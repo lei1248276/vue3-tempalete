@@ -1,0 +1,128 @@
+@import './variables.scss';
+@import './mixin.scss';
+@import './transition.scss';
+@import './element-ui.scss';
+@import './sidebar.scss';
+
+body {
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: Microsoft YaHei, Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,  Arial, sans-serif;
+}
+
+label {
+  font-weight: 700;
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+#app {
+  height: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+div:focus {
+  outline: none;
+}
+
+/* ! 重置chrome input[number] 样式 */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button{
+  -webkit-appearance: none !important;
+}
+/* ! 重置firefox input[number] 样式 */
+input[type="number"]{
+  -moz-appearance: textfield;
+}
+
+.clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+}
+
+.divider_left{
+  position: relative;
+  &:before{
+    content: '';
+    @include mid(0, 30%);
+    width: 2px;
+    height: 30px;
+    background-color: #CBCBCB;
+  }
+}
+
+.btn_search{
+  min-width: 90px;
+  background-color: #1275CB;
+  color: #fff;
+  border-radius: 4px;
+  border: none;
+  margin-right: 20px;
+}
+
+// main-container global css
+.app_container {
+  padding: 20px;
+  background-color: #F0F2F5;
+}
+
+.flex_container{
+  display: flex;
+  flex-wrap: wrap;
+  .flex_header{
+    flex-basis: 100%;
+    padding: 14px 14px 0;
+    margin-bottom: 32px;
+  }
+  .flex_main{
+    flex: 7;
+    margin-right: 32px;
+  }
+  .flex_other{
+    flex: 3;
+  }
+}
+
+.primary{
+  color: #3C66F5;
+  font-size: 14px;
+}
+
+.warning{
+  color: #FAAD14;
+  font-size: 14px;
+}
+
+.danger{
+  color: #FF4D4F;
+  font-size: 14px;
+}
