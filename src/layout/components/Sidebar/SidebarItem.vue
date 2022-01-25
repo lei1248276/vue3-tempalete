@@ -4,6 +4,7 @@
       v-if="onlyOneChild.meta"
       :index="resolvePath(onlyOneChild.path)"
       :class="{'submenu-title-noDropdown':!isNest}"
+      @click="toMenuRoute(resolvePath(onlyOneChild.path))"
     >
       <svg-icon :icon-class="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" />
       <template #title>{{ onlyOneChild.meta.title }}</template>
@@ -88,13 +89,14 @@ export default {
       return false
     },
     resolvePath(routePath) {
-      if (isExternal(routePath)) {
-        return routePath
-      }
-      if (isExternal(this.basePath)) {
-        return this.basePath
-      }
+      if (isExternal(routePath)) return routePath
+
+      if (isExternal(this.basePath)) return this.basePath
+
       return path.resolve(this.basePath, routePath)
+    },
+    toMenuRoute(path) {
+      isExternal(path) ? window.open(path) : this.$router.push(path)
     }
   }
 }

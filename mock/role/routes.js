@@ -12,6 +12,10 @@ const asyncRoutes = [
       component: 'test/test2',
       title: '用户管理'
     }]
+  },
+
+  {
+    path: '*'
   }
   /* {
     component: 'permission',

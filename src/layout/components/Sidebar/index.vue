@@ -14,13 +14,12 @@
         :collapse-transition="false"
         mode="vertical"
         unique-opened
-        router
       >
         <sidebar-item
-          v-for="route in permission_routes"
-          :key="route.path"
-          :item="route"
-          :base-path="route.path"
+          v-for="routes in permission_routes"
+          :key="routes.path"
+          :item="routes"
+          :base-path="routes.path"
         />
       </el-menu>
     </el-scrollbar>
@@ -28,37 +27,24 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+export default {
+  name: 'Sidebar'
+}
+</script>
+
+<script setup>
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.scss'
+import { useStore } from 'vuex'
+const store = useStore()
+import { useRoute } from 'vue-router'
+const route = useRoute()
 
-export default {
-  name: 'Sidebar',
-  components: { SidebarItem, Logo },
-  computed: {
-    ...mapGetters([
-      'sidebar',
-      'permission_routes'
-    ]),
-    activeMenu() {
-      const route = this.$route
-      const { meta, path } = route
-      // if set path, the sidebar will highlight the path you set
-      if (meta.activeMenu) {
-        return meta.activeMenu
-      }
-      return path
-    },
-    showLogo() {
-      return this.$store.state.settings.sidebarLogo
-    },
-    variables() {
-      return variables
-    },
-    isCollapse() {
-      return !this.sidebar.opened
-    }
-  }
-}
+const sidebar = computed(() => store.getters.sidebar)
+const permission_routes = computed(() => store.getters.permission_routes)
+// ! if set path, the sidebar will highlight the path you set
+const activeMenu = computed(() => route.meta.activeMenu || route.path)
+const showLogo = computed(() => store.state.settings.sidebarLogo)
+const isCollapse = computed(() => !sidebar.value.opened)
 </script>

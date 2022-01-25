@@ -67,20 +67,20 @@ export const asyncRoutes = {
     redirect: '/test/test',
     name: 'Permission',
     alwaysShow: true,
-    meta: { title: '测试', icon: 'dashboard' }
+    meta: { title: '测试', icon: 'table' }
   },
   'test/test': {
     path: 'test',
     name: 'Test',
     component: () => import(/* webpackChunkName: "role"*/'@/views/test'),
-    meta: { title: 'test', icon: 'dashboard' }
+    meta: { title: 'test', icon: 'table' }
   },
 
   'test/test2': {
     path: 'test2',
     name: 'Test2',
     component: () => import(/* webpackChunkName: "role"*/'@/views/test2'),
-    meta: { title: 'test2', icon: 'dashboard' }
+    meta: { title: 'test2', icon: 'table' }
   },
 
   // ! 404 页面必须放在最后 !!!

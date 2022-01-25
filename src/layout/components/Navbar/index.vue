@@ -1,7 +1,7 @@
 <template>
   <div class="navbar">
     <hamburger
-      :is-active="getters.sidebar.opened"
+      :is-active="sidebar.opened"
       class="hamburger-container"
       @toggleClick="toggleSideBar"
     />
@@ -9,7 +9,7 @@
     <breadcrumb class="breadcrumb-container" />
 
     <div class="right-menu">
-      <template v-if="getters.device!=='mobile'">
+      <template v-if="device!=='mobile'">
         <search
           id="header-search"
           class="right-menu-item"
@@ -34,10 +34,10 @@
       >
         <div class="avatar-wrapper divider_left">
           <img
-            :src="getters.avatar"
+            :src="avatar"
             class="user-avatar"
           >
-          <span class="user_name">{{ getters.name }}</span>
+          <span class="user_name">{{ name }}</span>
           <svg-icon
             icon-class="caret_bottom"
             class-name="caret_bottom"
@@ -52,7 +52,7 @@
             </router-link>
             <a
               target="_blank"
-              href="https://github.com/lei1248276/JiaGu-Admin"
+              href="https://github.com/lei1248276/vue3-tempalete"
             >
               <el-dropdown-item>Github</el-dropdown-item>
             </a>
@@ -82,10 +82,10 @@ const router = useRouter(), route = useRoute()
 import { useStore } from 'vuex'
 const store = useStore()
 
-const getters = ['sidebar', 'avatar', 'name', 'device'].reduce((acc, cur) => {
-  acc[cur] = computed(() => store.getters[cur])
-  return acc
-}, {})
+const sidebar = computed(() => store.getters.sidebar)
+const avatar = computed(() => store.getters.avatar)
+const name = computed(() => store.getters.name)
+const device = computed(() => store.getters.device)
 
 const toggleSideBar = () => { store.dispatch('app/toggleSideBar') }
 const logout = async() => {
