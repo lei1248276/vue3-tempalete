@@ -3,7 +3,7 @@
     ref="scrollContainer"
     :vertical="false"
     class="scroll-container"
-    @wheel.native.prevent="handleScroll"
+    @wheel.prevent="handleScroll"
   >
     <slot />
   </el-scrollbar>
@@ -27,7 +27,7 @@ export default {
   mounted() {
     this.scrollWrapper.addEventListener('scroll', this.emitScroll, true)
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.scrollWrapper.removeEventListener('scroll', this.emitScroll)
   },
   methods: {

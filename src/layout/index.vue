@@ -1,25 +1,27 @@
 <template>
-  <div
-    :class="classObj"
-    class="app-wrapper"
-  >
+  <ElConfigProvider :locale="zhCn">
     <div
-      v-if="device==='mobile'&&side_bar.opened"
-      class="drawer-bg"
-      @click="handleClickOutside"
-    />
-    <sidebar class="sidebar-container" />
-    <div
-      :class="{hasTagsView:needTagsView}"
-      class="main-container"
+      :class="classObj"
+      class="app-wrapper"
     >
-      <div :class="{'fixed-header':fixedHeader}">
-        <navbar />
-        <tags-view v-if="needTagsView" />
+      <div
+        v-if="device==='mobile'&&side_bar.opened"
+        class="drawer-bg"
+        @click="handleClickOutside"
+      />
+      <sidebar class="sidebar-container" />
+      <div
+        :class="{hasTagsView:needTagsView}"
+        class="main-container"
+      >
+        <div :class="{'fixed-header':fixedHeader}">
+          <navbar />
+          <tags-view v-if="needTagsView" />
+        </div>
+        <app-main />
       </div>
-      <app-main />
     </div>
-  </div>
+  </ElConfigProvider>
 </template>
 
 <script>
@@ -29,6 +31,9 @@ export default {
 </script>
 
 <script setup>
+import { ElConfigProvider } from 'element-plus'
+import zhCn from 'element-plus/lib/locale/lang/zh-cn'// !中文包
+
 import { Navbar, Sidebar, AppMain, TagsView } from './components'
 import { useStore } from 'vuex'
 const store = useStore()

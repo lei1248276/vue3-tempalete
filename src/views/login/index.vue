@@ -1,14 +1,13 @@
 <template>
   <div class="login-container">
     <el-form
-      ref="formRef"
-      :model="loginForm"
+      :ref="el => state.formRef = el"
+      :model="state.loginForm"
       :rules="loginRules"
       class="login-form"
       auto-complete="on"
       label-position="left"
     >
-
       <img
         class="logo"
         src="~@/assets/logo.png"
@@ -20,11 +19,11 @@
 
       <el-form-item
         prop="username"
-        style="border: none;background: transparent;"
+        style="width: 100%;border: none;background: transparent;"
       >
         <el-input
-          ref="usernameRef"
-          v-model="loginForm.username"
+          :ref="el => state.usernameRef = el"
+          v-model="state.loginForm.username"
           placeholder="请输入用户名"
           name="username"
           type="text"
@@ -36,13 +35,13 @@
 
       <el-form-item
         prop="password"
-        style="border: none;background: transparent;"
+        style="width: 100%;border: none;background: transparent;"
       >
         <el-input
-          :key="passwordType"
-          ref="passwordRef"
-          v-model="loginForm.password"
-          :type="passwordType"
+          :key="state.passwordType"
+          :ref="el => state.passwordRef = el"
+          v-model="state.loginForm.password"
+          :type="state.passwordType"
           placeholder="请输入密码"
           name="password"
           tabindex="2"
@@ -54,17 +53,18 @@
           class="show-pwd"
           @click="showPwd"
         >
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+          <svg-icon :icon-class="state.passwordType ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
 
       <el-button
-        :loading="loading"
+        :loading="state.loading"
         type="primary"
         round
         class="login_btn"
         @click.prevent="handleLogin"
-      >登录
+      >
+        登录
       </el-button>
     </el-form>
   </div>
@@ -82,42 +82,39 @@ const router = useRouter(), route = useRoute()
 import { useStore } from 'vuex'
 const store = useStore()
 
-const loginForm = reactive({
-  username: '',
-  password: ''
-})
-const loginRules = reactive({
+const loginRules = {
   username: [{ required: true, trigger: 'blur', message: '请输入用户名' }],
   password: [{ required: true, trigger: 'blur', message: '请输入密码' }]
+}
+const state = reactive({
+  formRef: null,
+  usernameRef: null,
+  passwordRef: null,
+  loginForm: { username: '', password: '' },
+  loading: false,
+  passwordType: 'password',
+  redirect: undefined
 })
-
-const formRef = ref(undefined)
-const usernameRef = ref(undefined)
-const passwordRef = ref(undefined)
-const loading = ref(false)
-const passwordType = ref('password')
-const redirect = ref(undefined)
 
 watch(
   () => route,
-  (route) => (redirect.value = route.query && route.query.redirect),
+  (route) => (state.redirect = route.query?.redirect),
   { immediate: true }
 )
 
-const showPwd = () => {
-  passwordType.value = passwordType.value === 'password' ? '' : 'password'
-  nextTick(() => { passwordRef.value.focus() })
+function showPwd() {
+  state.passwordType = state.passwordType ? '' : 'password'
+  nextTick(() => { state.passwordRef.focus() })
 }
-const handleLogin = () => {
-  formRef.value.validate(valid => {
+function handleLogin() {
+  state.formRef.validate(valid => {
     if (valid) {
-      loading.value = true
-      store.dispatch('user/login', loginForm)
+      state.loading = true
+      store.dispatch('user/login', state.loginForm)
         .then(() => {
-          router.push({ path: redirect.value || '/' })
-          loading.value = false
-        }).catch(() => {
-          loading.value = false
+          router.push({ path: state.redirect || '/' })
+        }).finally(() => {
+          state.loading = false
         })
     } else {
       console.log('error submit!!')

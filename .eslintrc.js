@@ -10,7 +10,7 @@ module.exports = {
     node: true,
     es6: true,
   },
-  extends: ['plugin:vue/recommended', 'eslint:recommended', 'vue-global-api'],
+  extends: ['plugin:vue/vue3-recommended', 'eslint:recommended', 'vue-global-api'],
 
   // add your custom rules here
   //it is base on https://github.com/vuejs/eslint-config-vue
@@ -24,13 +24,14 @@ module.exports = {
     }],
     "vue/no-multiple-template-root": "off",
     "vue/singleline-html-element-content-newline": "off",
-    "vue/multiline-html-element-content-newline":"off",
+    // "vue/multiline-html-element-content-newline":"off",
     "vue/name-property-casing": ["error", "PascalCase"],
     "vue/html-closing-bracket-newline": ["error", {
         "singleline": "never",
         "multiline": "always"
       }],
     "vue/no-v-html": "off",
+    "vue/no-v-for-template-key": "off",
     'accessor-pairs': 2,
     'arrow-spacing': [2, {
       'before': true,

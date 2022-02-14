@@ -12,7 +12,7 @@
   "dependencies": {
     "axios": "^0.24.0",
     "core-js": "^3.20.1",
-    "element-plus": "^1.2.0-beta.6",
+    "element-plus": "^2.0.1",
     "fuse.js": "3.4.4",
     "js-cookie": "^3.0.1",
     "normalize.css": "^8.0.1",
@@ -45,7 +45,10 @@
     "script-ext-html-webpack-plugin": "^2.1.5",
     "serve-static": "1.13.2",
     "svg-sprite-loader": "^6.0.11",
-    "svgo": "^2.8.0"
+    "svgo": "^2.8.0",
+    "unplugin-auto-import": "^0.5.11",
+    "unplugin-element-plus": "^0.3.1",
+    "unplugin-vue-components": "^0.17.18"
   },
   "eslintConfig": {
     "root": true,

@@ -6,7 +6,7 @@
       :class="{'submenu-title-noDropdown':!isNest}"
       @click="toMenuRoute(resolvePath(onlyOneChild.path))"
     >
-      <svg-icon :icon-class="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" />
+      <svg-icon :icon-class="onlyOneChild.meta.icon || item.meta.icon || ''" />
       <template #title>{{ onlyOneChild.meta.title }}</template>
     </el-menu-item>
   </template>
@@ -18,7 +18,7 @@
     popper-append-to-body
   >
     <template #title>
-      <svg-icon :icon-class="item.meta && item.meta.icon" />
+      <svg-icon :icon-class="item.meta.icon || ''" />
       <span>{{ item.meta.title }}</span>
     </template>
     <sidebar-item

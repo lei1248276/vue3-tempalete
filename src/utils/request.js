@@ -3,7 +3,16 @@ import { ElMessageBox, ElMessage, ElLoading } from 'element-plus'
 import store from '@/store'
 
 // ! LOADING对象（为了close）
-let LOADING = {}
+let LOADING = null
+function loadingStart() {
+  LOADING && LOADING.close()
+  LOADING = ElLoading.service({
+    lock: true,
+    text: 'Loading',
+    background: 'transparent',
+    fullscreen: false
+  })
+}
 
 console.log('%c🚀 ~ file: request ~', 'color: #F25F5C;font-weight: bold;', process.env.VUE_APP_BASE_API)
 
@@ -26,11 +35,7 @@ service.interceptors.request.use(
       config.headers['token'] = store.getters.token
       // console.log(config);
     }
-    LOADING = ElLoading.service({
-      lock: true,
-      text: 'ElLoading',
-      background: 'transparent'
-    })
+    loadingStart()
     return config
   },
   error => {
@@ -54,6 +59,7 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data
+    LOADING.close()
 
     // if the custom code is not 20000, it is judged as an error.
     if (res.code !== '2000') {
@@ -77,11 +83,8 @@ service.interceptors.response.use(
         })
       }
 
-      LOADING.close()
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
-      LOADING.close()
-
       return res
     }
   },

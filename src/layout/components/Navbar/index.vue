@@ -58,7 +58,7 @@
             </a>
             <el-dropdown-item
               divided
-              @click.native="logout"
+              @click="logout"
             >
               <span style="display:block;">退出登录</span>
             </el-dropdown-item>

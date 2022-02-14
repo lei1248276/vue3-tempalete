@@ -1,6 +1,9 @@
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
+const AutoImport = require('unplugin-auto-import/webpack')
+const Components = require('unplugin-vue-components/webpack')
+const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
 // const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
 function resolve(dir) {
@@ -57,7 +60,16 @@ module.exports = {
     output: {
       filename: `static/js/[name].${timeStamp}.js`,
       chunkFilename: `static/js/[name].${timeStamp}.js`
-    }
+    },
+    plugins: [
+      AutoImport({
+        resolvers: [ElementPlusResolver()]
+      }),
+      Components({
+        resolvers: [ElementPlusResolver()]
+      }),
+      require('unplugin-element-plus/webpack')()
+    ]
   },
   /* configureWebpack: config => {
     if (process.env.NODE_ENV !== 'development') {
