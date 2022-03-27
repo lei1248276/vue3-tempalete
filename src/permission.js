@@ -6,6 +6,7 @@ import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
 import { getRoutes } from '@/api/user'
+import { hasRoute } from '@/store/modules/permission'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -39,12 +40,15 @@ router.beforeEach(async(to, from, next) => {
           // * 请求获取服务端路由
           const { result: routes } = await getRoutes()
           const accessRoutes = await store.dispatch('permission/generateRoutes', routes)
+          // ! 查询是否存在重定向页面（针对：切换账号时）
+          const isRedirect = hasRoute(accessRoutes, to.path)
+
           // dynamically add accessible routes
           accessRoutes.forEach(route => router.addRoute(route))
 
           // hack method to ensure that addRoutes is complete
           // set the replace: true, so the navigation will not leave a history record
-          next({ ...to, replace: true })
+          next(isRedirect ? { ...to, replace: true } : { path: '/', replace: true })
         } catch (error) {
           // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')

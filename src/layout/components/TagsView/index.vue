@@ -18,6 +18,7 @@
         class="tags-view-item"
         @click.middle="!isAffix(tag)?closeSelectedTag(tag):''"
         @contextmenu.prevent="openMenu(tag,$event)"
+        @click="tag.fullPath === $route.fullPath && refreshSelectedTag($route)"
       >
         {{ tag.title }}
         <span

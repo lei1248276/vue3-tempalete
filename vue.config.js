@@ -38,7 +38,7 @@ module.exports = {
   filenameHashing: false,
   devServer: {
     before: require('./mock/mock-server.js'),
-    compress: true,
+    // compress: true,
     port: port,
     open: true,
     hot: true,

@@ -60,7 +60,31 @@ export const constantRoutes = [
   }
 ]
 
-export const asyncRoutes = {
+export const asyncRoutes = new Map([
+  ['test', {
+    path: '/test',
+    component: Layout,
+    redirect: '/test/test',
+    name: 'Permission',
+    alwaysShow: true,
+    meta: { title: '测试', icon: 'table' }
+  }],
+  ['test/test', {
+    path: 'test',
+    name: 'Test',
+    component: () => import(/* webpackChunkName: "role"*/'@/views/test'),
+    meta: { title: 'test', icon: 'table' }
+  }],
+  ['test/test2', {
+    path: 'test2',
+    name: 'Test2',
+    component: () => import(/* webpackChunkName: "role"*/'@/views/test2'),
+    meta: { title: 'test2', icon: 'table' }
+  }],
+  // ! 404 页面必须放在最后 !!!
+  ['*', { path: '/:pathMatch(.*)*', redirect: '/404', hidden: true }]
+])
+/* export const asyncRoutes = {
   'test': {
     path: '/test',
     component: Layout,
@@ -72,20 +96,20 @@ export const asyncRoutes = {
   'test/test': {
     path: 'test',
     name: 'Test',
-    component: () => import(/* webpackChunkName: "role"*/'@/views/test'),
+    component: () => import(/!* webpackChunkName: "role"*!/'@/views/test'),
     meta: { title: 'test', icon: 'table' }
   },
 
   'test/test2': {
     path: 'test2',
     name: 'Test2',
-    component: () => import(/* webpackChunkName: "role"*/'@/views/test2'),
+    component: () => import(/!* webpackChunkName: "role"*!/'@/views/test2'),
     meta: { title: 'test2', icon: 'table' }
   },
 
   // ! 404 页面必须放在最后 !!!
   '*': { path: '/:pathMatch(.*)*', redirect: '/404', hidden: true }
-}
+}*/
 
 const router = createRouter({
   history: createWebHashHistory(),

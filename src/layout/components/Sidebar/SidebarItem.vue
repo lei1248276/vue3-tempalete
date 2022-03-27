@@ -96,7 +96,12 @@ export default {
       return path.resolve(this.basePath, routePath)
     },
     toMenuRoute(path) {
-      isExternal(path) ? window.open(path) : this.$router.push(path)
+      const { fullPath } = this.$route
+      if (path === fullPath) {
+        this.$router.replace({ path: '/redirect' + fullPath })
+      } else {
+        isExternal(path) ? window.open(path) : this.$router.push(path)
+      }
     }
   }
 }
