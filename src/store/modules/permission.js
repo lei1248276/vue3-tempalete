@@ -52,7 +52,8 @@ export function filterAsyncRoutes(routes, asyncRoutes) {
     if (tmp.component || tmp.path === '*') {
       const path = tmp.component || tmp.path
       if (asyncRoutes.has(path)) {
-        Object.assign(tmp, asyncRoutes.get(path)).meta.title = tmp.title
+        Object.assign(tmp, asyncRoutes.get(path))
+        path !== '*' && (tmp.meta.title = tmp.title)
       } else {
         console.error(`路由地址不存在：${path}`)
         throw new Error(`路由地址不存在`)

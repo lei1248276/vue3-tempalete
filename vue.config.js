@@ -4,7 +4,7 @@ const defaultSettings = require('./src/settings.js')
 const AutoImport = require('unplugin-auto-import/webpack')
 const Components = require('unplugin-vue-components/webpack')
 const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
-// const CompressionWebpackPlugin = require('compression-webpack-plugin')
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -48,20 +48,25 @@ module.exports = {
       errors: true
     }
   },
-  configureWebpack: {
+  configureWebpack: config => {
+    if (process.env.NODE_ENV !== 'development') {
+      config.plugins.push(new CompressionWebpackPlugin({
+        filename: '[path][base].gz',
+        algorithm: 'gzip',
+        test: /\.(js|css)$/i,
+        threshold: 10240, // * 大于 10240字节，既10k时
+        deleteOriginalAssets: false, // * 是否删除原本的js
+        minRatio: 0.8 // * 压缩率
+      }))
+      // config.output.filename = `static/js/[name].${timeStamp}.js`
+      // config.output.chunkFilename = `static/js/[name].${timeStamp}.js`
+    }
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
-    name: name,
-    resolve: {
-      alias: {
-        '@': resolve('src')
-      }
-    },
-    output: {
-      filename: `static/js/[name].${timeStamp}.js`,
-      chunkFilename: `static/js/[name].${timeStamp}.js`
-    },
-    plugins: [
+    config.name = name
+    config.resolve.alias['@'] = resolve('src')
+
+    config.plugins.push(
       AutoImport({
         resolvers: [ElementPlusResolver()]
       }),
@@ -69,25 +74,8 @@ module.exports = {
         resolvers: [ElementPlusResolver()]
       }),
       require('unplugin-element-plus/webpack')()
-    ]
+    )
   },
-  /* configureWebpack: config => {
-    if (process.env.NODE_ENV !== 'development') {
-      config.plugins.push(new CompressionWebpackPlugin({
-        filename: '[path][base].gz',
-        algorithm: 'gzip',
-        test: /\.(js|css)$/i,
-        // threshold: 10240, // * 大于 10240字节，既10k时
-        threshold: 10240000,
-        deleteOriginalAssets: true, // * 是否删除原本的js
-        minRatio: 0.8 // * 压缩率
-      }));
-      config.output.filename = `static/js/[name].${timeStamp}.js`;
-      config.output.chunkFilename = `static/js/[name].${timeStamp}.js`;
-    }
-    config.name = name;
-    config.resolve.alias['@'] = resolve('src');
-  },*/
   css: {
     extract: {
       filename: `static/css/[name].${timeStamp}.css`,

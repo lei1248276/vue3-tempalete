@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const isMock = true
+const isMock = process.env.VUE_APP_MOCK
 
 export function login(data) {
   return request({

@@ -18,7 +18,7 @@ console.log('%c🚀 ~ file: request ~', 'color: #F25F5C;font-weight: bold;', pro
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  baseURL: process.env.VUE_APP_MOCK ? process.env.VUE_APP_MOCK_API : process.env.VUE_APP_BASE_API, // url = base url + request url
   // withCredentials: process.env.NODE_ENV !== 'development', // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })
