@@ -5,12 +5,28 @@ const constantRoutes = []
 const asyncRoutes = [
   {
     component: 'test',
+    title: '测试',
     children: [{
-      component: 'test/test',
-      title: '角色管理'
-    }, {
-      component: 'test/test2',
-      title: '用户管理'
+      component: 'nested',
+      title: '嵌套',
+      children: [{
+        component: 'test/test',
+        title: '角色管理'
+      }, {
+        component: 'test/test2',
+        title: '用户管理'
+      }]
+    },
+    {
+      component: 'nested',
+      title: '嵌套',
+      children: [{
+        component: 'test/test',
+        title: '角色管理'
+      }, {
+        component: 'test/test2',
+        title: '用户管理'
+      }]
     }]
   },
 

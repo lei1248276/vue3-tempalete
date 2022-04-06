@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { h } from 'vue'
 
 /* * Layout */
 import Layout from '@/layout'
@@ -13,7 +14,7 @@ import Layout from '@/layout'
   * roles: ['admin','editor']     控制页面角色（可以设置多个角色）
   * title: 'title'               名称显示在侧边栏和面包屑中（推荐设置）
   * icon: 'svg-name' 图标显示在侧边栏中
-  * noCache: true                如果设置为true，页面将不会被缓存（默认为false）
+  ! noCache: true                如果设置为true，页面将不会被缓存（默认为false），三级路由以上情况上级组件使用（component: { name: name, render: () => h('router-view') }）
   * affix: true                  如果设置为真，标签将固定在TagView中
   * breadcrumb: false            如果设置为 false，该项目将隐藏在面包屑中（默认为 true）
   * activeMenu: '/example/list'  如果设置路径，侧边栏将突出显示您设置的路径
@@ -68,6 +69,13 @@ export const asyncRoutes = new Map([
     name: 'Permission',
     alwaysShow: true,
     meta: { title: '测试', icon: 'table' }
+  }],
+  ['nested', {
+    path: 'nested',
+    component: { name: 'Nested', render: () => h('router-view') },
+    name: 'Nested',
+    alwaysShow: true,
+    meta: { title: '', icon: 'erp_permission', noCache: true }
   }],
   ['test/test', {
     path: 'test',

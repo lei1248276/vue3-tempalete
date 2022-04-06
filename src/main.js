@@ -9,15 +9,15 @@ import '@/styles/index.scss' // ! global css
 
 import 'vue-global-api' // ! 全局引入vue3 常用api
 
-import './icons' // ! icon
-import SvgIcon from '@/components/SvgIcon'// svg component
+import { setupSvgIcon } from './icons' // ! icon
 
 import './permission' // ! permission control
 
 const app = createApp(App)
 
+setupSvgIcon(app)
+
 app
   .use(router)
   .use(store)
-  .component('svg-icon', SvgIcon)
   .mount('#app')
