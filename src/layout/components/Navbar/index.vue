@@ -25,7 +25,6 @@
             class="right-menu-item hover-effect"
           />
         </el-tooltip>
-
       </template>
 
       <el-dropdown
@@ -123,6 +122,7 @@ const logout = async() => {
     float: right;
     height: 100%;
     line-height: 50px;
+    margin-top: 5px;
 
     &:focus {
       outline: none;
@@ -150,7 +150,6 @@ const logout = async() => {
       margin-right: 30px;
 
       .avatar-wrapper {
-        margin-top: 5px;
         position: relative;
         padding-left: 20px;
 

@@ -49,11 +49,10 @@ export function filterAsyncRoutes(routes, asyncRoutes) {
   routes.forEach(route => {
     const tmp = { ...route }
 
-    if (tmp.component || tmp.path === '*') {
-      const path = tmp.component || tmp.path
+    if (tmp.component) {
+      const path = tmp.component
       if (asyncRoutes.has(path)) {
-        Object.assign(tmp, asyncRoutes.get(path))
-        path !== '*' && (tmp.meta.title = tmp.title)
+        Object.assign(tmp, asyncRoutes.get(path)).meta.title = tmp.title
       } else {
         console.error(`路由地址不存在：${path}`)
         throw new Error(`路由地址不存在`)
@@ -79,7 +78,6 @@ const mutations = {
   SET_ROUTES: (state, routes) => {
     state.addRoutes = routes
     state.routes = constantRoutes.concat(routes)
-    // console.log(state.routes, state.addRoutes);
   }
 }
 
@@ -87,6 +85,8 @@ const actions = {
   generateRoutes({ commit }, routes) {
     return new Promise(resolve => {
       const accessedRoutes = filterAsyncRoutes(routes, asyncRoutes)
+      // ! 404 页面必须放在最后 !!!
+      accessedRoutes.push(asyncRoutes.get('*'))
       commit('SET_ROUTES', accessedRoutes)
       resolve(accessedRoutes)
       console.log('%c🚀 ~ file: permission ~ method: generateRoutes ~', 'color: #F25F5C;font-weight: bold;', routes, accessedRoutes)

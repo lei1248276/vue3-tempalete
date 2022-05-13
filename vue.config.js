@@ -11,8 +11,9 @@ function resolve(dir) {
 }
 
 const name = defaultSettings.title // page title
+const IS_PROD = process.env.NODE_ENV === 'production'
 
-const timeStamp = new Date().getTime()
+// const timeStamp = new Date().getTime()
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
@@ -35,7 +36,6 @@ module.exports = {
   assetsDir: 'static',
   lintOnSave: false,
   productionSourceMap: false,
-  filenameHashing: false,
   devServer: {
     before: require('./mock/mock-server.js'),
     // compress: true,
@@ -49,7 +49,7 @@ module.exports = {
     }
   },
   configureWebpack: config => {
-    if (process.env.NODE_ENV !== 'development') {
+    if (IS_PROD) {
       config.plugins.push(new CompressionWebpackPlugin({
         filename: '[path][base].gz',
         algorithm: 'gzip',
@@ -72,15 +72,15 @@ module.exports = {
       }),
       Components({
         resolvers: [ElementPlusResolver()]
-      }),
-      require('unplugin-element-plus/webpack')()
+      })
+      // require('unplugin-element-plus/webpack')()
     )
   },
   css: {
-    extract: {
+    /* extract: {
       filename: `static/css/[name].${timeStamp}.css`,
       chunkFilename: `static/css/[name].${timeStamp}.css`
-    },
+    },*/
     loaderOptions: {
       scss: {
         prependData: `
@@ -123,7 +123,7 @@ module.exports = {
       .end()
 
     config
-      .when(process.env.NODE_ENV !== 'development',
+      .when(IS_PROD,
         config => {
           config
             .plugin('ScriptExtHtmlWebpackPlugin')
