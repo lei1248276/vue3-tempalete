@@ -72,8 +72,8 @@ module.exports = {
       }),
       Components({
         resolvers: [ElementPlusResolver()]
-      })
-      // require('unplugin-element-plus/webpack')()
+      }),
+      require('unplugin-element-plus/webpack')()
     )
   },
   css: {
