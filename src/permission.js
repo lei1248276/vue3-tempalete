@@ -50,6 +50,7 @@ router.beforeEach(async(to, from, next) => {
           // set the replace: true, so the navigation will not leave a history record
           next(isRedirect ? { ...to, replace: true } : { path: '/', replace: true })
         } catch (error) {
+          console.log('%c🚀 ~ method: ??? ~', 'color: #F25F5C;font-weight: bold;', error)
           // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')
           ElMessage.error(error || 'Has Error')

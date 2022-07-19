@@ -177,10 +177,11 @@ $title_color: #333;
 .login-container {
   width: 100vw;
   min-height: 100vh;
-  background-image: url("https://keput.comdao.com.cn:8081/image/cover_admin.png");
-  background-size: 64% 100%;
-  background-repeat: no-repeat;
-  background-position: right;
+  //background-image: url("https://keput.comdao.com.cn:8081/image/cover_admin.png");
+  //background-size: 64% 100%;
+  //background-repeat: no-repeat;
+  //background-position: right;
+  background-color: gray;
   overflow: hidden;
 
   .logo{

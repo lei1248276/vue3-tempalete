@@ -28,11 +28,8 @@ const asyncRoutes = [
         title: '用户管理'
       }]
     }]
-  },
-
-  {
-    path: '*'
   }
+
   /* {
     component: 'permission',
     children: [{
