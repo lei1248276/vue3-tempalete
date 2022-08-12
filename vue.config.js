@@ -37,8 +37,8 @@ module.exports = {
   lintOnSave: false,
   productionSourceMap: false,
   devServer: {
-    before: require('./mock/mock-server.js'),
-    // compress: true,
+    before: process.env.VUE_APP_MOCK && require('./mock/mock-server.js'),
+    compress: true,
     port: port,
     open: true,
     hot: true,

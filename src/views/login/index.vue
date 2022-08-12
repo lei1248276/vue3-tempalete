@@ -8,10 +8,10 @@
       auto-complete="on"
       label-position="left"
     >
-      <img
+<!--      <img
         class="logo"
         src="~@/assets/logo.png"
-      >
+      >-->
 
       <div class="title-container">
         <h3 class="title">商城后台账户登录</h3>
