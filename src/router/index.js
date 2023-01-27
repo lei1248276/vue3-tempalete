@@ -75,7 +75,7 @@ export const asyncRoutes = new Map([
     component: { name: 'Nested', render: () => h('router-view') },
     name: 'Nested',
     alwaysShow: true,
-    meta: { title: '', icon: 'erp_permission', noCache: true }
+    meta: { title: '', icon: 'table', noCache: true }
   }],
   ['test/test', {
     path: 'test',
