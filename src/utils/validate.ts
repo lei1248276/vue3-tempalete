@@ -6,8 +6,8 @@
  * @param {string} path
  * @returns {Boolean}
  */
-export function isExternal(path) {
-  return /^(https?:|mailto:|tel:)/.test(path);
+export function isExternal(path: string) {
+  return /^(https?:|mailto:|tel:)/.test(path)
 }
 
 /**
@@ -23,14 +23,14 @@ export function isExternal(path) {
  * @param {string} phone
  * @returns {Boolean}
  */
-export function validPhone(phone) {
-  return /^(?:(?:\+|00)86)?1[3-9]\d{9}$/.test(phone);
+export function validPhone(phone: string) {
+  return /^(?:(?:\+|00)86)?1[3-9]\d{9}$/.test(phone)
 }
 
 /**
  * @param {string || number} IDCard
  * @returns {Boolean}
  */
-export function validPIDCard(IDCard) {
-  return /(^\d{8}(0\d|10|11|12)([0-2]\d|30|31)\d{3}$)|(^\d{6}(18|19|20)\d{2}(0\d|10|11|12)([0-2]\d|30|31)\d{3}(\d|X|x)$)/.test(IDCard);
+export function validPIDCard(IDCard: string) {
+  return /(^\d{8}(0\d|10|11|12)([0-2]\d|30|31)\d{3}$)|(^\d{6}(18|19|20)\d{2}(0\d|10|11|12)([0-2]\d|30|31)\d{3}(\d|X|x)$)/.test(IDCard)
 }

@@ -2,16 +2,16 @@
   <div class="app_container">
     <el-button
       type="primary"
-      @click="$router.push('/test2')"
+      @click="$router.push('/dashboard')"
     >
-      跳转test2
+      跳转dashboard
     </el-button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Role'
+  name: 'Admin'
 }
 </script>
 

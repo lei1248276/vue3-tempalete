@@ -1,6 +1,6 @@
 'use strict'
 const path = require('path')
-const defaultSettings = require('./src/settings.js')
+const defaultSettings = require('@/settings.ts')
 const AutoImport = require('unplugin-auto-import/webpack')
 const Components = require('unplugin-vue-components/webpack')
 const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
@@ -37,7 +37,7 @@ module.exports = {
   lintOnSave: false,
   productionSourceMap: false,
   devServer: {
-    before: process.env.VUE_APP_MOCK && require('./mock/mock-server.js'),
+    before: process.env.VITE_MOCK && require('./mock/mock-server.js'),
     compress: true,
     port: port,
     open: true,

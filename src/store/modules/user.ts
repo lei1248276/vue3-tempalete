@@ -34,9 +34,9 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
-        const { result } = response
-        commit('SET_TOKEN', result.token)
-        setToken(result.token)
+        const { result: { token }} = response
+        commit('SET_TOKEN', token)
+        setToken(token)
         resolve()
       }).catch(error => {
         reject(error)
@@ -61,12 +61,10 @@ const actions = {
   },
 
   // user logout
-  logout({ commit, state, dispatch, rootGetters }) {
+  logout({ state, dispatch, rootGetters }) {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
-        commit('SET_TOKEN', '')
-        commit('SET_USER_ID', '')
-        removeToken()
+        dispatch('resetToken')
         resetRouter(rootGetters.permission_addRoutes)
 
         // reset visited views and cached views
@@ -83,8 +81,8 @@ const actions = {
   // remove token
   resetToken({ commit }) {
     return new Promise(resolve => {
-      commit('SET_TOKEN', '')
       commit('SET_USER_ID', '')
+      commit('SET_TOKEN', '')
       removeToken()
       resolve()
     })

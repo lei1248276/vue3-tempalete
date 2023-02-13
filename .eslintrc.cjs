@@ -1,31 +1,66 @@
+/* eslint-env node */
+require('@rushstack/eslint-patch/modern-module-resolution')
+
 module.exports = {
   root: true,
   parserOptions: {
-    parser: 'babel-eslint',
     sourceType: 'module',
-    ecmaVersion: 9
+    ecmaVersion: 'latest',
   },
   env: {
     browser: true,
-    node: true,
-    es6: true,
+    node: true
   },
-  extends: ['plugin:vue/vue3-recommended', 'eslint:recommended', 'vue-global-api'],
+  extends: [
+    'plugin:vue/vue3-essential',
+    'plugin:vue/vue3-recommended',
+    'eslint:recommended',
+    '@vue/eslint-config-typescript',
+    'vue-global-api'
+  ],
+  globals: {
+    // Ref sugar (take 2)
+    $: "readonly",
+    $$: "readonly",
+    $ref: "readonly",
+    $shallowRef: "readonly",
+    $computed: "readonly",
+
+    // index.d.ts
+    // global.d.ts
+    Fn: "readonly",
+    PromiseFn: "readonly",
+    RefType: "readonly",
+    LabelValueOptions: "readonly",
+    EmitType: "readonly",
+    TargetContext: "readonly",
+    ComponentElRef: "readonly",
+    ComponentRef: "readonly",
+    ElRef: "readonly",
+    global: "readonly",
+    ForDataType: "readonly",
+    ComponentRoutes: "readonly",
+
+    // script setup
+    defineProps: "readonly",
+    defineEmits: "readonly",
+    defineExpose: "readonly",
+    withDefaults: "readonly"
+  },
 
   // add your custom rules here
   //it is base on https://github.com/vuejs/eslint-config-vue
   rules: {
-    "vue/max-attributes-per-line": [2, {
-      "singleline": 1,
-      "multiline": {
-        "max": 1,
-        "allowFirstLine": false
-      }
-    }],
+    // "vue/max-attributes-per-line": [2, {
+    //   "singleline": 1,
+    //   "multiline": {
+    //     "max": 1,
+    //     "allowFirstLine": false
+    //   }
+    // }],
+    "vue/multi-word-component-names": "off",
     "vue/no-multiple-template-root": "off",
     "vue/singleline-html-element-content-newline": "off",
-    // "vue/multiline-html-element-content-newline":"off",
-    "vue/name-property-casing": ["error", "PascalCase"],
     "vue/html-closing-bracket-newline": ["error", {
         "singleline": "never",
         "multiline": "always"

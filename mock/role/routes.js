@@ -4,124 +4,135 @@ const constantRoutes = []
 
 const asyncRoutes = [
   {
-    component: 'test',
+    path: 'test',
     title: '测试',
     children: [{
-      component: 'nested',
+      path: 'nested',
       title: '嵌套',
       children: [{
-        component: 'test/test',
-        title: '角色管理'
+        path: 'nested2',
+        title: '嵌套2',
+        children: [{
+          path: 'role',
+          title: '角色管理'
+        }, {
+          path: 'user',
+          title: '用户管理'
+        }]
       }, {
-        component: 'test/test2',
-        title: '用户管理'
+        path: 'nested3',
+        title: '嵌套3',
+        children: [{
+          path: 'admin',
+          title: '管理员'
+        }]
       }]
     }]
   }
 
   /* {
-    component: 'permission',
+    path: 'permission',
     children: [{
-      component: 'permission/role',
+      path: 'permission/role',
       title: '角色管理'
     }, {
-      component: 'permission/user',
+      path: 'permission/user',
       title: '用户管理'
     }]
   },
 
   {
-    component: 'doctorManage',
+    path: 'doctorManage',
     title: '医生管理',
     children: [{
-      component: 'doctorManage/register',
+      path: 'doctorManage/register',
       title: '医生注册审核'
     }, {
-      component: 'doctorManage/onlineDoctor',
+      path: 'doctorManage/onlineDoctor',
       title: '线上医生列表'
     }, {
-      component: 'doctorManage/discount',
+      path: 'doctorManage/discount',
       title: '医生价格组维护'
     }]
   },
 
   {
-    component: 'salesManage',
+    path: 'salesManage',
     title: '销售管理',
     children: [{
-      component: 'salesManage/goods',
+      path: 'salesManage/goods',
       title: '商品管理'
     }, {
-      component: 'salesManage/combo',
+      path: 'salesManage/combo',
       title: '套餐管理'
     }]
   },
 
   {
-    component: 'areaManage',
+    path: 'areaManage',
     title: '大区管理',
     children: [{
-      component: 'areaManage/areaInfo',
+      path: 'areaManage/areaInfo',
       title: '大区信息管理'
     }, {
-      component: 'areaManage/areaPrice',
+      path: 'areaManage/areaPrice',
       title: '大区价格组维护'
     }]
   },
 
   {
-    component: 'agentManage',
+    path: 'agentManage',
     title: '代理商管理',
     children: [{
-      component: 'agentManage/agentCheck',
+      path: 'agentManage/agentCheck',
       title: '代理商审核'
     }, {
-      component: 'agentManage/onlineAgent',
+      path: 'agentManage/onlineAgent',
       title: '线上代理商'
     }]
   },
 
   {
-    component: 'orderManage',
+    path: 'orderManage',
     title: '订单管理',
     children: [{
-      component: 'orderManage/order',
+      path: 'orderManage/order',
       title: '订单列表'
     }, {
-      component: 'orderManage/refund',
+      path: 'orderManage/refund',
       title: '退款申请列表'
     }]
   },
 
   {
-    component: 'reportManage',
+    path: 'reportManage',
     title: '报表管理',
     children: [{
-      component: 'reportManage/orderReport',
+      path: 'reportManage/orderReport',
       title: '订单报表分析'
     }]
   },
 
   {
-    component: 'splitAccountManage',
+    path: 'splitAccountManage',
     title: '分账管理',
     children: [{
-      component: 'splitAccountManage/splitAccountCheck',
+      path: 'splitAccountManage/splitAccountCheck',
       title: '分账审批'
     }]
   },
 
   {
-    component: 'forumManage',
+    path: 'forumManage',
     title: '论坛管理',
     children: [{
-      component: 'forumManage/article',
+      path: 'forumManage/article',
       title: '文章列表'
     }, {
-      component: 'forumManage/video',
+      path: 'forumManage/video',
       title: '视频列表'
     }, {
-      component: 'forumManage/expert',
+      path: 'forumManage/expert',
       title: '专家列表'
     }]
   }*/

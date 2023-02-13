@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 
   title: 'vue3-template',
 

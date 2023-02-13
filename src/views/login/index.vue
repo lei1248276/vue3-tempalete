@@ -8,7 +8,7 @@
       auto-complete="on"
       label-position="left"
     >
-<!--      <img
+      <!--      <img
         class="logo"
         src="~@/assets/logo.png"
       >-->
@@ -17,10 +17,7 @@
         <h3 class="title">后台模版</h3>
       </div>
 
-      <el-form-item
-        prop="username"
-        style="width: 100%;border: none;background: transparent;"
-      >
+      <el-form-item prop="username">
         <el-input
           :ref="el => state.usernameRef = el"
           v-model="state.loginForm.username"
@@ -33,10 +30,7 @@
         />
       </el-form-item>
 
-      <el-form-item
-        prop="password"
-        style="width: 100%;border: none;background: transparent;"
-      >
+      <el-form-item prop="password">
         <el-input
           :key="state.passwordType"
           :ref="el => state.passwordRef = el"
@@ -49,12 +43,11 @@
           class="form_input"
           @keypress.enter="handleLogin"
         />
-        <span
-          class="show-pwd"
+        <svg-icon
+          :icon-class="state.passwordType ? 'eye' : 'eye-open'"
+          class-name="show-pwd"
           @click="showPwd"
-        >
-          <svg-icon :icon-class="state.passwordType ? 'eye' : 'eye-open'" />
-        </span>
+        />
       </el-form-item>
 
       <el-button
@@ -70,49 +63,52 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'Login'
 }
 </script>
 
-<script setup>
-import { useRoute, useRouter } from 'vue-router'
-const router = useRouter(), route = useRoute()
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import type { FormInstance } from 'element-plus'
+const router = useRouter()
 const store = useStore()
 
 const loginRules = {
   username: [{ required: true, trigger: 'blur', message: '请输入用户名' }],
   password: [{ required: true, trigger: 'blur', message: '请输入密码' }]
 }
-const state = reactive({
+
+interface State {
+  formRef: FormInstance | null
+  usernameRef: HTMLInputElement | null
+  passwordRef: HTMLInputElement | null
+  loginForm: { username: string, password: string }
+  loading: boolean
+  passwordType: 'password' | ''
+}
+const state = reactive<State>({
   formRef: null,
   usernameRef: null,
   passwordRef: null,
   loginForm: { username: '', password: '' },
   loading: false,
-  passwordType: 'password',
-  redirect: undefined
+  passwordType: 'password'
 })
-
-watch(
-  () => route,
-  (route) => (state.redirect = route.query?.redirect),
-  { immediate: true }
-)
 
 function showPwd() {
   state.passwordType = state.passwordType ? '' : 'password'
-  nextTick(() => { state.passwordRef.focus() })
+  nextTick(() => { state.passwordRef?.focus() })
 }
 function handleLogin() {
-  state.formRef.validate(valid => {
+  state.formRef?.validate((valid: boolean) => {
     if (valid) {
       state.loading = true
       store.dispatch('user/login', state.loginForm)
         .then(() => {
-          router.push({ path: state.redirect || '/' })
+          router.push('/')
         }).finally(() => {
           state.loading = false
         })

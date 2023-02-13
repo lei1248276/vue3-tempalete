@@ -29,7 +29,7 @@ export default {
   },
   data() {
     return {
-      logo: require('@/assets/jiagu.png')
+      logo: new URL('@/assets/jiagu.png', import.meta.url).href
     }
   }
 }

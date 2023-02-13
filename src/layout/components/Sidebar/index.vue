@@ -16,7 +16,7 @@
         unique-opened
       >
         <sidebar-item
-          v-for="routes in permission_routes"
+          v-for="routes in showingRoutes"
           :key="routes.path"
           :item="routes"
           :base-path="routes.path"
@@ -33,16 +33,16 @@ export default {
 </script>
 
 <script setup>
-import Logo from './Logo'
-import SidebarItem from './SidebarItem'
-import variables from '@/styles/variables.scss'
+import Logo from './Logo.vue'
+import SidebarItem from './SidebarItem.vue'
+import variables from '@/styles/variables.module.scss'
 import { useStore } from 'vuex'
-const store = useStore()
 import { useRoute } from 'vue-router'
+const store = useStore()
 const route = useRoute()
 
 const sidebar = computed(() => store.getters.sidebar)
-const permission_routes = computed(() => store.getters.permission_routes)
+const showingRoutes = computed(() => store.getters.permission_routes.filter((route) => !route.meta.hidden))
 // ! if set path, the sidebar will highlight the path you set
 const activeMenu = computed(() => route.meta.activeMenu || route.path)
 const showLogo = computed(() => store.state.settings.sidebarLogo)

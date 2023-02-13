@@ -1,8 +1,9 @@
-import SvgIcon from '@/components/SvgIcon'// svg component
+import SvgIcon from '@/components/SvgIcon/index.vue'// svg component
 
-const req = require.context('./svg', false, /\.svg$/)
-const requireAll = requireContext => requireContext.keys().map(requireContext)
-requireAll(req)
+// const req = import.meta.glob('./svg/*.svg', { eager: true })
+// console.log(req)
+// const requireAll = requireContext => Object.keys(requireContext).forEach(key => req[key]())
+// requireAll(req)
 
 export function setupSvgIcon(app) {
   app.component('SvgIcon', SvgIcon)

@@ -1,6 +1,6 @@
-import defaultSettings from '@/settings';
+import defaultSettings from '@/settings'
 
-const { showSettings, fixedHeader, sidebarLogo, tagsView, keepAlive } = defaultSettings;
+const { showSettings, fixedHeader, sidebarLogo, tagsView, keepAlive } = defaultSettings
 
 const state = {
   showSettings: showSettings,
@@ -8,27 +8,27 @@ const state = {
   sidebarLogo: sidebarLogo,
   tagsView: tagsView,
   keepAlive: keepAlive
-};
+}
 
 const mutations = {
   CHANGE_SETTING: (state, { key, value }) => {
     // eslint-disable-next-line no-prototype-builtins
     if (state.hasOwnProperty(key)) {
-      state[key] = value;
+      state[key] = value
     }
   }
-};
+}
 
 const actions = {
   changeSetting({ commit }, data) {
-    commit('CHANGE_SETTING', data);
+    commit('CHANGE_SETTING', data)
   }
-};
+}
 
 export default {
   namespaced: true,
   state,
   mutations,
   actions
-};
+}
 

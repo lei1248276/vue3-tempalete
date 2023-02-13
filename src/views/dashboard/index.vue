@@ -3,20 +3,28 @@
     <el-button
       type="primary"
       @click="$router.push('/login')"
-    >跳转login</el-button>
+    >
+      跳转login
+    </el-button>
     <el-button
       type="primary"
-      @click="$router.push('/test')"
-    >跳转test</el-button>
+      @click="$router.push('/test/nested/nested2/role')"
+    >
+      跳转role
+    </el-button>
     <el-button
       type="primary"
-      @click="$router.push('/test2')"
-    >跳转test2</el-button>
+      @click="$router.push('/test/nested/nested2/user')"
+    >
+      跳转user
+    </el-button>
 
     <el-button
       type="primary"
-      @click="resetRouter"
-    >resetRouter</el-button>
+      @click="resetRouter($store.getters.permission_addRoutes)"
+    >
+      resetRouter
+    </el-button>
 
     <el-button @click="calcCount">{{ count }}</el-button>
     <el-button @click="calcAge">{{ person.age }}</el-button>

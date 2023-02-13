@@ -24,13 +24,13 @@
   </ElConfigProvider>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'Layout'
 }
 </script>
 
-<script setup>
+<script setup lang="ts">
 import { ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'// !中文包
 
@@ -57,6 +57,8 @@ const handleClickOutside = () => {
 </script>
 
 <style lang="scss" scoped>
+  @import "@/styles/variables.module.scss";
+
   .app-wrapper {
     @include clearfix;
     position: relative;

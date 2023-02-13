@@ -1,9 +1,16 @@
 import axios from 'axios'
+import 'element-plus/es/components/message/style/css'
+import 'element-plus/es/components/loading/style/css'
+import 'element-plus/es/components/message-box/style/css'
 import { ElMessageBox, ElMessage, ElLoading } from 'element-plus'
 import store from '@/store'
 
+export interface ResponseData {
+  result: any
+}
+
 // ! LOADING对象（为了close）
-let LOADING = null
+let LOADING: any
 function loadingStart() {
   LOADING && LOADING.close()
   LOADING = ElLoading.service({
@@ -14,12 +21,12 @@ function loadingStart() {
   })
 }
 
-console.log('%c🚀 ~ file: request ~', 'color: #F25F5C;font-weight: bold;', process.env.VUE_APP_BASE_API)
+console.log('%c🚀 ~ file: request ~', 'color: #F25F5C;font-weight: bold;', import.meta.env.VITE_BASE_API)
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.VUE_APP_MOCK ? process.env.VUE_APP_MOCK_API : process.env.VUE_APP_BASE_API, // url = base url + request url
-  // withCredentials: process.env.NODE_ENV !== 'development', // send cookies when cross-domain requests
+  baseURL: import.meta.env.VITE_MOCK ? import.meta.env.VITE_MOCK_API : import.meta.env.VITE_BASE_API, // url = base url + request url
+  // withCredentials: import.meta.env.NODE_ENV !== 'development', // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })
 
@@ -28,7 +35,7 @@ service.interceptors.request.use(
   config => {
     // do something before request is sent
 
-    if (store.getters.token) {
+    if (config.headers && store.getters.token) {
       // let each request carry token
       // ['token'] is a custom headers key
       // please modify it according to the actual situation
@@ -58,19 +65,19 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   response => {
-    const res = response.data
+    const { code, message } = response.data
     LOADING.close()
 
     // if the custom code is not 20000, it is judged as an error.
-    if (res.code !== '2000') {
+    if (code !== '2000') {
       ElMessage({
-        message: res.message || 'Error',
+        message: message || 'Error',
         type: 'error',
         duration: 5 * 1000
       })
 
       // 50014: Token expired;
-      if (res.code === '50014') {
+      if (code === '50014') {
         // to re-login
         ElMessageBox.confirm('账号已退出，您可以继续停留在此页面，或重新登录', '确认退出', {
           confirmButtonText: '重新登录',
@@ -83,9 +90,9 @@ service.interceptors.response.use(
         })
       }
 
-      return Promise.reject(new Error(res.message || 'Error'))
+      return Promise.reject(new Error(message || 'Error'))
     } else {
-      return res
+      return response.data
     }
   },
   error => {

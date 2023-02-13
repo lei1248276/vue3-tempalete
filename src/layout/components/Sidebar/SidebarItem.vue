@@ -1,108 +1,91 @@
-<template v-if="!item.hidden">
-  <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
-    <el-menu-item
-      v-if="onlyOneChild.meta"
-      :index="resolvePath(onlyOneChild.path)"
-      :class="{'submenu-title-noDropdown':!isNest}"
-      @click="toMenuRoute(resolvePath(onlyOneChild.path))"
+<template>
+  <template
+    v-for="childRoute in showingRoutes"
+    :key="childRoute.path"
+  >
+    <el-sub-menu
+      v-if="childRoute.children"
+      :index="resolvePath(props.basePath, childRoute.path)"
     >
-      <svg-icon :icon-class="onlyOneChild.meta.icon || item.meta.icon || ''" />
-      <template #title>{{ onlyOneChild.meta.title }}</template>
+      <template #title>
+        <svg-icon :icon-class="childRoute.meta?.icon || ''" />
+        <span>{{ childRoute.meta?.title || '' }}</span>
+      </template>
+
+      <sidebar-item
+        v-for="child in childRoute.children.filter((dir: Route) => !dir.meta.hidden)"
+        :key="child.path"
+        :is-nest="true"
+        :item="child"
+        :base-path="resolvePath(props.basePath, child.path)"
+        class="nest-menu"
+      />
+    </el-sub-menu>
+
+    <el-menu-item
+      v-else
+      :index="resolvePath(props.basePath, childRoute.path)"
+      :class="{'submenu-title-noDropdown': !isNest}"
+      @click="toMenuRoute(resolvePath(props.basePath, childRoute.path))"
+    >
+      <svg-icon :icon-class="childRoute.meta?.icon || ''" />
+      <template #title>{{ childRoute.meta?.title || '' }}</template>
     </el-menu-item>
   </template>
-
-  <el-sub-menu
-    v-else
-    ref="subMenu"
-    :index="resolvePath(item.path)"
-    popper-append-to-body
-  >
-    <template #title>
-      <svg-icon :icon-class="item.meta.icon || ''" />
-      <span>{{ item.meta.title }}</span>
-    </template>
-    <sidebar-item
-      v-for="child in item.children"
-      :key="child.path"
-      :is-nest="true"
-      :item="child"
-      :base-path="resolvePath(child.path)"
-      class="nest-menu"
-    />
-  </el-sub-menu>
 </template>
 
-<script>
-import path from 'path'
-import { isExternal } from '@/utils/validate'
-import FixiOSBug from './FixiOSBug'
+<script lang="ts">
+// import FixiOSBug from './FixiOSBug'
 
 export default {
   name: 'SidebarItem',
-  mixins: [FixiOSBug],
-  props: {
-    // route object
-    item: {
-      type: Object,
-      required: true
-    },
-    isNest: {
-      type: Boolean,
-      default: false
-    },
-    basePath: {
-      type: String,
-      default: ''
-    }
-  },
-  data() {
-    // To fix https://github.com/PanJiaChen/vue-admin-template/issues/237
-    // TODO: refactor with render function
-    this.onlyOneChild = null
-    return {
-      // onlyOneChild: null
-    }
-  },
-  methods: {
-    hasOneShowingChild(children = [], parent) {
-      const showingChildren = children.filter(item => {
-        if (item.hidden) {
-          return false
-        } else {
-          // Temp set(will be used if only has one showing child)
-          this.onlyOneChild = item
-          return true
-        }
-      })
+  inheritAttrs: false
+  // mixins: [FixiOSBug]
+}
+</script>
 
-      // When there is only one child router, the child router is displayed by default
-      if (showingChildren.length === 1) {
-        return true
-      }
+<script setup lang="ts">
+import path from 'path-browserify'
+import { isExternal } from '@/utils/validate'
+import { useRoute, useRouter } from 'vue-router'
+import type { Route } from '@/router'
+const router = useRouter(), route = useRoute()
 
-      // Show parent if there are no child router to display
-      if (showingChildren.length === 0) {
-        this.onlyOneChild = { ... parent, path: '', noShowingChildren: true }
-        return true
-      }
+interface Props {
+  item: Route
+  isNest?: boolean
+  basePath: string
+}
 
-      return false
-    },
-    resolvePath(routePath) {
-      if (isExternal(routePath)) return routePath
+const props = withDefaults(defineProps<Props>(), {
+  isNest: false
+})
 
-      if (isExternal(this.basePath)) return this.basePath
+let showingRoutes: Route[] = []
 
-      return path.resolve(this.basePath, routePath)
-    },
-    toMenuRoute(path) {
-      const { fullPath } = this.$route
-      if (path === fullPath) {
-        this.$router.replace({ path: '/redirect' + fullPath })
-      } else {
-        isExternal(path) ? window.open(path) : this.$router.push(path)
-      }
-    }
+filterShowingChild(props.item.children, props.item)
+function filterShowingChild(children: Route[] | undefined, parent: Route): any {
+  if (!children) return showingRoutes.push(parent)
+
+  if (!parent.meta?.noShow) return showingRoutes.push(parent)
+
+  showingRoutes = children.filter((route: Route) => !route.meta?.hidden)
+}
+
+function resolvePath(parentPath: string, childPath: string) {
+  if (isExternal(childPath)) return childPath
+
+  const chiPath = childPath[0] === '/' ? childPath.substring(1) : childPath
+  if (parentPath.split('/').includes(chiPath)) return parentPath
+
+  return path.join(parentPath, childPath)
+}
+function toMenuRoute(path: string) {
+  const { fullPath } = route
+  if (path === fullPath) {
+    router.replace({ path: '/redirect' + fullPath })
+  } else {
+    isExternal(path) ? window.open(path) : router.push(path)
   }
 }
 </script>
