@@ -21,58 +21,54 @@
   </el-breadcrumb>
 </template>
 
-<script>
-import pathToRegexp from 'path-to-regexp'
-
+<script lang="ts">
 export default {
-  name: 'Breadcrumb',
-  data() {
-    return {
-      levelList: null
-    }
-  },
-  watch: {
-    $route() {
-      this.getBreadcrumb()
-    }
-  },
-  created() {
-    this.getBreadcrumb()
-  },
-  methods: {
-    getBreadcrumb() {
-      // only show routes with meta.title
-      let matched = this.$route.matched.filter(item => item.meta?.title && !item.meta.noShow)
-      const first = matched[0]
+  name: 'Breadcrumb'
+}
+</script>
 
-      if (!this.isDashboard(first)) {
-        matched = [{ path: '/dashboard', meta: { title: '首页' }}].concat(matched)
-      }
+<script setup lang="ts">
+import pathToRegexp from 'path-to-regexp'
+import { useRoute, useRouter } from 'vue-router'
+const route = useRoute(), router = useRouter()
 
-      this.levelList = matched
-    },
-    isDashboard(route) {
-      const name = route && route.name
-      if (!name) {
-        return false
-      }
-      return name.trim().toLocaleLowerCase() === 'Dashboard'.toLocaleLowerCase()
-    },
-    pathCompile(path) {
-      // To solve this problem https://github.com/PanJiaChen/vue-element-admin/issues/561
-      const { params } = this.$route
-      var toPath = pathToRegexp.compile(path)
-      return toPath(params)
-    },
-    handleLink(item) {
-      const { redirect, path } = item
-      if (redirect) {
-        this.$router.push(redirect)
-        return
-      }
-      this.$router.push(this.pathCompile(path))
-    }
+const levelList = ref<any[]>([])
+
+watch(
+  () => route.path,
+  () => getBreadcrumb(),
+  { immediate: true }
+)
+
+function getBreadcrumb() {
+  // only show routes with meta.title
+  let matched: any[] = route.matched.filter(item => item.meta?.title && !item.meta.noShow)
+  const first = matched[0]
+
+  if (!isDashboard(first)) {
+    matched = [{ path: '/dashboard', meta: { title: '首页' }}].concat(matched)
   }
+
+  levelList.value = matched
+}
+function isDashboard(route: { name?: string }) {
+  if (typeof route.name !== 'string') return false
+
+  return route.name.trim().toLocaleLowerCase() === 'Dashboard'.toLocaleLowerCase()
+}
+function pathCompile(path: string) {
+  // To solve this problem https://github.com/PanJiaChen/vue-element-admin/issues/561
+  const { params } = route
+  var toPath = pathToRegexp.compile(path)
+  return toPath(params)
+}
+function handleLink(item: { redirect?: string, path: string }) {
+  const { redirect, path } = item
+  if (redirect) {
+    router.push(redirect)
+    return
+  }
+  router.push(pathCompile(path))
 }
 </script>
 
