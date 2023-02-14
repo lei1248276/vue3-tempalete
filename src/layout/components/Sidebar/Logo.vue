@@ -18,21 +18,19 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
-  name: 'SidebarLogo',
-  props: {
-    collapse: {
-      type: Boolean,
-      required: true
-    }
-  },
-  data() {
-    return {
-      logo: new URL('@/assets/jiagu.png', import.meta.url).href
-    }
-  }
+  name: 'SidebarLogo'
 }
+</script>
+
+<script setup lang="ts">
+defineProps<{
+  collapse: boolean
+}>()
+
+const logo = ref<string>(new URL('@/assets/jiagu.png', import.meta.url).href)
+
 </script>
 
 <style lang="scss" scoped>

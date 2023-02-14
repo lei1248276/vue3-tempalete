@@ -68,13 +68,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'Navbar'
 }
 </script>
 
-<script setup>
+<script setup lang="ts">
 import { Breadcrumb, Hamburger, Screenfull, Search } from '@/components'
 import { useRoute, useRouter } from 'vue-router'
 const router = useRouter(), route = useRoute()
