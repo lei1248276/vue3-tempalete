@@ -5,7 +5,7 @@
  * @param { String } filename
  * @return void
 **/
-export default function useDownload(data, filename) {
+export default function useDownload(data: Blob, filename: string) {
   const url = URL.createObjectURL(data)
   const link = document.createElement('a')
   link.href = url
