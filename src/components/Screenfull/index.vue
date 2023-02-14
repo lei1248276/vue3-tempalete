@@ -1,52 +1,51 @@
 <template>
   <div>
     <svg-icon
-      :icon-class="isFullscreen?'exit-fullscreen':'fullscreen'"
-      @click="click"
+      :icon-class="isFullscreen ? 'exit-fullscreen' : 'fullscreen'"
+      @click="onClick"
     />
   </div>
 </template>
 
-<script>
-import screenfull from 'screenfull'
-
+<script lang="ts">
 export default {
-  name: 'Screenfull',
-  data() {
-    return {
-      isFullscreen: false
-    }
-  },
-  mounted() {
-    this.init()
-  },
-  beforeDestroy() {
-    this.destroy()
-  },
-  methods: {
-    click() {
-      if (!screenfull.enabled) {
-        this.$message({
-          message: '你的浏览器不能执行',
-          type: 'warning'
-        })
-        return false
-      }
-      screenfull.toggle()
-    },
-    change() {
-      this.isFullscreen = screenfull.isFullscreen
-    },
-    init() {
-      if (screenfull.enabled) {
-        screenfull.on('change', this.change)
-      }
-    },
-    destroy() {
-      if (screenfull.enabled) {
-        screenfull.off('change', this.change)
-      }
-    }
+  name: 'Screenfull'
+}
+</script>
+
+<script setup lang="ts">
+import screenfull from 'screenfull'
+import 'element-plus/es/components/message/style/css'
+import { ElMessage } from 'element-plus'
+
+onMounted(() => { init() })
+onUnmounted(() => { destroy() })
+
+const isFullscreen = ref<boolean>(false)
+
+function onClick() {
+  if (!screenfull.isEnabled) {
+    ElMessage({
+      message: '你的浏览器不能执行',
+      type: 'warning'
+    })
+    return false
+  }
+  screenfull.toggle()
+}
+function onChange() {
+  isFullscreen.value = screenfull.isFullscreen
+}
+
+function init() {
+  if (screenfull.isEnabled) {
+    screenfull.on('change', onChange)
+  }
+}
+
+function destroy() {
+  if (screenfull.isEnabled) {
+    screenfull.off('change', onChange)
   }
 }
 </script>
