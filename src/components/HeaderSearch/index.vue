@@ -1,26 +1,26 @@
 <template>
   <div
-    :class="{'show':show}"
+    :class="{'isShow': isShow}"
     class="header-search"
   >
     <svg-icon
       class-name="search-icon"
       icon-class="search"
-      @click.stop="click"
+      @click.stop="onClick"
     />
     <el-select
-      ref="headerSearchSelect"
-      v-model="search"
+      :ref="(el) => { headerSearchSelectRef = el }"
+      v-model="searchData.search"
       :remote-method="querySearch"
       filterable
       default-first-option
       remote
       placeholder="Search"
       class="header-search-select"
-      @change="change"
+      @change="onChange"
     >
       <el-option
-        v-for="item in options"
+        v-for="item in searchData.options"
         :key="item.path"
         :value="item"
         :label="item.title.join(' > ')"
@@ -29,126 +29,140 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+export default {
+  name: 'HeaderSearch'
+}
+</script>
+
+<script setup lang="ts">
 // fuse is a lightweight fuzzy-search module
 // make search results more in line with expectations
 import Fuse from 'fuse.js'
 import path from 'path-browserify'
+import type { ElSelect } from 'element-plus'
+import { useStore } from 'vuex'
+const store = useStore()
+import { useRouter } from 'vue-router'
+import type { Route } from '@/router'
+const router = useRouter()
 
-export default {
-  name: 'HeaderSearch',
-  data() {
-    return {
-      search: '',
-      options: [],
-      searchPool: [],
-      show: false,
-      fuse: undefined
+interface Search {
+  search: string
+  searchPool: SearchOption[]
+  options: any[]
+}
+interface SearchOption {
+  path: string
+  title: string[]
+}
+
+const searchData = reactive<Search>({
+  search: '',
+  searchPool: [],
+  options: []
+})
+const fuse = ref<any>(null)
+const isShow = ref<boolean>(false)
+const headerSearchSelectRef = ref<InstanceType<typeof ElSelect> | null>(null)
+
+const routes = computed<Route[]>(() => store.getters.permission_routes)
+
+watch(
+  () => routes,
+  () => { searchData.searchPool = generateRoutes(toRaw(routes.value)) },
+  { immediate: true }
+)
+watch(
+  () => searchData.searchPool,
+  (list: SearchOption[]) => { initFuse(list) },
+  { immediate: true }
+)
+watch(
+  () => isShow,
+  (value) => {
+    value
+      ? document.body.addEventListener('click', onClose)
+      : document.body.removeEventListener('click', onClose)
+  }
+)
+
+function onClick() {
+  isShow.value = !isShow.value
+  if (isShow.value) {
+    headerSearchSelectRef.value?.focus()
+  }
+}
+function onClose() {
+  headerSearchSelectRef.value?.blur()
+  searchData.options = []
+  isShow.value = false
+}
+function onChange(item: SearchOption) {
+  router.push(item.path)
+  searchData.search = ''
+  searchData.options = []
+  nextTick(() => { isShow.value = false })
+}
+function initFuse(list: SearchOption[]) {
+  fuse.value = new Fuse(list, {
+    shouldSort: true,
+    threshold: 0.4,
+    location: 0,
+    distance: 100,
+    maxPatternLength: 32,
+    minMatchCharLength: 1,
+    keys: [{
+      name: 'title',
+      weight: 0.7
+    }, {
+      name: 'path',
+      weight: 0.3
+    }]
+  })
+}
+// Filter out the routes that can be displayed in the sidebar
+// And generate the internationalized title
+function generateRoutes(routes: Route[], basePath: string = '/', prefixTitle: string[] = []) {
+  const res: SearchOption[] = []
+
+  for (const route of routes) {
+    // skip hidden route
+    if (route.meta?.hidden) { continue }
+
+    const data: SearchOption = {
+      path: path.join(basePath, route.path),
+      title: [...prefixTitle]
     }
-  },
-  computed: {
-    routes() {
-      return this.$store.getters.permission_routes
-    }
-  },
-  watch: {
-    routes() {
-      this.searchPool = this.generateRoutes(this.routes)
-    },
-    searchPool(list) {
-      this.initFuse(list)
-    },
-    show(value) {
-      if (value) {
-        document.body.addEventListener('click', this.close)
-      } else {
-        document.body.removeEventListener('click', this.close)
+
+    if (route.meta?.title) {
+      // * skip noShow route title
+      if (!route.meta?.noShow) {
+        data.title.push(route.meta.title)
+      }
+
+      // only push the routes with title
+      // special case: need to exclude parent route without redirect
+      if (route.redirect !== 'noRedirect' && !route.children) {
+        res.push(data)
       }
     }
-  },
-  mounted() {
-    this.searchPool = this.generateRoutes(this.routes)
-  },
-  methods: {
-    click() {
-      this.show = !this.show
-      if (this.show) {
-        this.$refs.headerSearchSelect && this.$refs.headerSearchSelect.focus()
-      }
-    },
-    close() {
-      this.$refs.headerSearchSelect && this.$refs.headerSearchSelect.blur()
-      this.options = []
-      this.show = false
-    },
-    change(val) {
-      this.$router.push(val.path)
-      this.search = ''
-      this.options = []
-      this.$nextTick(() => {
-        this.show = false
-      })
-    },
-    initFuse(list) {
-      this.fuse = new Fuse(list, {
-        shouldSort: true,
-        threshold: 0.4,
-        location: 0,
-        distance: 100,
-        maxPatternLength: 32,
-        minMatchCharLength: 1,
-        keys: [{
-          name: 'title',
-          weight: 0.7
-        }, {
-          name: 'path',
-          weight: 0.3
-        }]
-      })
-    },
-    // Filter out the routes that can be displayed in the sidebar
-    // And generate the internationalized title
-    generateRoutes(routes, basePath = '/', prefixTitle = []) {
-      let res = []
 
-      for (const router of routes) {
-        // skip hidden router
-        if (router.hidden) { continue }
-
-        const data = {
-          path: path.resolve(basePath, router.path),
-          title: [...prefixTitle]
-        }
-
-        if (router.meta && router.meta.title) {
-          data.title = [...data.title, router.meta.title]
-
-          if (router.redirect !== 'noRedirect') {
-            // only push the routes with title
-            // special case: need to exclude parent router without redirect
-            res.push(data)
-          }
-        }
-
-        // recursive child routes
-        if (router.children) {
-          const tempRoutes = this.generateRoutes(router.children, data.path, data.title)
-          if (tempRoutes.length >= 1) {
-            res = [...res, ...tempRoutes]
-          }
-        }
-      }
-      return res
-    },
-    querySearch(query) {
-      if (query !== '') {
-        this.options = this.fuse.search(query)
-      } else {
-        this.options = []
+    // recursive child routes
+    if (route.children) {
+      const tempRoutes = generateRoutes(route.children, data.path, data.title)
+      if (tempRoutes.length >= 1) {
+        res.push(...tempRoutes)
       }
     }
   }
+
+  return res
 }
+function querySearch(query: string) {
+  searchData.options = query !== '' ? fuse.value.search(query) : []
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -182,7 +196,7 @@ export default {
     }
   }
 
-  &.show {
+  &.isShow {
     .header-search-select {
       width: 210px;
       margin-left: 10px;

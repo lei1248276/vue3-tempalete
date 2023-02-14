@@ -49,13 +49,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'CustomTable'
 }
 </script>
 
-<script setup>
+<script setup lang="ts">
 const emit = defineEmits(['update:page', 'update:limit', 'pagination'])
 const props = defineProps({
   data: {

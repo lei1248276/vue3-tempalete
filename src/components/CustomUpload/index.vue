@@ -19,13 +19,13 @@
   </el-upload>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'CustomUpload'
 }
 </script>
 
-<script setup>
+<script setup lang="ts">
 import { useCustomUpload } from '@/hooks/components'
 import { ElMessage } from 'element-plus'
 import { addImg, removeImg } from '@/api/upload'
