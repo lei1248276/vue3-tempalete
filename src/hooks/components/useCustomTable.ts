@@ -1,4 +1,4 @@
-export default function useCustomTable(params) {
+export default function useCustomTable(params: any) {
   const state = reactive({
     searchForm: {
       current: 1,
@@ -6,10 +6,10 @@ export default function useCustomTable(params) {
       total: 0,
       params
     },
-    list: []
+    list: [] as any[]
   })
 
-  const onLoad = async(request, query) => {
+  const onLoad = async(request: Function, query: any) => {
     const { result } = await request(query || state.searchForm)
     console.log('%c🚀 ~ method: useCustomTable.onLoad ~', 'color: #F25F5C;font-weight: bold;', result)
     if (Array.isArray(result)) {
@@ -20,9 +20,9 @@ export default function useCustomTable(params) {
     }
   }
 
-  const addRow = rows => { state.list = state.list.concat(rows) }
+  const addRow = (rows: any[]) => { state.list = state.list.concat(rows) }
 
-  const deleteRow = rows => {
+  const deleteRow = (rows: any) => {
     rows = Array.isArray(rows) ? rows : [rows]
     state.list = rows.length === state.list.length
       ? clear()

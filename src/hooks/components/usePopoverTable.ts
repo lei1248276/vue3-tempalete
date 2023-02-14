@@ -1,4 +1,4 @@
-export default function usePopoverTable(params) {
+export default function usePopoverTable(params: any) {
   const state = reactive({
     searchForm: {
       current: 1,
@@ -10,14 +10,14 @@ export default function usePopoverTable(params) {
     list: []
   })
 
-  const onLoad = async request => {
+  const onLoad = async(request: Function) => {
     const { result } = await request(state.searchForm)
     state.searchForm.total = result.total
     state.list = result.records
     console.log('%c🚀 ~ method: usePopoverTable.onLoad ~', 'color: #F25F5C;font-weight: bold;', result)
   }
 
-  const onShow = boolean => { state.isShow = boolean }
+  const onShow = (boolean: boolean) => { state.isShow = boolean }
 
   return [state, { onLoad, onShow }]
 }
