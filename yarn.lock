@@ -463,10 +463,15 @@
     "@vue/compiler-dom" "3.2.47"
     "@vue/shared" "3.2.47"
 
-"@vue/devtools-api@^6.0.0-beta.11", "@vue/devtools-api@^6.0.0-beta.18":
+"@vue/devtools-api@^6.0.0-beta.11":
   version "6.0.0-beta.21.1"
   resolved "https://registry.npmmirror.com/@vue/devtools-api/download/@vue/devtools-api-6.0.0-beta.21.1.tgz"
   integrity sha512-FqC4s3pm35qGVeXRGOjTsRzlkJjrBLriDS9YXbflHLsfA9FrcKzIyWnLXoNm+/7930E8rRakXuAc2QkC50swAw==
+
+"@vue/devtools-api@^6.4.5":
+  version "6.5.0"
+  resolved "https://registry.npmmirror.com/@vue/devtools-api/-/devtools-api-6.5.0.tgz#98b99425edee70b4c992692628fa1ea2c1e57d07"
+  integrity sha512-o9KfBeaBmCKl10usN4crU53fYtC1r7jJwdGKjPT24t348rHxgfpZ0xL3Xm/gLUYnc0oTp8LAmrxOeLyu6tbk2Q==
 
 "@vue/eslint-config-typescript@^11.0.2":
   version "11.0.2"
@@ -1246,7 +1251,7 @@ ee-first@1.1.1:
   resolved "https://registry.npm.taobao.org/ee-first/download/ee-first-1.1.1.tgz"
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
-element-plus@2.2.30:
+element-plus@^2.2.30:
   version "2.2.30"
   resolved "https://registry.npmmirror.com/element-plus/-/element-plus-2.2.30.tgz#b594efcbd6969f3f88130aa1edf50c98139d6e73"
   integrity sha512-HYSnmf2VMGa0gmw03evxevodPy3WimbAd4sfenOAhNs7Wl8IdT+YJjQyGAQjgEjRvhmujN4O/CZqhuEffRyOZg==
@@ -3787,12 +3792,12 @@ vue-global-api@^0.4.1:
     eslint-config-vue-global-api "0.4.1"
     vue-demi latest
 
-vue-router@4:
-  version "4.0.12"
-  resolved "https://registry.npmmirror.com/vue-router/download/vue-router-4.0.12.tgz"
-  integrity sha512-CPXvfqe+mZLB1kBWssssTiWg4EQERyqJZes7USiqfW9B5N2x+nHlnsM1D3b5CaJ6qgCvMmYJnz+G0iWjNCvXrg==
+vue-router@^4:
+  version "4.1.6"
+  resolved "https://registry.npmmirror.com/vue-router/-/vue-router-4.1.6.tgz#b70303737e12b4814578d21d68d21618469375a1"
+  integrity sha512-DYWYwsG6xNPmLq/FmZn8Ip+qrhFEzA14EI12MsMgVxvHFDYvlr4NXpVF5hrRH1wVcDP8fGi5F4rxuJSl8/r+EQ==
   dependencies:
-    "@vue/devtools-api" "^6.0.0-beta.18"
+    "@vue/devtools-api" "^6.4.5"
 
 vue-template-compiler@^2.7.14:
   version "2.7.14"
