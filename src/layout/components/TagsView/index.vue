@@ -1,36 +1,38 @@
 <template>
   <div
     id="tags-view-container"
+    ref="tagsViewRef"
     class="tags-view-container"
   >
     <scroll-pane
-      ref="scrollPane"
+      ref="scrollPaneRef"
       class="tags-view-wrapper"
+      :tags="tagRefs"
       @scroll="handleScroll"
     >
       <router-link
         v-for="tag in visitedViews"
-        ref="tag"
+        ref="tagRefs"
         :key="tag.path"
-        :class="isActive(tag)?'active':''"
+        :class="isActive(tag) ? 'active' : ''"
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
-        tag="span"
         class="tags-view-item"
-        @click.middle="!isAffix(tag)?closeSelectedTag(tag):''"
-        @contextmenu.prevent="openMenu(tag,$event)"
-        @click="tag.fullPath === $route.fullPath && refreshSelectedTag($route)"
+        @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''"
+        @contextmenu.prevent="openMenu(tag, $event)"
+        @click="tag.fullPath === route.fullPath && refreshSelectedTag(route)"
       >
         {{ tag.title }}
         <span
           v-if="!isAffix(tag)"
           class="icon-close"
           @click.prevent.stop="closeSelectedTag(tag)"
-        >x</span>
+        >x
+        </span>
       </router-link>
     </scroll-pane>
     <ul
       v-show="visible"
-      :style="{left:left+'px',top:top+'px'}"
+      :style="{left: left + 'px',top: top + 'px'}"
       class="contextmenu"
     >
       <li @click="refreshSelectedTag(selectedTag)">刷新</li>
@@ -46,176 +48,210 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+export default {
+  name: 'TagsView'
+}
+</script>
+
+<script setup lang="ts">
 import ScrollPane from './ScrollPane.vue'
 import path from 'path-browserify'
+import { useStore } from 'vuex'
+import { useRoute, useRouter, RouteLocationNormalizedLoaded, RouterLinkProps } from 'vue-router'
+import { Route } from '@/router'
+const router = useRouter()
+const route = useRoute()
+const store = useStore()
 
-export default {
-  name: 'TagsView',
-  components: { ScrollPane },
-  data() {
-    return {
-      visible: false,
-      top: 0,
-      left: 0,
-      selectedTag: {},
-      affixTags: []
+export type Tag = Partial<RouteLocationNormalizedLoaded> & {
+  title?: string
+  meta?: Partial<Route['meta']>
+}
+
+onMounted(() => {
+  initTags()
+  addTags()
+})
+
+const visible = ref(false)
+const top = ref(0)
+const left = ref(0)
+const selectedTag = ref<Tag>()
+const affixTags = ref<Tag[]>([])
+
+const tagsViewRef = ref<HTMLDivElement>()
+const tagRefs = ref<RouterLinkProps[]>([])
+const scrollPaneRef = ref()
+
+const visitedViews = computed<Tag[]>(() => store.state.tagsView.visitedViews)
+const routes = computed<Route[]>(() => store.state.permission.routes)
+
+watch(
+  () => route.path,
+  () => {
+    addTags()
+    moveToCurrentTag()
+  }
+)
+
+watch(
+  () => visible,
+  (value) => {
+    if (value) {
+      document.body.addEventListener('click', closeMenu)
+    } else {
+      document.body.removeEventListener('click', closeMenu)
     }
   },
-  computed: {
-    visitedViews() {
-      return this.$store.state.tagsView.visitedViews
-    },
-    routes() {
-      return this.$store.state.permission.routes
-    }
-  },
-  watch: {
-    $route() {
-      this.addTags()
-      this.moveToCurrentTag()
-    },
-    visible(value) {
-      if (value) {
-        document.body.addEventListener('click', this.closeMenu)
-      } else {
-        document.body.removeEventListener('click', this.closeMenu)
-      }
-    }
-  },
-  mounted() {
-    this.initTags()
-    this.addTags()
-  },
-  methods: {
-    isActive(route) {
-      return route.path === this.$route.path
-    },
-    isAffix(tag) {
-      return tag.meta && tag.meta.affix
-    },
-    filterAffixTags(routes, basePath = '/') {
-      let tags = []
-      routes.forEach(route => {
-        if (route.meta && route.meta.affix) {
-          const tagPath = path.resolve(basePath, route.path)
-          tags.push({
-            fullPath: tagPath,
-            path: tagPath,
-            name: route.name,
-            meta: { ...route.meta }
-          })
-        }
-        if (route.children) {
-          const tempTags = this.filterAffixTags(route.children, route.path)
-          if (tempTags.length >= 1) {
-            tags = [...tags, ...tempTags]
-          }
-        }
-      })
-      return tags
-    },
-    initTags() {
-      const affixTags = this.affixTags = this.filterAffixTags(this.routes)
-      for (const tag of affixTags) {
-        // Must have tag name
-        if (tag.name) {
-          this.$store.dispatch('tagsView/addVisitedView', tag)
-        }
-      }
-    },
-    addTags() {
-      const { name } = this.$route
-      if (name) {
-        this.$store.dispatch('tagsView/addView', this.$route)
-      }
-      return false
-    },
-    moveToCurrentTag() {
-      const tags = this.$refs.tag
-      this.$nextTick(() => {
-        for (const tag of tags) {
-          if (tag.to.path === this.$route.path) {
-            this.$refs.scrollPane.moveToTarget(tag)
-            // when query is different then update
-            if (tag.to.fullPath !== this.$route.fullPath) {
-              this.$store.dispatch('tagsView/updateVisitedView', this.$route)
-            }
-            break
-          }
-        }
-      })
-    },
-    refreshSelectedTag(view) {
-      this.$store.dispatch('tagsView/delCachedView', view).then(() => {
-        const { fullPath } = view
-        this.$nextTick(() => {
-          this.$router.replace({
-            path: '/redirect' + fullPath
-          })
-        })
-      })
-    },
-    closeSelectedTag(view) {
-      this.$store.dispatch('tagsView/delView', view).then(({ visitedViews }) => {
-        if (this.isActive(view)) {
-          this.toLastView(visitedViews, view)
-        }
-      })
-    },
-    closeOthersTags() {
-      this.$router.push(this.selectedTag)
-      this.$store.dispatch('tagsView/delOthersViews', this.selectedTag).then(() => {
-        this.moveToCurrentTag()
-      })
-    },
-    closeAllTags(view) {
-      this.$store.dispatch('tagsView/delAllViews').then(({ visitedViews }) => {
-        if (this.affixTags.some(tag => tag.path === view.path)) {
-          return
-        }
-        this.toLastView(visitedViews, view)
-      })
-    },
-    toLastView(visitedViews, view) {
-      const latestView = visitedViews.slice(-1)[0]
-      if (latestView) {
-        this.$router.push(latestView.fullPath)
-      } else {
-        // now the default is to redirect to the home page if there is no tags-view,
-        // you can adjust it according to your needs.
-        if (view.name === 'Dashboard') {
-          // to reload home page
-          this.$router.replace({ path: '/redirect' + view.fullPath })
-        } else {
-          this.$router.push('/')
-        }
-      }
-    },
-    openMenu(tag, e) {
-      const menuMinWidth = 105
-      const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
-      const offsetWidth = this.$el.offsetWidth // container width
-      const maxLeft = offsetWidth - menuMinWidth // left boundary
-      const left = e.clientX - offsetLeft + 15 // 15: margin right
+  { immediate: true }
+)
 
-      if (left > maxLeft) {
-        this.left = maxLeft
-      } else {
-        this.left = left
-      }
+function isActive(activeTag: Tag) {
+  return activeTag.path === route.path
+}
 
-      this.top = e.clientY
-      this.visible = true
-      this.selectedTag = tag
-    },
-    closeMenu() {
-      this.visible = false
-    },
-    handleScroll() {
-      this.closeMenu()
+function isAffix(tag: Tag) {
+  return tag?.meta?.affix
+}
+
+function filterAffixTags(routes: Route[], basePath = '/'): Tag[] {
+  let tags: Tag[] = []
+  routes.forEach(route => {
+    if (route.meta && route.meta.affix) {
+      const tagPath = path.resolve(basePath, route.path)
+      tags.push({
+        fullPath: tagPath,
+        path: tagPath,
+        name: route.name || '',
+        title: '',
+        meta: { ...route.meta }
+      })
+    }
+    if (route.children) {
+      const tempTags = filterAffixTags(route.children, route.path)
+      if (tempTags.length >= 1) {
+        tags = [...tags, ...tempTags]
+      }
+    }
+  })
+  return tags
+}
+
+function initTags() {
+  const tags = (affixTags.value = filterAffixTags(routes.value))
+  for (const tag of tags) {
+    // Must have tag name
+    if (tag.name) {
+      store.dispatch('tagsView/addVisitedView', tag)
     }
   }
+}
+
+function addTags() {
+  const { name } = route
+  if (name) {
+    store.dispatch('tagsView/addView', route)
+  }
+  return false
+}
+
+function moveToCurrentTag() {
+  nextTick(() => {
+    for (const tag of tagRefs.value) {
+      // @ts-ignore
+      if (tag.to.path === route.path) {
+        scrollPaneRef.value.moveToTarget(tag)
+        // when query is different then update
+        // @ts-ignore
+        if (tag.to.fullPath !== route.fullPath) {
+          store.dispatch('tagsView/updateVisitedView', route)
+        }
+        break
+      }
+    }
+  })
+}
+
+function refreshSelectedTag(view: Tag) {
+  store.dispatch('tagsView/delCachedView', view).then(() => {
+    const { fullPath } = view
+    nextTick(() => {
+      router.replace({
+        path: '/redirect' + fullPath
+      })
+    })
+  })
+}
+
+function closeSelectedTag(view: Tag) {
+  store.dispatch('tagsView/delView', view)
+    .then(({ visitedViews }) => {
+      if (isActive(view)) {
+        toLastView(visitedViews, view)
+      }
+    })
+}
+
+function closeOthersTags() {
+  // @ts-ignore
+  router.push(selectedTag.value)
+  store.dispatch('tagsView/delOthersViews', selectedTag.value).then(() => {
+    moveToCurrentTag()
+  })
+}
+
+function closeAllTags(view: Tag) {
+  store.dispatch('tagsView/delAllViews').then(({ visitedViews }) => {
+    if (affixTags.value.some(tag => tag.path === view.path)) {
+      return
+    }
+    toLastView(visitedViews, view)
+  })
+}
+
+function toLastView(visitedViews: Tag[], view: Tag) {
+  const latestView = visitedViews.slice(-1)[0]
+  if (latestView) {
+    router.push(latestView.fullPath || '')
+  } else {
+    // now the default is to redirect to the home page if there is no tags-view,
+    // you can adjust it according to your needs.
+    if (view.name === 'Dashboard') {
+      // to reload home page
+      router.replace({ path: '/redirect' + view.fullPath })
+    } else {
+      router.push('/')
+    }
+  }
+}
+
+function openMenu(tag: Tag, e: MouseEvent) {
+  if (!tagsViewRef.value) return
+
+  const menuMinWidth = 105
+  const offsetLeft = tagsViewRef.value.getBoundingClientRect().left // container margin left
+  const offsetWidth = tagsViewRef.value.offsetWidth // container width
+  const maxLeft = offsetWidth - menuMinWidth // left boundary
+  const $left = e.clientX - offsetLeft + 15 // 15: margin right
+
+  if ($left > maxLeft) {
+    left.value = maxLeft
+  } else {
+    left.value = $left
+  }
+
+  top.value = e.clientY
+  visible.value = true
+  selectedTag.value = tag
+}
+
+function closeMenu() {
+  visible.value = false
+}
+
+function handleScroll() {
+  closeMenu()
 }
 </script>
 
