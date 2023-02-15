@@ -42,7 +42,7 @@ watch(
 
 function getBreadcrumb() {
   // only show routes with meta.title
-  let matched: any[] = route.matched.filter(item => item.meta?.title && !item.meta.noShow)
+  let matched: any[] = route.matched.filter(item => item?.meta?.title && !item.meta.noShow)
   const first = matched[0]
 
   if (!isDashboard(first)) {
@@ -52,7 +52,7 @@ function getBreadcrumb() {
   levelList.value = matched
 }
 function isDashboard(route: { name?: string }) {
-  if (typeof route.name !== 'string') return false
+  if (!route || !route.name) return false
 
   return route.name.trim().toLocaleLowerCase() === 'Dashboard'.toLocaleLowerCase()
 }
