@@ -9,7 +9,7 @@
         :key="item.path"
       >
         <span
-          v-if="item.redirect === 'noRedirect' || index == levelList.length - 1"
+          v-if="item.redirect === 'noRedirect' || index === levelList.length - 1"
           class="no-redirect"
         >{{ item.meta.title }}</span>
         <a
@@ -29,10 +29,12 @@ export default {
 
 <script setup lang="ts">
 import pathToRegexp from 'path-to-regexp'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter, RouteLocationMatched } from 'vue-router'
 const route = useRoute(), router = useRouter()
 
-const levelList = ref<any[]>([])
+type RouteMatched = Partial<RouteLocationMatched>
+
+const levelList = ref<RouteMatched[]>([])
 
 watch(
   () => route.path,
@@ -42,17 +44,17 @@ watch(
 
 function getBreadcrumb() {
   // only show routes with meta.title
-  let matched: any[] = route.matched.filter(item => item?.meta?.title && !item.meta.noShow)
+  const matched: RouteMatched[] = route.matched.filter(item => item?.meta?.title && !item.meta.noShow)
   const first = matched[0]
 
   if (!isDashboard(first)) {
-    matched = [{ path: '/dashboard', meta: { title: '首页' }}].concat(matched)
+    matched.unshift({ path: '/dashboard', meta: { title: '首页' }})
   }
 
   levelList.value = matched
 }
-function isDashboard(route: { name?: string }) {
-  if (!route || !route.name) return false
+function isDashboard(route: RouteMatched) {
+  if (!route || typeof route.name !== 'string') return false
 
   return route.name.trim().toLocaleLowerCase() === 'Dashboard'.toLocaleLowerCase()
 }
@@ -62,13 +64,13 @@ function pathCompile(path: string) {
   var toPath = pathToRegexp.compile(path)
   return toPath(params)
 }
-function handleLink(item: { redirect?: string, path: string }) {
+function handleLink(item: RouteMatched) {
   const { redirect, path } = item
   if (redirect) {
-    router.push(redirect)
+    router.push(redirect as string)
     return
   }
-  router.push(pathCompile(path))
+  router.push(pathCompile(path || ''))
 }
 </script>
 
