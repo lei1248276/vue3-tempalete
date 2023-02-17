@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-table
-      :ref="element => el = element"
+      ref="tableRef"
       :data="props.data"
       stripe
       highlight-current-row
@@ -56,7 +56,12 @@ export default {
 </script>
 
 <script setup lang="ts">
-const emit = defineEmits(['update:page', 'update:limit', 'pagination'])
+import type { ElTable } from 'element-plus'
+
+const emit = defineEmits<{(e: 'update:page', val: number): void
+  (e: 'update:limit', val: number): void
+  (e: 'pagination', option: { page: number, limit: number}): void
+}>()
 const props = defineProps({
   data: {
     type: Array,
@@ -84,8 +89,8 @@ const props = defineProps({
   }
 })
 
-const el = ref(null)
-defineExpose(el)
+const tableRef = ref<InstanceType<typeof ElTable>>()
+defineExpose(tableRef)
 
 const calc = reactive({
   currentPage: computed({

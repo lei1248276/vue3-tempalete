@@ -10,7 +10,7 @@ import '@/styles/index.scss' // ! global css
 import 'vue-global-api' // ! 全局引入vue3 常用api
 
 import 'virtual:svg-icons-register'
-import SvgIcon from '@/components/SvgIcon/index.vue'// svg component
+import { Pagination, SvgIcon } from '@/components'
 
 import './permission' // ! permission control
 
@@ -21,4 +21,5 @@ app
   .use(pinia)
   .use(router)
   .component('SvgIcon', SvgIcon)
+  .component('Pagination', Pagination)
   .mount('#app')
