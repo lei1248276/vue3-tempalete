@@ -17,7 +17,7 @@ export default {
 
 <script setup lang="ts">
 import type { ElScrollbar } from 'element-plus'
-import { Tag } from './index.vue'
+import type { TagView } from '@/store/tagsView'
 
 const props = defineProps<{ tags: any[] }>()
 const emit = defineEmits(['scroll'])
@@ -47,7 +47,7 @@ function emitScroll() {
   emit('scroll')
 }
 
-function moveToTarget(currentTag: Tag) {
+function moveToTarget(currentTag: TagView) {
   if (!scrollContainerRef.value) return
 
   const $container: HTMLElement = scrollContainerRef.value.parentNode as HTMLElement

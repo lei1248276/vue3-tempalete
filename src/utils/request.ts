@@ -1,19 +1,22 @@
 import axios from 'axios'
 import 'element-plus/es/components/message/style/css'
-import 'element-plus/es/components/loading/style/css'
+import 'element-plus/es/components/Loading/style/css'
 import 'element-plus/es/components/message-box/style/css'
 import { ElMessageBox, ElMessage, ElLoading } from 'element-plus'
-import store from '@/store'
+import { useUserStore } from '@/store'
+import { getToken } from '@/utils/auth'
 
 export interface ResponseData {
   result: any
 }
 
-// ! LOADING对象（为了close）
-let LOADING: any
+let userStore:ReturnType< typeof useUserStore>
+
+let Loading: ReturnType<typeof ElLoading.service>
+
 function loadingStart() {
-  LOADING && LOADING.close()
-  LOADING = ElLoading.service({
+  Loading && Loading.close()
+  Loading = ElLoading.service({
     lock: true,
     text: 'Loading',
     background: 'transparent',
@@ -33,16 +36,17 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
+    loadingStart()
+    userStore || (userStore = useUserStore())
     // do something before request is sent
 
-    if (config.headers && store.getters.token) {
+    if (config.headers && userStore.token) {
       // let each request carry token
       // ['token'] is a custom headers key
       // please modify it according to the actual situation
-      config.headers['token'] = store.getters.token
+      config.headers['token'] = userStore.token
       // console.log(config);
     }
-    loadingStart()
     return config
   },
   error => {
@@ -66,7 +70,7 @@ service.interceptors.response.use(
    */
   response => {
     const { code, message } = response.data
-    LOADING.close()
+    Loading.close()
 
     // if the custom code is not 20000, it is judged as an error.
     if (code !== '2000') {
@@ -84,9 +88,8 @@ service.interceptors.response.use(
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          store.dispatch('user/resetToken').then(() => {
-            location.reload()
-          })
+          userStore.resetToken()
+          location.reload()
         })
       }
 
@@ -102,7 +105,7 @@ service.interceptors.response.use(
       type: 'error',
       duration: 5 * 1000
     })
-    LOADING.close()
+    Loading.close()
 
     return Promise.reject(error)
   }

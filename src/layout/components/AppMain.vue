@@ -3,7 +3,7 @@
     <!--   ! 开发时使用会造成热更新失效   -->
     <router-view
       v-slot="{ Component }"
-      :key="key"
+      :key="route.path"
     >
       <transition
         name="fade-transform"
@@ -11,8 +11,8 @@
         appear
       >
         <keep-alive
-          v-if="keepAlive"
-          :include="cachedViews"
+          v-if="settingsStore.keepAlive"
+          :include="tagsViewStore.cachedViews"
         >
           <component :is="Component" />
         </keep-alive>
@@ -34,13 +34,11 @@ export default {
 
 <script setup>
 import { useRoute } from 'vue-router'
-const route = useRoute()
-import { useStore } from 'vuex'
-const store = useStore()
+import { useTagsViewStore, useSettingsStore } from '@/store'
 
-const cachedViews = computed(() => store.state.tagsView.cachedViews)
-const key = computed(() => route.path)
-const keepAlive = computed(() => store.state.settings.keepAlive)
+const route = useRoute()
+const tagsViewStore = useTagsViewStore()
+const settingsStore = useSettingsStore()
 </script>
 
 <style scoped lang="scss">

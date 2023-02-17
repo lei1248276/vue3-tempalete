@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'has-logo':showLogo}">
+  <div :class="{'has-logo': showLogo}">
     <logo
       v-if="showLogo"
       :collapse="isCollapse"
@@ -36,15 +36,17 @@ export default {
 import Logo from './Logo.vue'
 import SidebarItem from './SidebarItem.vue'
 import variables from '@/styles/variables.module.scss'
-import { useStore } from 'vuex'
+import { useAppStore, useSettingsStore, usePermissionStore } from '@/store'
 import { useRoute } from 'vue-router'
-const store = useStore()
-const route = useRoute()
 
-const sidebar = computed(() => store.getters.sidebar)
-const showingRoutes = computed(() => store.getters.permission_routes.filter((route) => !route.meta.hidden))
+const route = useRoute()
+const appStore = useAppStore()
+const settingsStore = useSettingsStore()
+const permissionStore = usePermissionStore()
+
+const showingRoutes = computed(() => permissionStore.routes.filter((route) => !route?.meta?.hidden))
 // ! if set path, the sidebar will highlight the path you set
-const activeMenu = computed(() => route.meta.activeMenu || route.path)
-const showLogo = computed(() => store.state.settings.sidebarLogo)
-const isCollapse = computed(() => !sidebar.value.opened)
+const activeMenu = computed(() => route?.meta?.activeMenu || route.path)
+const showLogo = computed(() => settingsStore.sidebarLogo)
+const isCollapse = computed(() => !appStore.sidebar.opened)
 </script>

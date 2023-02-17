@@ -9,7 +9,7 @@
       @click.stop="onClick"
     />
     <el-select
-      :ref="(el) => { headerSearchSelectRef = el }"
+      ref="headerSearchSelectRef"
       v-model="searchData.search"
       :remote-method="querySearch"
       filterable
@@ -40,11 +40,12 @@ export default {
 // make search results more in line with expectations
 import Fuse from 'fuse.js'
 import path from 'path-browserify'
-import type { ElSelect } from 'element-plus'
-import { useStore } from 'vuex'
-const store = useStore()
+import { usePermissionStore } from '@/store'
 import { useRouter } from 'vue-router'
+import type { ElSelect } from 'element-plus'
 import type { Route } from '@/router'
+
+const permissionStore = usePermissionStore()
 const router = useRouter()
 
 interface Search {
@@ -66,11 +67,9 @@ const fuse = ref<any>(null)
 const isShow = ref<boolean>(false)
 const headerSearchSelectRef = ref<InstanceType<typeof ElSelect> | null>(null)
 
-const routes = computed<Route[]>(() => store.getters.permission_routes)
-
 watch(
-  () => routes,
-  () => { searchData.searchPool = generateRoutes(toRaw(routes.value)) },
+  () => permissionStore.routes,
+  () => { searchData.searchPool = generateRoutes(toRaw(permissionStore.routes)) },
   { immediate: true }
 )
 watch(

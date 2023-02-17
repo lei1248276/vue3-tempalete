@@ -1,15 +1,15 @@
 <template>
   <div class="navbar">
     <hamburger
-      :is-active="sidebar.opened"
+      :is-active="appStore.sidebar.opened"
       class="hamburger-container"
-      @toggleClick="toggleSideBar"
+      @toggleClick="appStore.toggleSideBar"
     />
 
     <breadcrumb class="breadcrumb-container" />
 
     <div class="right-menu">
-      <template v-if="device!=='mobile'">
+      <template v-if="appStore.device !== 'mobile'">
         <search
           id="header-search"
           class="right-menu-item"
@@ -33,10 +33,10 @@
       >
         <div class="avatar-wrapper divider_left">
           <img
-            :src="avatar"
+            :src="userStore.avatar"
             class="user-avatar"
           >
-          <span class="user_name">{{ name }}</span>
+          <span class="user_name">{{ userStore.username }}</span>
           <svg-icon
             icon-class="caret_bottom"
             class-name="caret_bottom"
@@ -76,19 +76,16 @@ export default {
 
 <script setup lang="ts">
 import { Breadcrumb, Hamburger, Screenfull, Search } from '@/components'
+import { useAppStore, useUserStore } from '@/store'
 import { useRoute, useRouter } from 'vue-router'
-const router = useRouter(), route = useRoute()
-import { useStore } from 'vuex'
-const store = useStore()
 
-const sidebar = computed(() => store.getters.sidebar)
-const avatar = computed(() => store.getters.avatar)
-const name = computed(() => store.getters.name)
-const device = computed(() => store.getters.device)
+const router = useRouter()
+const route = useRoute()
+const appStore = useAppStore()
+const userStore = useUserStore()
 
-const toggleSideBar = () => { store.dispatch('app/toggleSideBar') }
 const logout = async() => {
-  await store.dispatch('user/logout')
+  await userStore.logout()
   router.push(`/login?redirect=${route.fullPath}`)
 }
 </script>

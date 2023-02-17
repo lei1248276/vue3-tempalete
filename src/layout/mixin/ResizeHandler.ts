@@ -1,14 +1,17 @@
-import store from '@/store'
+import { useAppStore } from '@/store'
 
 const { body } = document
 const WIDTH = 992 // refer to Bootstrap's responsive design
+let appStore: ReturnType<typeof useAppStore>
 
 export default function ResizeHandler() {
+  appStore || (appStore = useAppStore())
+
   onMounted(() => {
     const isMobile = $_isMobile()
     if (isMobile) {
-      store.dispatch('app/toggleDevice', 'mobile')
-      store.dispatch('app/closeSideBar', { withoutAnimation: true })
+      appStore.toggleDevice('mobile')
+      appStore.closeSideBar(true)
     }
   })
 
@@ -29,10 +32,10 @@ export default function ResizeHandler() {
   function $_resizeHandler() {
     if (!document.hidden) {
       const isMobile = $_isMobile()
-      store.dispatch('app/toggleDevice', isMobile ? 'mobile' : 'desktop')
+      appStore.toggleDevice(isMobile ? 'mobile' : 'desktop')
 
       if (isMobile) {
-        store.dispatch('app/closeSideBar', { withoutAnimation: true })
+        appStore.closeSideBar(true)
       }
     }
   }

@@ -1,60 +1,58 @@
 <template>
-  <div class="login-container">
+  <div class="login">
     <el-form
-      :ref="el => state.formRef = el"
-      :model="state.loginForm"
+      ref="formRef"
+      :model="loginForm"
       :rules="loginRules"
       class="login-form"
       auto-complete="on"
       label-position="left"
     >
       <!--      <img
-        class="logo"
+        class="login-form__logo"
         src="~@/assets/logo.png"
       >-->
 
-      <div class="title-container">
-        <h3 class="title">后台模版</h3>
-      </div>
+      <h3 class="login-form__title">后台模版</h3>
 
       <el-form-item prop="username">
         <el-input
-          :ref="el => state.usernameRef = el"
-          v-model="state.loginForm.username"
+          ref="usernameRef"
+          v-model="loginForm.username"
           placeholder="请输入用户名"
           name="username"
           type="text"
           tabindex="1"
           auto-complete="on"
-          class="form_input"
+          class="login-form__input"
         />
       </el-form-item>
 
       <el-form-item prop="password">
         <el-input
-          :key="state.passwordType"
-          :ref="el => state.passwordRef = el"
-          v-model="state.loginForm.password"
-          :type="state.passwordType"
+          ref="passwordRef"
+          :key="passwordType"
+          v-model="loginForm.password"
+          :type="passwordType"
           placeholder="请输入密码"
           name="password"
           tabindex="2"
           auto-complete="on"
-          class="form_input"
+          class="login-form__input"
           @keypress.enter="handleLogin"
         />
         <svg-icon
-          :icon-class="state.passwordType ? 'eye' : 'eye-open'"
-          class-name="show-pwd"
+          :icon-class="passwordType ? 'eye' : 'eye-open'"
+          class-name="password--show"
           @click="showPwd"
         />
       </el-form-item>
 
       <el-button
-        :loading="state.loading"
+        :loading="loading"
         type="primary"
         round
-        class="login_btn"
+        class="login-form__btn"
         @click.prevent="handleLogin"
       >
         登录
@@ -71,46 +69,38 @@ export default {
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+import { useUserStore } from '@/store'
 import type { FormInstance } from 'element-plus'
+
 const router = useRouter()
-const store = useStore()
+const userStore = useUserStore()
 
 const loginRules = {
   username: [{ required: true, trigger: 'blur', message: '请输入用户名' }],
   password: [{ required: true, trigger: 'blur', message: '请输入密码' }]
 }
 
-interface State {
-  formRef: FormInstance | null
-  usernameRef: HTMLInputElement | null
-  passwordRef: HTMLInputElement | null
-  loginForm: { username: string, password: string }
-  loading: boolean
-  passwordType: 'password' | ''
-}
-const state = reactive<State>({
-  formRef: null,
-  usernameRef: null,
-  passwordRef: null,
-  loginForm: { username: '', password: '' },
-  loading: false,
-  passwordType: 'password'
-})
+const loginForm = ref({ username: '', password: '' })
+const loading = ref(false)
+const passwordType = ref<'password' | ''>('password')
 
-function showPwd() {
-  state.passwordType = state.passwordType ? '' : 'password'
-  nextTick(() => { state.passwordRef?.focus() })
+const formRef = ref<FormInstance>()
+const usernameRef = ref<HTMLInputElement>()
+const passwordRef = ref<HTMLInputElement>()
+
+function showPwd() { // * 动态控制Input标签type类型（为了浏览器密码提示）
+  passwordType.value = passwordType.value ? '' : 'password'
+  nextTick(() => { passwordRef.value?.focus() })
 }
 function handleLogin() {
-  state.formRef?.validate((valid: boolean) => {
+  formRef.value?.validate((valid: boolean) => {
     if (valid) {
-      state.loading = true
-      store.dispatch('user/login', state.loginForm)
+      loading.value = true
+      userStore.login(loginForm.value)
         .then(() => {
           router.push('/')
         }).finally(() => {
-          state.loading = false
+          loading.value = false
         })
     } else {
       console.log('error submit!!')
@@ -129,36 +119,37 @@ $light_gray:#999999;
 $cursor: #999999;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
-  .login-container .el-input input {
+  .login .el-input input {
     color: $cursor;
   }
 }
 
 /* reset element-ui css */
-.login-container {
+.login {
   .el-input {
     display: inline-block;
     height: 60px;
-    width: 85%;
 
-    input {
-      background: transparent;
-      border: 0;
-      -webkit-appearance: none;
-      color: $light_gray;
-      height: 60px;
-      caret-color: $cursor;
+    &__wrapper{
+      height: inherit;
+      background-color: inherit;
       box-shadow: none;
 
-      // ! 隐藏浏览器自动填充的颜色
-      &:-webkit-autofill,
-      &:-webkit-autofill:hover,
-      &:-webkit-autofill:focus,
-      &:-webkit-autofill:active,{
-        -webkit-transition-delay: 99999s;
-        -webkit-transition: color 99999s ease-out, background-color 99999s ease-out;
-        //box-shadow: 0 0 0px 1000px $bg inset !important;
-        //-webkit-text-fill-color: $cursor !important;
+      input {
+        -webkit-appearance: none;
+        color: $light_gray;
+        caret-color: $cursor;
+
+        // ! 隐藏浏览器自动填充的颜色
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover,
+        &:-webkit-autofill:focus,
+        &:-webkit-autofill:active,{
+          -webkit-transition-delay: 99999s;
+          -webkit-transition: color 99999s ease-out, background-color 99999s ease-out;
+          //box-shadow: 0 0 0px 1000px $bg inset !important;
+          //-webkit-text-fill-color: $cursor !important;
+        }
       }
     }
   }
@@ -171,7 +162,7 @@ $dark_gray: #889aa4;
 $light_gray: #eee;
 $title_color: #333;
 
-.login-container {
+.login {
   width: 100vw;
   min-height: 100vh;
   //background-image: url("https://keput.comdao.com.cn:8081/image/cover_admin.png");
@@ -181,55 +172,52 @@ $title_color: #333;
   background-color: gray;
   overflow: hidden;
 
-  .logo{
-    @include wh(222px, 58px);
-    margin-bottom: 210px;
-  }
-
-  .login-form {
+  &-form {
     width: 420px;
     text-align: left;
     @include xMid(10.42%);
     top: 6.48%;
     overflow: hidden;
-  }
 
-  .title-container {
-    position: relative;
+    &__logo{
+      @include wh(222px, 58px);
+      margin-bottom: 210px;
+    }
 
-    .title {
+    &__title {
+      position: relative;
       @include fc(32px, $title_color);
       font-weight: bold;
       margin: 10% auto 15%;
       text-align: left;
     }
-  }
 
-  .form_input{
-    width:100%;
-    padding-left: 36px;
-    background: #F5F5F5;
-    border-radius: 33px;
-  }
+    &__input{
+      width:100%;
+      padding-left: 36px;
+      background: #F5F5F5;
+      border-radius: 33px;
+    }
 
-  .show-pwd {
-    position: absolute;
-    right: 36px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 16px;
-    color: $dark_gray;
-    cursor: pointer;
-    user-select: none;
+    &__btn{
+      @include wh(180px, 60px);
+      font-size: 18px;
+      margin-top:6%;
+      background: #3C66F5;
+      box-shadow: 0 4px 10px rgba(60, 102, 245, 0.65);
+      border-radius: 33px;
+    }
   }
+}
 
-  .login_btn{
-    @include wh(180px, 60px);
-    font-size: 18px;
-    margin-top:6%;
-    background: #3C66F5;
-    box-shadow: 0 4px 10px rgba(60, 102, 245, 0.65);
-    border-radius: 33px;
-  }
+.password--show {
+  position: absolute;
+  right: 36px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: $dark_gray;
+  cursor: pointer;
+  user-select: none;
 }
 </style>

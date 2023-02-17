@@ -5,18 +5,18 @@
       class="app-wrapper"
     >
       <div
-        v-if="device==='mobile'&&side_bar.opened"
+        v-if="appStore.device === 'mobile' && appStore.sidebar.opened"
         class="drawer-bg"
         @click="handleClickOutside"
       />
       <sidebar class="sidebar-container" />
       <div
-        :class="{hasTagsView:needTagsView}"
+        :class="{hasTagsView: settingsStore.tagsView}"
         class="main-container"
       >
-        <div :class="{'fixed-header':fixedHeader}">
+        <div :class="{'fixed-header': settingsStore.fixedHeader}">
           <navbar />
-          <tags-view v-if="needTagsView" />
+          <tags-view v-if="settingsStore.tagsView" />
         </div>
         <app-main />
       </div>
@@ -35,24 +35,22 @@ import { ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'// !中文包
 
 import { Navbar, Sidebar, AppMain, TagsView } from './components'
-import { useStore } from 'vuex'
-const store = useStore()
+import { useAppStore, useSettingsStore } from '@/store'
 import ResizeHandler from '@/layout/mixin/ResizeHandler'
 ResizeHandler()
 
-const side_bar = computed(() => store.state.app.sidebar)
-const device = computed(() => store.state.app.device)
-const needTagsView = computed(() => store.state.settings.tagsView)
-const fixedHeader = computed(() => store.state.settings.fixedHeader)
+const appStore = useAppStore()
+const settingsStore = useSettingsStore()
+
 const classObj = computed(() => ({
-  hideSidebar: !side_bar.value.opened,
-  openSidebar: side_bar.value.opened,
-  withoutAnimation: side_bar.value.withoutAnimation,
-  mobile: device.value === 'mobile'
+  hideSidebar: !appStore.sidebar.opened,
+  openSidebar: appStore.sidebar.opened,
+  withoutAnimation: appStore.sidebar.withoutAnimation,
+  mobile: appStore.device === 'mobile'
 }))
 
 const handleClickOutside = () => {
-  store.dispatch('app/closeSideBar', { withoutAnimation: false })
+  appStore.closeSideBar(false)
 }
 </script>
 
