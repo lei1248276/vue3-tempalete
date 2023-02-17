@@ -18,14 +18,15 @@
     "nprogress": "^0.2.0",
     "path-browserify": "^1.0.1",
     "path-to-regexp": "2.4.0",
+    "pinia": "^2.0.30",
     "screenfull": "6.0.2",
     "vue": "^3.2.47",
     "vue-global-api": "^0.4.1",
-    "vue-router": "^4",
-    "vuex": "^4.0.2"
+    "vue-router": "^4"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.2.0",
+    "@types/js-cookie": "^3.0.2",
     "@types/node": "^18.13.0",
     "@types/nprogress": "^0.2.0",
     "@types/path-browserify": "^1.0.0",
