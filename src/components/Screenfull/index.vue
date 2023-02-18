@@ -1,6 +1,6 @@
 <template>
   <div>
-    <svg-icon
+    <SvgIcon
       :icon-class="isFullscreen ? 'exit-fullscreen' : 'fullscreen'"
       @click="onClick"
     />
@@ -15,8 +15,6 @@ export default {
 
 <script setup lang="ts">
 import screenfull from 'screenfull'
-import 'element-plus/es/components/message/style/css'
-import { ElMessage } from 'element-plus'
 
 onMounted(() => { init() })
 onUnmounted(() => { destroy() })

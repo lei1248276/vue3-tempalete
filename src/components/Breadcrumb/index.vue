@@ -29,10 +29,11 @@ export default {
 
 <script setup lang="ts">
 import pathToRegexp from 'path-to-regexp'
-import { useRoute, useRouter, RouteLocationMatched } from 'vue-router'
-const route = useRoute(), router = useRouter()
+import type { RouteLocationMatched } from 'vue-router'
 
 type RouteMatched = Partial<RouteLocationMatched>
+
+const route = useRoute(), router = useRouter()
 
 const levelList = ref<RouteMatched[]>([])
 

@@ -1,16 +1,16 @@
 <template>
   <div class="navbar">
-    <hamburger
+    <Hamburger
       :is-active="appStore.sidebar.opened"
       class="hamburger-container"
       @toggleClick="appStore.toggleSideBar"
     />
 
-    <breadcrumb class="breadcrumb-container" />
+    <Breadcrumb class="breadcrumb-container" />
 
     <div class="right-menu">
       <template v-if="appStore.device !== 'mobile'">
-        <search
+        <HeaderSearch
           id="header-search"
           class="right-menu-item"
         />
@@ -20,7 +20,7 @@
           effect="dark"
           placement="bottom"
         >
-          <screenfull
+          <Screenfull
             id="screenfull"
             class="right-menu-item hover-effect"
           />
@@ -37,7 +37,7 @@
             class="user-avatar"
           >
           <span class="user_name">{{ userStore.username }}</span>
-          <svg-icon
+          <SvgIcon
             icon-class="caret_bottom"
             class-name="caret_bottom"
           />
@@ -75,10 +75,6 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { Breadcrumb, Hamburger, Screenfull, Search } from '@/components'
-import { useAppStore, useUserStore } from '@/store'
-import { useRoute, useRouter } from 'vue-router'
-
 const router = useRouter()
 const route = useRoute()
 const appStore = useAppStore()

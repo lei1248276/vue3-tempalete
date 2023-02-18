@@ -8,7 +8,7 @@
       :index="resolvePath(props.basePath, childRoute.path)"
     >
       <template #title>
-        <svg-icon :icon-class="childRoute.meta?.icon || ''" />
+        <SvgIcon :icon-class="childRoute.meta?.icon || ''" />
         <span>{{ childRoute.meta?.title || '' }}</span>
       </template>
 
@@ -28,7 +28,7 @@
       :class="{'submenu-title-noDropdown': !isNest}"
       @click="toMenuRoute(resolvePath(props.basePath, childRoute.path))"
     >
-      <svg-icon :icon-class="childRoute.meta?.icon || ''" />
+      <SvgIcon :icon-class="childRoute.meta?.icon || ''" />
       <template #title>{{ childRoute.meta?.title || '' }}</template>
     </el-menu-item>
   </template>
@@ -47,7 +47,6 @@ export default {
 <script setup lang="ts">
 import path from 'path-browserify'
 import { isExternal } from '@/utils/validate'
-import { useRoute, useRouter } from 'vue-router'
 import type { Route } from '@/router'
 const router = useRouter(), route = useRoute()
 

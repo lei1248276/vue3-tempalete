@@ -4,7 +4,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
-import path from 'path-browserify'
+import path from 'path'
 // import mockServer from './mock/mock-server.cjs'
 
 function resolve(dir) {
@@ -23,9 +23,28 @@ export default defineConfig({
   plugins: [
     vue(),
     AutoImport({
-      resolvers: [ElementPlusResolver()]
+      resolvers: [ElementPlusResolver()],
+      imports: [
+        'vue',
+        'vue-router',
+        'pinia',
+        {
+          'axios': [
+            ['default', 'axios']
+          ]
+        }
+      ],
+      dirs: [
+        'src/store',
+        'src/hooks/**'
+      ],
+      dts: true, // or a custom path
+      eslintrc: {
+        enabled: true
+      }
     }),
     Components({
+      dts: true,
       resolvers: [ElementPlusResolver()]
     }),
     createSvgIconsPlugin({

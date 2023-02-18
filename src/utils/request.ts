@@ -1,11 +1,3 @@
-import axios from 'axios'
-import 'element-plus/es/components/message/style/css'
-import 'element-plus/es/components/Loading/style/css'
-import 'element-plus/es/components/message-box/style/css'
-import { ElMessageBox, ElMessage, ElLoading } from 'element-plus'
-import { useUserStore } from '@/store'
-import { getToken } from '@/utils/auth'
-
 export interface ResponseData {
   result: any
 }

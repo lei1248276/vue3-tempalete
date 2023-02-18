@@ -3,7 +3,7 @@
     :class="{'isShow': isShow}"
     class="header-search"
   >
-    <svg-icon
+    <SvgIcon
       class-name="search-icon"
       icon-class="search"
       @click.stop="onClick"
@@ -40,8 +40,6 @@ export default {
 // make search results more in line with expectations
 import Fuse from 'fuse.js'
 import path from 'path-browserify'
-import { usePermissionStore } from '@/store'
-import { useRouter } from 'vue-router'
 import type { ElSelect } from 'element-plus'
 import type { Route } from '@/router'
 

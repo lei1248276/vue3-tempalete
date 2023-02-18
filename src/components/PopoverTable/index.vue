@@ -9,7 +9,7 @@
     style="position: relative"
     @after-leave="emit('update:visible', false)"
   >
-    <svg-icon
+    <SvgIcon
       icon-class="icon_close"
       class-name="icon-close"
       @click="emit('update:visible', false)"

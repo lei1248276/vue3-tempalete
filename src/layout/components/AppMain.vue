@@ -33,9 +33,6 @@ export default {
 </script>
 
 <script setup>
-import { useRoute } from 'vue-router'
-import { useTagsViewStore, useSettingsStore } from '@/store'
-
 const route = useRoute()
 const tagsViewStore = useTagsViewStore()
 const settingsStore = useSettingsStore()

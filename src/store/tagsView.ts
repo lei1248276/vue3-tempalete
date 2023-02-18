@@ -1,6 +1,5 @@
-import { defineStore } from 'pinia'
-import { RouteLocationNormalizedLoaded } from 'vue-router'
-import { Route } from '@/router'
+import type { RouteLocationNormalizedLoaded } from 'vue-router'
+import type { Route } from '@/router'
 
 export type TagView = Partial<RouteLocationNormalizedLoaded> & {
   title?: string

@@ -41,7 +41,7 @@
           class="login-form__input"
           @keypress.enter="handleLogin"
         />
-        <svg-icon
+        <SvgIcon
           :icon-class="passwordType ? 'eye' : 'eye-open'"
           class-name="password--show"
           @click="showPwd"
@@ -68,8 +68,6 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-import { useUserStore } from '@/store'
 import type { FormInstance } from 'element-plus'
 
 const router = useRouter()

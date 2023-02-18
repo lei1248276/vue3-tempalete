@@ -36,8 +36,6 @@ export default {
 import Logo from './Logo.vue'
 import SidebarItem from './SidebarItem.vue'
 import variables from '@/styles/variables.module.scss'
-import { useAppStore, useSettingsStore, usePermissionStore } from '@/store'
-import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const appStore = useAppStore()

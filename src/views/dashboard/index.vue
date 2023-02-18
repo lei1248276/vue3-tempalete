@@ -21,7 +21,7 @@
 
     <el-button
       type="primary"
-      @click="resetRouter($store.getters.permission_addRoutes)"
+      @click="resetRouter()"
     >
       resetRouter
     </el-button>
@@ -38,13 +38,8 @@ export default {
 </script>
 
 <script setup>
-// import { ref, reactive, onMounted, watch } from 'vue'
 import { resetRouter } from '@/router'
 
-/* onMounted(() => {
-  console.log('onMounted')
-  resetRouter()
-})*/
 const count = ref(0)
 const person = reactive({ age: 1 })
 const calcCount = () => count.value++

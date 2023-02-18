@@ -1,4 +1,3 @@
-import { defineStore } from 'pinia'
 import { asyncRoutes, constantRoutes, Route, RouteMap } from '@/router'
 
 export const usePermissionStore = defineStore('permission', {

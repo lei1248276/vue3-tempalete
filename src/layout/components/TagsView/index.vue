@@ -57,8 +57,7 @@ export default {
 <script setup lang="ts">
 import ScrollPane from './ScrollPane.vue'
 import path from 'path-browserify'
-import { usePermissionStore, useTagsViewStore } from '@/store'
-import { useRoute, useRouter, RouterLinkProps } from 'vue-router'
+import type { RouterLinkProps } from 'vue-router'
 import type { Route } from '@/router'
 import type { TagView } from '@/store/tagsView'
 

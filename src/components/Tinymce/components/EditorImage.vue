@@ -7,7 +7,7 @@
     >
       上传
       <template #icon>
-        <svg-icon icon-class="icon_upload" />
+        <SvgIcon icon-class="icon_upload" />
       </template>
     </el-button>
     <el-dialog
@@ -26,7 +26,7 @@
         :on-error="(err) => { ElMessage({ type: 'error',message: err.message}) }"
         :on-remove="(img) => { imgUploader.removeImg(removeImg, img) }"
       >
-        <svg-icon
+        <SvgIcon
           icon-class="plus"
           class-name="uploader__icon"
         />

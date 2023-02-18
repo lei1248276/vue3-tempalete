@@ -12,7 +12,7 @@
     :on-error="(err) => { ElMessage({ type: 'error',message: err.message}) }"
     v-bind="$attrs"
   >
-    <svg-icon
+    <SvgIcon
       icon-class="plus"
       class-name="uploader__icon"
     />
@@ -26,9 +26,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { useCustomUpload } from '@/hooks/components'
-import { ElMessage } from 'element-plus'
-import { addImg, removeImg } from '@/api/upload'
+// import { addImg, removeImg } from '@/api/upload'
 
 const emit = defineEmits(['update:modelValue', 'change'])
 const props = defineProps({

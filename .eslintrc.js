@@ -5,7 +5,7 @@ module.exports = {
   root: true,
   parserOptions: {
     sourceType: 'module',
-    ecmaVersion: 'latest',
+    ecmaVersion: 'latest'
   },
   env: {
     browser: true,
@@ -16,51 +16,22 @@ module.exports = {
     'plugin:vue/vue3-recommended',
     'eslint:recommended',
     '@vue/eslint-config-typescript',
-    'vue-global-api'
+    './.eslintrc-auto-import.json'
   ],
-  globals: {
-    // Ref sugar (take 2)
-    $: "readonly",
-    $$: "readonly",
-    $ref: "readonly",
-    $shallowRef: "readonly",
-    $computed: "readonly",
-
-    // index.d.ts
-    // global.d.ts
-    Fn: "readonly",
-    PromiseFn: "readonly",
-    RefType: "readonly",
-    LabelValueOptions: "readonly",
-    EmitType: "readonly",
-    TargetContext: "readonly",
-    ComponentElRef: "readonly",
-    ComponentRef: "readonly",
-    ElRef: "readonly",
-    global: "readonly",
-    ForDataType: "readonly",
-    ComponentRoutes: "readonly",
-
-    // script setup
-    defineProps: "readonly",
-    defineEmits: "readonly",
-    defineExpose: "readonly",
-    withDefaults: "readonly"
-  },
 
   // add your custom rules here
-  //it is base on https://github.com/vuejs/eslint-config-vue
+  // it is base on https://github.com/vuejs/eslint-config-vue
   rules: {
-    "vue/v-on-event-hyphenation": 0,
-    "vue/multi-word-component-names": "off",
-    "vue/no-multiple-template-root": "off",
-    "vue/singleline-html-element-content-newline": "off",
-    "vue/html-closing-bracket-newline": ["error", {
-        "singleline": "never",
-        "multiline": "always"
-      }],
-    "vue/no-v-html": "off",
-    "vue/no-v-for-template-key": "off",
+    'vue/v-on-event-hyphenation': 0,
+    'vue/multi-word-component-names': 'off',
+    'vue/no-multiple-template-root': 'off',
+    'vue/singleline-html-element-content-newline': 'off',
+    'vue/html-closing-bracket-newline': ['error', {
+      'singleline': 'never',
+      'multiline': 'always'
+    }],
+    'vue/no-v-html': 'off',
+    'vue/no-v-for-template-key': 'off',
     'accessor-pairs': 2,
     'arrow-spacing': [2, {
       'before': true,
@@ -83,7 +54,7 @@ module.exports = {
     'curly': [2, 'multi-line'],
     'dot-location': [2, 'property'],
     'eol-last': 2,
-    'eqeqeq': ["error", "always", {"null": "ignore"}],
+    'eqeqeq': ['error', 'always', { 'null': 'ignore' }],
     'generator-star-spacing': [2, {
       'before': true,
       'after': true
@@ -188,7 +159,7 @@ module.exports = {
     'no-useless-escape': 0,
     'no-whitespace-before-property': 2,
     'no-with': 2,
-    /*'one-var': [2, {
+    /* 'one-var': [2, {
       'initialized': 'always'
     }],*/
     'operator-linebreak': [2, 'after', {

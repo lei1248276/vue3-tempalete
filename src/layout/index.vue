@@ -9,14 +9,16 @@
         class="drawer-bg"
         @click="handleClickOutside"
       />
-      <sidebar class="sidebar-container" />
+
+      <Sidebar class="sidebar-container" />
+
       <div
         :class="{hasTagsView: settingsStore.tagsView}"
         class="main-container"
       >
         <div :class="{'fixed-header': settingsStore.fixedHeader}">
           <navbar />
-          <tags-view v-if="settingsStore.tagsView" />
+          <TagsView v-if="settingsStore.tagsView" />
         </div>
         <app-main />
       </div>
@@ -31,11 +33,9 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { Navbar, Sidebar, AppMain, TagsView } from './components'
 import { ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'// !中文包
-
-import { Navbar, Sidebar, AppMain, TagsView } from './components'
-import { useAppStore, useSettingsStore } from '@/store'
 import ResizeHandler from '@/layout/mixin/ResizeHandler'
 ResizeHandler()
 
