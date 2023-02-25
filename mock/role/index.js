@@ -1,23 +1,23 @@
-const Mock = require('mockjs');
-const { deepClone } = require('../utils');
-const { asyncRoutes, constantRoutes } = require('./routes.js');
+const Mock = require('mockjs')
+const { deepClone } = require('../utils')
+const { asyncRoutes, constantRoutes } = require('./routes.js')
 
-const routes = deepClone([...asyncRoutes]);
+const routes = deepClone([...constantRoutes, ...asyncRoutes])
 
-const roles = [
-  {
+const roles = {
+  'admin-token': {
     key: 'admin',
     name: 'admin',
     description: '超级管理员。 有权查看所有页面。',
     routes: routes
   },
-  {
+  'editor-token': {
     key: 'editor',
     name: 'editor',
     description: '编辑者。 可以看到除系统页面以外的所有页面',
-    routes: routes.filter(i => i.path !== '/system')// just a mock
+    routes: routes.filter(i => i.path !== 'test')// just a mock
   },
-  {
+  'visitor-token': {
     key: 'visitor',
     name: 'visitor',
     description: '访客。 只能看到主页和文档页面',
@@ -33,7 +33,7 @@ const roles = [
       ]
     }]
   }
-];
+}
 
 module.exports = [
   // mock get all routes form server
@@ -41,11 +41,12 @@ module.exports = [
     url: '/vue-element-admin/routes',
     type: 'get',
     response: _ => {
+      const route = roles[_[Object.getOwnPropertySymbols(_)[1]].token].routes
       return {
         code: '2000',
-        data: routes,
-        result: routes
-      };
+        data: route,
+        result: route
+      }
     }
   },
 
@@ -57,7 +58,7 @@ module.exports = [
       return {
         code: 20000,
         data: roles
-      };
+      }
     }
   },
 
@@ -96,4 +97,4 @@ module.exports = [
       }
     }
   }
-];
+]
