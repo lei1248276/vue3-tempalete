@@ -1,11 +1,10 @@
-import { defineConfig } from 'vite'
+import { defineConfig, splitVendorChunkPlugin } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import path from 'path'
-// import mockServer from './mock/mock-server.cjs'
 
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -13,6 +12,7 @@ function resolve(dir) {
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: './',
   server: {
     host: true,
     port: 9527,
@@ -50,7 +50,8 @@ export default defineConfig({
     createSvgIconsPlugin({
       iconDirs: [resolve('src/icons/svg')],
       symbolId: 'icon-[dir]-[name]'
-    })
+    }),
+    splitVendorChunkPlugin()
   ],
   resolve: {
     alias: {

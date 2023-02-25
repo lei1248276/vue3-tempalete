@@ -125,11 +125,9 @@ $cursor: #999999;
 /* reset element-ui css */
 .login {
   .el-input {
-    display: inline-block;
     height: 60px;
 
     &__wrapper{
-      height: inherit;
       background-color: inherit;
       box-shadow: none;
 
@@ -195,6 +193,7 @@ $title_color: #333;
       padding-left: 36px;
       background: #F5F5F5;
       border-radius: 33px;
+      overflow: hidden;
     }
 
     &__btn{

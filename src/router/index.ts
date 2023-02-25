@@ -4,10 +4,9 @@ import {
   RouteRecordRaw,
   RouteRecordRedirectOption
 } from 'vue-router'
-import { h, resolveComponent } from 'vue'
 
 /* * Layout */
-import Layout from '@/layout/index.vue'
+import Layout from '@/layout/layout.vue'
 
 // ! 与从服务器请求的路由表对应
 export interface RouteMap {
@@ -46,7 +45,7 @@ export const constantRoutes: Route[] = [
     children: [{
       path: 'dashboard',
       name: 'Dashboard',
-      component: () => import('@/views/dashboard/index.vue'),
+      component: () => import('@/views/dashboard/dashboard.vue'),
       meta: { title: '首页', icon: 'dashboard', affix: true }
     }]
   },
@@ -57,14 +56,14 @@ export const constantRoutes: Route[] = [
     children: [
       {
         path: '/redirect/:path(.*)',
-        component: () => import('@/views/redirect/index.vue')
+        component: () => import('@/views/redirect/redirect.vue')
       }
     ]
   },
 
   {
     path: '/login',
-    component: () => import('@/views/login/index.vue'),
+    component: () => import('@/views/login/login.vue'),
     meta: { hidden: true }
   },
 
@@ -106,19 +105,19 @@ export const asyncRoutes = new Map<string, Route>([
   ['role', {
     path: 'role',
     name: 'Role',
-    component: () => import(/* webpackChunkName: "role"*/'@/views/test/index.vue'),
+    component: () => import('@/views/role/role.vue'),
     meta: { title: '', icon: 'table' }
   }],
   ['user', {
     path: 'user',
     name: 'User',
-    component: () => import(/* webpackChunkName: "user"*/'@/views/test2/index.vue'),
+    component: () => import('@/views/user/user.vue'),
     meta: { title: '', icon: 'table' }
   }],
   ['admin', {
     path: 'admin',
     name: 'Admin',
-    component: () => import(/* webpackChunkName: "user"*/'@/views/test3/index.vue'),
+    component: () => import('@/views/admin/admin.vue'),
     meta: { title: '', icon: 'table' }
   }]
 ])
