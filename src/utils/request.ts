@@ -11,8 +11,7 @@ function loadingStart() {
   Loading = ElLoading.service({
     lock: true,
     text: 'Loading',
-    background: 'transparent',
-    fullscreen: false
+    background: 'transparent'
   })
 }
 
