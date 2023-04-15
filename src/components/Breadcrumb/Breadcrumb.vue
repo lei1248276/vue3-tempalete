@@ -11,11 +11,11 @@
         <span
           v-if="item.redirect === 'noRedirect' || index === levelList.length - 1"
           class="no-redirect"
-        >{{ item.meta.title }}</span>
+        >{{ item?.meta?.title }}</span>
         <a
           v-else
           @click.prevent="handleLink(item)"
-        >{{ item.meta.title }}</a>
+        >{{ item?.meta?.title }}</a>
       </el-breadcrumb-item>
     </transition-group>
   </el-breadcrumb>
@@ -67,10 +67,9 @@ function pathCompile(path: string) {
 }
 function handleLink(item: RouteMatched) {
   const { redirect, path } = item
-  if (redirect) {
-    router.push(redirect as string)
-    return
-  }
+
+  if (typeof redirect === 'string') return router.push(redirect)
+
   router.push(pathCompile(path || ''))
 }
 </script>
