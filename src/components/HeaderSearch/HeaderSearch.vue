@@ -56,12 +56,13 @@ interface SearchOption {
   title: string[]
 }
 
+let fuse: Fuse<SearchOption>
+
 const searchData = reactive<Search>({
   search: '',
   searchPool: [],
   options: []
 })
-const fuse = ref<any>(null)
 const isShow = ref<boolean>(false)
 const headerSearchSelectRef = ref<InstanceType<typeof ElSelect> | null>(null)
 
@@ -84,6 +85,24 @@ watch(
   }
 )
 
+function initFuse(list: SearchOption[]) {
+  fuse = new Fuse(list, {
+    threshold: 0.4,
+    keys: [{
+      name: 'title',
+      weight: 0.7
+    }, {
+      name: 'path',
+      weight: 0.3
+    }]
+  })
+}
+function querySearch(query: string) {
+  if (!fuse || !query) return
+
+  searchData.options = fuse.search(query).map((v) => v.item)
+}
+
 function onClick() {
   isShow.value = !isShow.value
   if (isShow.value) {
@@ -101,23 +120,7 @@ function onChange(item: SearchOption) {
   searchData.options = []
   nextTick(() => { isShow.value = false })
 }
-function initFuse(list: SearchOption[]) {
-  fuse.value = new Fuse(list, {
-    shouldSort: true,
-    threshold: 0.4,
-    location: 0,
-    distance: 100,
-    maxPatternLength: 32,
-    minMatchCharLength: 1,
-    keys: [{
-      name: 'title',
-      weight: 0.7
-    }, {
-      name: 'path',
-      weight: 0.3
-    }]
-  })
-}
+
 // Filter out the routes that can be displayed in the sidebar
 // And generate the internationalized title
 function generateRoutes(routes: Route[], basePath: string = '/', prefixTitle: string[] = []) {
@@ -156,10 +159,6 @@ function generateRoutes(routes: Route[], basePath: string = '/', prefixTitle: st
 
   return res
 }
-function querySearch(query: string) {
-  searchData.options = query !== '' ? fuse.value.search(query) : []
-}
-
 </script>
 
 <style lang="scss" scoped>
