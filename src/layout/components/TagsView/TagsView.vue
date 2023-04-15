@@ -15,7 +15,7 @@
         ref="tagRefs"
         :key="tag.path"
         :class="isActive(tag) ? 'active' : ''"
-        :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
+        :to="{ path: tag.path || '', query: tag.query, fullPath: tag.fullPath } as any"
         class="tags-view-item"
         @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''"
         @contextmenu.prevent="openMenu(tag, $event)"
@@ -105,8 +105,10 @@ function isActive(activeTag: TagView) {
   return activeTag.path === route.path
 }
 
-function isAffix(tag: TagView) {
-  return tag?.meta?.affix
+function isAffix(tag?: TagView) {
+  if (!tag) return false
+
+  return tag.meta?.affix
 }
 
 function filterAffixTags(routes: Route[], basePath = '/'): TagView[] {
@@ -153,12 +155,12 @@ function addTags() {
 function moveToCurrentTag() {
   nextTick(() => {
     for (const tag of tagRefs.value) {
-      // @ts-ignore
-      if (tag.to.path === route.path) {
+      const { path, fullPath } = tag.to as { path: string, fullPath: string }
+
+      if (path === route.path) {
         scrollPaneRef.value.moveToTarget(tag)
         // when query is different then update
-        // @ts-ignore
-        if (tag.to.fullPath !== route.fullPath) {
+        if (fullPath !== route.fullPath) {
           tagsViewStore.updateVisitedView(route)
         }
         break
@@ -167,7 +169,9 @@ function moveToCurrentTag() {
   })
 }
 
-function refreshSelectedTag(view: TagView) {
+function refreshSelectedTag(view?: TagView) {
+  if (!view) return
+
   tagsViewStore.delCachedView(view).then(() => {
     const { fullPath } = view
     nextTick(() => {
@@ -178,7 +182,9 @@ function refreshSelectedTag(view: TagView) {
   })
 }
 
-function closeSelectedTag(view: TagView) {
+function closeSelectedTag(view?: TagView) {
+  if (!view) return
+
   tagsViewStore.delView(view)
     .then(({ visitedViews }) => {
       if (isActive(view)) {
@@ -189,14 +195,16 @@ function closeSelectedTag(view: TagView) {
 
 function closeOthersTags() {
   if (!selectedTag.value) return
-  // @ts-ignore
-  router.push(selectedTag.value)
+
+  router.push(selectedTag.value as any)
   tagsViewStore.delOthersViews(selectedTag.value).then(() => {
     moveToCurrentTag()
   })
 }
 
-function closeAllTags(view: TagView) {
+function closeAllTags(view?: TagView) {
+  if (!view) return
+
   tagsViewStore.delAllViews().then(({ visitedViews }) => {
     if (affixTags.value.some(tag => tag.path === view.path)) {
       return
