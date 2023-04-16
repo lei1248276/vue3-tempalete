@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "dev": "vite --open",
-    "mock": "node mock/mock-server.js",
     "preview": "node build/index.js --preview",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml"
   },

@@ -46,7 +46,7 @@ const responseFake = (url, type, respond) => {
   }
 }
 
-const mockServer = (app) => {
+const mockServer = (app, port) => {
   // parse app.body
   // https://expressjs.com/en/4x/api.html#req.body
   app.use(bodyParser.json())
@@ -82,10 +82,24 @@ const mockServer = (app) => {
     }
   })
 
-  app.listen(9528)
+  app.listen(port)
 }
 
-mockServer(express())
+module.exports = () => ({
+  name: 'mock-server',
+  apply: 'serve',
+  enforce: 'post',
+  config: (config) => ({
+    server: {
+      proxy: {
+        '/dev-api': `http://localhost:${config.server.port + 1}`
+      }
+    }
+  }),
+  configResolved(resolvedConfig) {
+    mockServer(express(), resolvedConfig.server.port + 1)
+  }
+})
 
 /* module.exports = () => {
   const app = express()
