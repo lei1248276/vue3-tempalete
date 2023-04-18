@@ -16,59 +16,40 @@ const whiteList = ['/login'] // no redirect whitelist
 router.beforeEach(async(to, from, next) => {
   userStore || (userStore = useUserStore())
   permissionStore || (permissionStore = usePermissionStore())
-  // start progress bar
+
+  // * 开启进度条
   NProgress.start()
 
-  // set page title
-  document.title = getPageTitle(to.meta.title as string)
+  // * 设置文档title
+  document.title = getPageTitle((to.meta?.title as string) || '')
 
-  // determine whether the user has logged in
-  if (userStore.token) {
-    if (to.path === '/login') {
-      // if is logged in, redirect to the home page
-      next({ path: '/' })
-      NProgress.done() // hack: https://github.com/PanJiaChen/vue-element-admin/pull/2939
-    } else {
-      // ! 通过getInfo判断用户是否获得了他的权限角色和路由
-      if (userStore.userId) {
-        next()
-      } else {
-        try {
-          // get user info
-          // note: roles must be an object array! such as: ['admin'] or ,['developer','editor']
-          await userStore.getInfo()
-          // * 请求获取服务端路由
-          const { result: routeMaps } = await getRoutes()
-          const accessRoutes: Route[] = await permissionStore.generateRoutes(routeMaps)
-          console.log('%c🚀 ~ method: generateRoutes ~', 'color: #F25F5C;font-weight: bold;', accessRoutes)
+  // * 如果进入的whitelist页面，放行
+  if (whiteList.includes(to.path)) return next()
 
-          // dynamically add accessible routes
-          nextTick(() => { accessRoutes.forEach((route) => { router.addRoute(route) }) })
+  if (!userStore.token) return next(`/login?redirect=${to.path}`)
 
-          // hack method to ensure that addRoutes is complete
-          // set replace: true, so the navigation will not leave a history record
-          next({ path: '/', replace: true })
-        } catch (error) {
-          console.log('%c🚀 ~ method: ??? ~', 'color: #F25F5C;font-weight: bold;', error)
-          // remove token and go to login page to re-login
-          await userStore.resetToken()
-          ElMessage.error(error || 'Has Error')
-          next(`/login?redirect=${to.path}`)
-          NProgress.done()
-        }
-      }
-    }
-  } else {
-    /* has no token*/
+  // * 已经获取到用户信息标识（获取用户信息和token是分开的）
+  if (userStore.userId) return next()
 
-    if (whiteList.indexOf(to.path) !== -1) {
-      // in the free login whitelist, go directly
-      next()
-    } else {
-      // other pages that do not have permission to access are redirected to the login page.
-      next(`/login?redirect=${to.path}`)
-      NProgress.done()
-    }
+  try {
+    // ! 每次进入都要获取用户信息
+    await userStore.getInfo()
+
+    // * 请求获取服务端路由表
+    const { result: routeMaps } = await getRoutes()
+    // * 完善路由信息
+    const accessRoutes: Route[] = permissionStore.generateRoutes(routeMaps)
+    // * 动态添加权限路由
+    nextTick(() => { accessRoutes.forEach((route) => { router.addRoute(route) }) })
+
+    // * replace到首页（清除历史记录）
+    next({ path: '/', replace: true })
+  } catch (error) {
+    userStore.resetToken()
+    next(`/login?redirect=${to.path}`)
+    ElMessage.error(error || 'Has Error')
+    NProgress.done()
+    console.error('%c🚀 ~ method: ??? ~', 'color: #F25F5C;font-weight: bold;', error)
   }
 })
 

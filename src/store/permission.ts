@@ -6,13 +6,13 @@ export const usePermissionStore = defineStore('permission', {
     addRoutes: [] as Route[]
   }),
   actions: {
-    generateRoutes(routeMaps: RouteMap[]): Promise<Route[]> {
-      return new Promise(resolve => {
-        const accessedRoutes: Route[] = filterAsyncRoutes(routeMaps, asyncRoutes)
-        this.addRoutes = accessedRoutes
-        this.routes = constantRoutes.concat(accessedRoutes)
-        resolve(accessedRoutes)
-      })
+    generateRoutes(routeMaps: RouteMap[]) {
+      const accessedRoutes: Route[] = filterAsyncRoutes(routeMaps, asyncRoutes)
+      console.log('🚀 ~ file: permission.ts:11 ~ generateRoutes ~ accessedRoutes:', accessedRoutes)
+      this.addRoutes = accessedRoutes
+      this.routes = constantRoutes.concat(accessedRoutes)
+
+      return accessedRoutes
     }
     // * 查询是否有权限
     /* hasPermission(roles: string[], route: Route): boolean {
