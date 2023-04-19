@@ -11,9 +11,6 @@
       <el-menu
         :default-active="activeMenu"
         :collapse="isCollapse"
-        :background-color="variables.menuBg"
-        :text-color="variables.menuText"
-        :active-text-color="variables.menuActiveText"
         :collapse-transition="false"
         mode="vertical"
         unique-opened
@@ -38,7 +35,6 @@ export default {
 <script setup>
 import Logo from './Logo.vue'
 import SidebarItem from './SidebarItem.vue'
-import variables from '@/styles/variables.module.scss'
 
 const route = useRoute()
 const appStore = useAppStore()
@@ -53,13 +49,13 @@ const isCollapse = computed(() => !appStore.sidebar.opened)
 </script>
 
 <style lang="scss">
-@import "@/styles/variables.module.scss";
+@import '@/styles/mixin.scss';
 
 #app {
   .sidebar-container {
     transition: width 0.28s;
-    width: $sideBarWidth !important;
-    background-color: $menuBg;
+    width: var(--sideBarWidth) !important;
+    background-color: var(--menuBg);
     height: 100%;
     position: fixed;
     font-size: 0px;
@@ -114,7 +110,7 @@ const isCollapse = computed(() => !appStore.sidebar.opened)
       height: 100%;
       width: 100% !important;
       .is-active{
-        background-color: $subMenuActiveBg !important;
+        background-color: var(--subMenuActiveBg) !important;
       }
     }
 
@@ -122,27 +118,27 @@ const isCollapse = computed(() => !appStore.sidebar.opened)
     .submenu-title-noDropdown,
     .el-sub-menu__title {
       &:hover {
-        background-color: $subMenuHover !important;
+        background-color: var(--subMenuHover) !important;
       }
     }
 
     .is-active>.el-sub-menu__title {
-      color: $menuActiveText !important;
-      background-color: $subMenuBg !important;
+      color: var(--menuActiveText) !important;
+      background-color: var(--subMenuBg) !important;
     }
 
     & .el-sub-menu>.el-sub-menu__title,
     & .el-menu-item {
-      color: $subMenuText;
-      background-color: $subMenuBg !important;
+      color: var(--subMenuText);
+      background-color: var(--subMenuBg) !important;
 
       &.is-active{
-        color: $subMenuActiveText !important;
-        background-color: $subMenuActiveBg !important;
+        color: var(--subMenuActiveText) !important;
+        background-color: var(--subMenuActiveBg) !important;
       }
 
       &:hover {
-        background-color: $subMenuHover !important;
+        background-color: var(--subMenuHover) !important;
       }
     }
   }
@@ -163,23 +159,12 @@ const isCollapse = computed(() => !appStore.sidebar.opened)
   .el-sub-menu>.el-sub-menu__title,
   .el-menu-item {
     &:hover {
-      background-color: $subMenuHover !important;
+      background-color: var(--subMenuHover) !important;
     }
   }
 
   >.el-menu--popup {
-    &::-webkit-scrollbar-track-piece {
-      background: #d3dce6;
-    }
-
-    &::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: #99a9bf;
-      border-radius: 20px;
-    }
+    @include scrollBar;
   }
 }
 </style>

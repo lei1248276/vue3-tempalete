@@ -55,13 +55,11 @@ const handleClickOutside = () => { appStore.closeSideBar(false) }
 </script>
 
 <style lang="scss">
-  @import "@/styles/variables.module.scss";
-
   #app {
     .main-container {
       min-height: 100%;
       transition: margin-left .28s;
-      margin-left: $sideBarWidth;
+      margin-left: var(--sideBarWidth);
       position: relative;
     }
 
@@ -83,14 +81,14 @@ const handleClickOutside = () => { appStore.closeSideBar(false) }
 
       .sidebar-container {
         transition: transform .28s;
-        width: $sideBarWidth !important;
+        width: var(--sideBarWidth) !important;
       }
 
       &.sidebar--hide {
         .sidebar-container {
           pointer-events: none;
           transition-duration: 0.3s;
-          transform: translate3d(-$sideBarWidth, 0, 0);
+          transform: translate3d(-var(--sideBarWidth), 0, 0);
         }
       }
     }
@@ -105,8 +103,6 @@ const handleClickOutside = () => { appStore.closeSideBar(false) }
 </style>
 
 <style lang="scss" scoped>
-  @import "@/styles/variables.module.scss";
-
   .app-wrapper {
     @include clearfix;
     position: relative;
@@ -132,7 +128,7 @@ const handleClickOutside = () => { appStore.closeSideBar(false) }
     top: 0;
     right: 0;
     z-index: 9;
-    width: calc(100% - #{$sideBarWidth});
+    width: calc(100% - #{var(--sideBarWidth)});
     transition: width 0.28s;
   }
 

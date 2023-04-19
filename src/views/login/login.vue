@@ -109,20 +109,15 @@ function handleLogin() {
 </script>
 
 <style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
-/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
+$input-bg:#F5F5F5;
+$text-color:#333;
 
-$bg:#889aa4;
-$light_gray:#999999;
-$cursor: #999999;
-
-@supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
+@supports (-webkit-mask: none) and (not (cater-color: $text-color)) {
   .login .el-input input {
-    color: $cursor;
+    color: $text-color;
   }
 }
 
-/* reset element-ui css */
 .login {
   .el-input {
     height: 60px;
@@ -133,18 +128,16 @@ $cursor: #999999;
 
       input {
         -webkit-appearance: none;
-        color: $light_gray;
-        caret-color: $cursor;
+        color: $text-color;
+        caret-color: $text-color;
 
         // ! 隐藏浏览器自动填充的颜色
         &:-webkit-autofill,
         &:-webkit-autofill:hover,
         &:-webkit-autofill:focus,
-        &:-webkit-autofill:active,{
-          -webkit-transition-delay: 99999s;
-          -webkit-transition: color 99999s ease-out, background-color 99999s ease-out;
-          //box-shadow: 0 0 0px 1000px $bg inset !important;
-          //-webkit-text-fill-color: $cursor !important;
+        &:-webkit-autofill:active {
+          box-shadow: 0 0 0px 1000px $input-bg inset;
+          -webkit-text-fill-color: $text-color;
         }
       }
     }
@@ -153,11 +146,6 @@ $cursor: #999999;
 </style>
 
 <style lang="scss" scoped>
-$bg: #2d3a4b;
-$dark_gray: #889aa4;
-$light_gray: #eee;
-$title_color: #333;
-
 .login {
   width: 100vw;
   min-height: 100vh;
@@ -165,14 +153,13 @@ $title_color: #333;
   //background-size: 64% 100%;
   //background-repeat: no-repeat;
   //background-position: right;
-  background-color: gray;
+  background-color: #334154;
   overflow: hidden;
 
   &-form {
     width: 420px;
-    text-align: left;
-    @include xMid(10.42%);
-    top: 6.48%;
+    text-align: center;
+    @include mid();
     overflow: hidden;
 
     &__logo{
@@ -182,10 +169,9 @@ $title_color: #333;
 
     &__title {
       position: relative;
-      @include fc(32px, $title_color);
+      margin: 0 auto 15%;
+      @include fc(32px, #fff);
       font-weight: bold;
-      margin: 10% auto 15%;
-      text-align: left;
     }
 
     &__input{
@@ -197,7 +183,7 @@ $title_color: #333;
     }
 
     &__btn{
-      @include wh(180px, 60px);
+      @include wh(100%, 60px);
       font-size: 18px;
       margin-top:6%;
       background: #3C66F5;
@@ -213,7 +199,7 @@ $title_color: #333;
   top: 50%;
   transform: translateY(-50%);
   font-size: 16px;
-  color: $dark_gray;
+  color: #889aa4;
   cursor: pointer;
   user-select: none;
 }
