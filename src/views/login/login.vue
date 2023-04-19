@@ -96,7 +96,7 @@ function handleLogin() {
       loading.value = true
       userStore.login(loginForm.value)
         .then(() => {
-          router.push('/')
+          router.push({ path: '/', replace: true })
         }).finally(() => {
           loading.value = false
         })

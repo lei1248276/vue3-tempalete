@@ -75,14 +75,14 @@ export default {
 </script>
 
 <script setup lang="ts">
+
 const router = useRouter()
-const route = useRoute()
 const appStore = useAppStore()
 const userStore = useUserStore()
 
 const logout = async() => {
   await userStore.logout()
-  router.push(`/login?redirect=${route.fullPath}`)
+  router.replace({ path: '/login', replace: true })
 }
 </script>
 

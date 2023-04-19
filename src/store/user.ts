@@ -8,7 +8,7 @@ export const useUserStore = defineStore('user', {
     username: '',
     avatar: '',
     introduction: '',
-    userId: undefined as number | undefined
+    userId: 0
   }),
   actions: {
     // * user login
@@ -26,12 +26,11 @@ export const useUserStore = defineStore('user', {
       })
     },
     // * get user info
-    getInfo() {
+    getUserInfo() {
       return new Promise((resolve, reject) => {
         getInfo().then((response) => {
-          console.log('%c🚀 ~ file: user ~ method: getInfo ~', 'color: #F25F5C;font-weight: bold;', response)
+          console.log('🚀 ~ file: user.ts:32 ~ getInfo ~ response:', response)
           const { result: { nickname: username, id, avatar }} = response
-
           this.username = username
           this.userId = id
           this.avatar = avatar
@@ -63,7 +62,7 @@ export const useUserStore = defineStore('user', {
     },
     // * remove token
     resetToken() {
-      this.userId = undefined
+      this.userId = 0
       this.token = ''
       removeToken()
     }

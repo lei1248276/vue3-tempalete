@@ -1,7 +1,7 @@
 // @ts-ignore
 import Cookies from 'js-cookie'
 
-const TokenKey = 'jia_gu'
+const TokenKey = 'auth'
 
 export function getToken() {
   return Cookies.get(TokenKey)
