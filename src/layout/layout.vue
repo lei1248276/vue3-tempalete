@@ -10,7 +10,7 @@
         @click="handleClickOutside"
       />
 
-      <Sidebar class="sidebar-container" />
+      <Sidebar />
 
       <div
         :class="{hasTagsView: settingsStore.tagsView}"
@@ -18,8 +18,10 @@
       >
         <div :class="{'fixed-header': settingsStore.fixedHeader}">
           <navbar />
+
           <TagsView v-if="settingsStore.tagsView" />
         </div>
+
         <app-main />
       </div>
     </div>
@@ -43,16 +45,64 @@ const appStore = useAppStore()
 const settingsStore = useSettingsStore()
 
 const classObj = computed(() => ({
-  hideSidebar: !appStore.sidebar.opened,
-  openSidebar: appStore.sidebar.opened,
-  withoutAnimation: appStore.sidebar.withoutAnimation,
+  'sidebar--hide': !appStore.sidebar.opened,
+  'sidebar--open': appStore.sidebar.opened,
+  'without-animation': appStore.sidebar.withoutAnimation,
   mobile: appStore.device === 'mobile'
 }))
 
-const handleClickOutside = () => {
-  appStore.closeSideBar(false)
-}
+const handleClickOutside = () => { appStore.closeSideBar(false) }
 </script>
+
+<style lang="scss">
+  @import "@/styles/variables.module.scss";
+
+  #app {
+    .main-container {
+      min-height: 100%;
+      transition: margin-left .28s;
+      margin-left: $sideBarWidth;
+      position: relative;
+    }
+
+    .sidebar--hide{
+      .sidebar-container {
+        width: 54px !important;
+      }
+
+      .main-container {
+        margin-left: 54px;
+      }
+    }
+
+    // mobile responsive
+    .mobile {
+      .main-container {
+        margin-left: 0px;
+      }
+
+      .sidebar-container {
+        transition: transform .28s;
+        width: $sideBarWidth !important;
+      }
+
+      &.sidebar--hide {
+        .sidebar-container {
+          pointer-events: none;
+          transition-duration: 0.3s;
+          transform: translate3d(-$sideBarWidth, 0, 0);
+        }
+      }
+    }
+
+    .without-animation {
+      .main-container,
+      .sidebar-container {
+        transition: none;
+      }
+    }
+  }
+</style>
 
 <style lang="scss" scoped>
   @import "@/styles/variables.module.scss";
@@ -62,7 +112,7 @@ const handleClickOutside = () => {
     position: relative;
     height: 100%;
     width: 100%;
-    &.mobile.openSidebar{
+    &.mobile.sidebar--open{
       position: fixed;
       top: 0;
     }
@@ -86,7 +136,7 @@ const handleClickOutside = () => {
     transition: width 0.28s;
   }
 
-  .hideSidebar .fixed-header {
+  .sidebar--hide .fixed-header {
     width: calc(100% - 54px)
   }
 

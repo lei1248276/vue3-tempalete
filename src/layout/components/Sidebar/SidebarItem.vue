@@ -13,12 +13,11 @@
       </template>
 
       <sidebar-item
-        v-for="child in childRoute.children.filter((dir: Route) => !dir.meta.hidden)"
+        v-for="child in childRoute.children.filter((dir: Route) => !dir?.meta?.hidden)"
         :key="child.path"
         :is-nest="true"
         :item="child"
         :base-path="resolvePath(props.basePath, child.path)"
-        class="nest-menu"
       />
     </el-sub-menu>
 
@@ -35,12 +34,9 @@
 </template>
 
 <script lang="ts">
-// import FixiOSBug from './FixiOSBug'
-
 export default {
   name: 'SidebarItem',
   inheritAttrs: false
-  // mixins: [FixiOSBug]
 }
 </script>
 
@@ -62,14 +58,13 @@ const props = withDefaults(defineProps<Props>(), {
 
 let showingRoutes: Route[] = []
 
-filterShowingChild(props.item.children, props.item)
-function filterShowingChild(children: Route[] | undefined, parent: Route): any {
+;(function filterShowingChild(children: Route[] | undefined, parent: Route) {
   if (!children) return showingRoutes.push(parent)
 
   if (!parent.meta?.noShow) return showingRoutes.push(parent)
 
   showingRoutes = children.filter((route: Route) => !route.meta?.hidden)
-}
+})(props.item.children, props.item)
 
 function resolvePath(parentPath: string, childPath: string) {
   if (isExternal(childPath)) return childPath
@@ -79,6 +74,7 @@ function resolvePath(parentPath: string, childPath: string) {
 
   return path.join(parentPath, childPath)
 }
+
 function toMenuRoute(path: string) {
   const { fullPath } = route
   if (path === fullPath) {

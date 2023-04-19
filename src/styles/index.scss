@@ -2,7 +2,6 @@
 @import './mixin.scss';
 @import './transition.scss';
 @import './element-ui.scss';
-@import './sidebar.scss';
 
 body {
   height: 100%;
@@ -58,6 +57,12 @@ input[type="number"]{
   -moz-appearance: textfield;
 }
 
+// main-container global css
+.app_container {
+  padding: 20px;
+  background-color: #F0F2F5;
+}
+
 .clearfix {
   &:after {
     visibility: hidden;
@@ -78,52 +83,4 @@ input[type="number"]{
     height: 30px;
     background-color: #CBCBCB;
   }
-}
-
-.btn_search{
-  min-width: 90px;
-  background-color: #1275CB;
-  color: #fff;
-  border-radius: 4px;
-  border: none;
-  margin-right: 20px;
-}
-
-// main-container global css
-.app_container {
-  padding: 20px;
-  background-color: #F0F2F5;
-}
-
-.flex_container{
-  display: flex;
-  flex-wrap: wrap;
-  .flex_header{
-    flex-basis: 100%;
-    padding: 14px 14px 0;
-    margin-bottom: 32px;
-  }
-  .flex_main{
-    flex: 7;
-    margin-right: 32px;
-    padding-bottom: 150px;
-  }
-  .flex_other{
-    flex: 3;
-  }
-}
-
-.primary{
-  color: #3C66F5;
-  font-size: 14px;
-}
-
-.warning{
-  color: #FAAD14;
-  font-size: 14px;
-}
-
-.danger{
-  color: #FF4D4F;
-  font-size: 14px;
 }
