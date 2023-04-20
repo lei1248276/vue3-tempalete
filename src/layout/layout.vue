@@ -17,12 +17,12 @@
         class="main-container"
       >
         <div :class="{'fixed-header': settingsStore.fixedHeader}">
-          <navbar />
+          <Navbar />
 
           <TagsView v-if="settingsStore.tagsView" />
         </div>
 
-        <app-main />
+        <AppMain />
       </div>
     </div>
   </ElConfigProvider>

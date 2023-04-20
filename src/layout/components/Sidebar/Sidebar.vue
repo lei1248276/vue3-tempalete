@@ -3,7 +3,7 @@
     :class="{'has-logo': showLogo}"
     class="sidebar-container"
   >
-    <logo
+    <Logo
       v-if="showLogo"
       :collapse="isCollapse"
     />
@@ -15,7 +15,7 @@
         mode="vertical"
         unique-opened
       >
-        <sidebar-item
+        <SidebarItem
           v-for="routes in showingRoutes"
           :key="routes.path"
           :item="routes"
@@ -33,8 +33,8 @@ export default {
 </script>
 
 <script setup>
-import Logo from './Logo.vue'
-import SidebarItem from './SidebarItem.vue'
+import Logo from './components/Logo.vue'
+import SidebarItem from './components/SidebarItem.vue'
 
 const route = useRoute()
 const appStore = useAppStore()
@@ -49,8 +49,6 @@ const isCollapse = computed(() => !appStore.sidebar.opened)
 </script>
 
 <style lang="scss">
-@import '@/styles/mixin.scss';
-
 #app {
   .sidebar-container {
     transition: width 0.28s;

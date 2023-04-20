@@ -12,7 +12,7 @@
         <span>{{ childRoute.meta?.title || '' }}</span>
       </template>
 
-      <sidebar-item
+      <SidebarItem
         v-for="child in childRoute.children.filter((dir: Route) => !dir?.meta?.hidden)"
         :key="child.path"
         :is-nest="true"

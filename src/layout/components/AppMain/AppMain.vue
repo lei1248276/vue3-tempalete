@@ -1,6 +1,5 @@
 <template>
   <section class="app-main">
-    <!--   ! 开发时使用会造成热更新失效   -->
     <router-view
       v-slot="{ Component }"
       :key="route.path"

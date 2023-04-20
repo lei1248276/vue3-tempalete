@@ -4,7 +4,7 @@
     ref="tagsViewRef"
     class="tags-view-container"
   >
-    <scroll-pane
+    <ScrollPane
       ref="scrollPaneRef"
       class="tags-view-wrapper"
       :tags="tagRefs"
@@ -29,7 +29,7 @@
         >x
         </span>
       </router-link>
-    </scroll-pane>
+    </ScrollPane>
     <ul
       v-show="visible"
       :style="{left: left + 'px',top: top + 'px'}"
@@ -55,7 +55,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import ScrollPane from './ScrollPane.vue'
+import ScrollPane from './components/ScrollPane.vue'
 import path from 'path-browserify'
 import type { RouterLinkProps } from 'vue-router'
 import type { Route } from '@/router'

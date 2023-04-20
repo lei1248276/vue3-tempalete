@@ -29,7 +29,6 @@ defineProps<{
   collapse: boolean
 }>()
 
-// const logo = ref<string>(new URL('@/assets/jiagu.png', import.meta.url).href)
 const logo = ref<string>('https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png')
 
 </script>
@@ -49,6 +48,7 @@ const logo = ref<string>('https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e
   width: 100%;
   height: 50px;
   line-height: 50px;
+  padding: 4px;
   text-align: center;
   overflow: hidden;
 
@@ -57,10 +57,8 @@ const logo = ref<string>('https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e
     width: 100%;
 
     & .sidebar-logo {
-      width: 138px;
-      height: 36px;
-      vertical-align: middle;
-      margin-right: 12px;
+      width: 100%;
+      height: 100%;
     }
 
     & .sidebar-title {
