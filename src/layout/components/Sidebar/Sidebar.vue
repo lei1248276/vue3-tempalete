@@ -26,13 +26,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'Sidebar'
 }
 </script>
 
-<script setup>
+<script setup lang="ts">
 import Logo from './components/Logo.vue'
 import SidebarItem from './components/SidebarItem.vue'
 
@@ -42,8 +42,7 @@ const settingsStore = useSettingsStore()
 const permissionStore = usePermissionStore()
 
 const showingRoutes = computed(() => permissionStore.routes.filter((route) => !route?.meta?.hidden))
-// ! if set path, the sidebar will highlight the path you set
-const activeMenu = computed(() => route?.meta?.activeMenu || route.path)
+const activeMenu = computed(() => route.path)
 const showLogo = computed(() => settingsStore.sidebarLogo)
 const isCollapse = computed(() => !appStore.sidebar.opened)
 </script>

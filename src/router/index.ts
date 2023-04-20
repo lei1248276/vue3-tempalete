@@ -6,7 +6,7 @@ import {
 } from 'vue-router'
 
 /* * Layout */
-import Layout from '@/layout/layout.vue'
+import Layout from '@/layout/Layout.vue'
 
 // ! 与从服务器请求的路由表对应
 export interface RouteMap {
@@ -25,11 +25,10 @@ export type Route = RouteRecordRaw & {
    title?: string // * 名称显示在侧边栏和面包屑中
    icon?: string // * 'svg-name' 图标显示在侧边栏中
    roles?: string[] // * 参考：['admin','editor']   控制页面角色（可以设置多个角色）
-   hidden?: boolean // * （默认是"false"）设置为"true"时，将不会显示在侧边栏中（包含子级）
-   noShow?: boolean // * （默认是 false）设置为"true"时，只隐藏自身（用来隐藏上级装饰页面，比如"Layout"）
-   noCache?: boolean // ! 如果设置为true，页面将不会被缓存（默认为false），三级路由以上情况上级组件使用（component: { name: name, render: () => h(resolveComponent('router-view')) }）
-   affix?: boolean // * 如果设置为真，标签将固定在TagView中
-   activeMenu?: string // * '参考：/example/list'  如果设置路径，侧边栏将突出显示您设置的路径
+   hidden?: boolean // * 设置为'true'时，将不会显示在侧边栏中（包含子级）
+   noShow?: boolean // * 设置为'true'时，只隐藏自身（比如用来隐藏上级装饰页面"Layout"）
+   noCache?: boolean // ! 如果设置为true时，页面将不会被缓存（默认为false），三级路由以上情况上级组件使用（component: { name: name, render: () => h(resolveComponent('router-view')) }）
+   affix?: boolean // * 设置为'true'时，标签将固定在TagView中
   }
 }
 
@@ -81,7 +80,7 @@ export const asyncRoutes = new Map<string, Route>([
     path: '/test',
     name: 'Test',
     component: Layout,
-    meta: { title: '测试', icon: 'table' }
+    meta: { title: '', icon: 'table' }
   }],
   ['nested', {
     path: 'nested',
@@ -96,11 +95,10 @@ export const asyncRoutes = new Map<string, Route>([
     meta: { title: '', icon: 'table', noShow: true }
   }],
   ['nested3', {
-    // noShow: true,
     path: 'nested3',
     name: 'Nested3',
     component: { name: 'Nested3', render: () => h(resolveComponent('router-view')) },
-    meta: { title: '', icon: 'table' }
+    meta: { title: '', icon: 'table', noShow: true }
   }],
   ['role', {
     path: 'role',

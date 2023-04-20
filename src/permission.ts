@@ -14,7 +14,7 @@ let permissionStore: ReturnType<typeof usePermissionStore>
 const whiteList = ['/login'] // no redirect whitelist
 
 router.beforeEach(async(to, from, next) => {
-  console.log('🚀 ~ file: permission.ts:17 ~ router.beforeEach ~ to:', to)
+  // console.log('🚀 ~ file: permission.ts:17 ~ router.beforeEach ~ to:', to)
   userStore || (userStore = useUserStore())
   permissionStore || (permissionStore = usePermissionStore())
 
@@ -23,6 +23,9 @@ router.beforeEach(async(to, from, next) => {
 
   // * 设置文档title
   document.title = getPageTitle((to.meta?.title as string) || '')
+
+  // * 如果已经登录了，跳转到login页面重定向到首页
+  if (userStore.token && to.path === '/login') return next({ path: '/', replace: true })
 
   // * 如果进入的whitelist页面，放行
   if (whiteList.includes(to.path)) return next()
