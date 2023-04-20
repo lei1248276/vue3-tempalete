@@ -27,17 +27,18 @@
         <div class="bullshit__oops">哎呀!</div>
         <div class="bullshit__headline">{{ message }}</div>
         <div class="bullshit__info">请检查您输入的网址是否正确，或点击下方按钮返回首页.</div>
-        <a
-          href=""
+        <router-link
+          :to="{ path: '/', replace: true }"
           class="bullshit__return-home"
-        >返回首页</a>
+        >
+          返回首页
+        </router-link>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-
+<script lang="ts">
 export default {
   name: 'Page404',
   computed: {

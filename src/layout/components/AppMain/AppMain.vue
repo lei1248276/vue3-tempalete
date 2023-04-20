@@ -25,13 +25,13 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'AppMain'
 }
 </script>
 
-<script setup>
+<script setup lang="ts">
 const route = useRoute()
 const tagsViewStore = useTagsViewStore()
 const settingsStore = useSettingsStore()

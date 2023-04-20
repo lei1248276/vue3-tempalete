@@ -7,7 +7,7 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import path from 'path'
 import mockServer from './mock/mock-server'
 
-function resolve(dir) {
+function resolve(dir: string) {
   return path.join(__dirname, dir)
 }
 

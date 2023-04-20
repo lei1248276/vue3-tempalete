@@ -21,7 +21,7 @@
 
     <el-button
       type="primary"
-      @click="resetRouter()"
+      @click="resetRouter(permissionStore.addRoutes)"
     >
       resetRouter
     </el-button>
@@ -31,14 +31,16 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'Dashboard'
 }
 </script>
 
-<script setup>
+<script setup lang="ts">
 import { resetRouter } from '@/router'
+
+const permissionStore = usePermissionStore()
 
 const count = ref(0)
 const person = reactive({ age: 1 })

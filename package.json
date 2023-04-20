@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite --open",
+    "build": "vite build",
     "preview": "node build/index.js --preview",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml"
   },
