@@ -6,17 +6,17 @@ export type TagView = Partial<RouteLocationNormalizedLoaded> & {
   meta?: Partial<Route['meta']>
 }
 
-export type VisitedViews = TagView[]
-export type CachedViews = string[]
+export type VisitedViews = TagView
+export type CachedViews = string
 export interface TagsViewsState {
-  visitedViews: TagView[],
-  cachedViews: string[]
+  visitedViews: VisitedViews[],
+  cachedViews: CachedViews[]
 }
 
 export const useTagsViewStore = defineStore('tagsView', {
   state: () => ({
-    visitedViews: [] as TagView[],
-    cachedViews: [] as string[]
+    visitedViews: [] as VisitedViews[],
+    cachedViews: [] as CachedViews[]
   }),
   actions: {
     addView(view: TagView) {
@@ -25,102 +25,74 @@ export const useTagsViewStore = defineStore('tagsView', {
     },
     addVisitedView(view: TagView) {
       if (this.visitedViews.some(v => v.path === view.path)) return
-      this.visitedViews.push(
-        Object.assign({}, view, {
-          title: view?.meta?.title || 'no-name'
-        })
-      )
+      this.visitedViews.push({ ...view, title: view?.meta?.title || '' })
     },
     addCachedView(view: TagView) {
-      if (this.cachedViews.includes(String(view.name))) return
+      if (!view.name || this.cachedViews.includes(String(view.name))) return
       if (!view?.meta?.noCache) {
         this.cachedViews.push(String(view.name))
       }
     },
 
-    delView(view: TagView): Promise<TagsViewsState> {
-      return new Promise(resolve => {
-        this.delVisitedView(view)
-        this.delCachedView(view)
-        resolve({
-          visitedViews: [...this.visitedViews],
-          cachedViews: [...this.cachedViews]
-        })
-      })
+    delView(view: TagView): TagsViewsState {
+      return {
+        visitedViews: this.delVisitedView(view),
+        cachedViews: this.delCachedView(view)
+      }
     },
-    delVisitedView(view: TagView): Promise<VisitedViews> {
-      return new Promise(resolve => {
-        for (const [i, v] of this.visitedViews.entries()) {
-          if (v.path === view.path) {
-            this.visitedViews.splice(i, 1)
-            break
-          }
+    delVisitedView(view: TagView): VisitedViews[] {
+      for (const [i, v] of this.visitedViews.entries()) {
+        if (v.path === view.path) {
+          this.visitedViews.splice(i, 1)
+          break
         }
-        resolve([...this.visitedViews])
-      })
+      }
+      return [...this.visitedViews]
     },
-    delCachedView(view: TagView): Promise<CachedViews> {
-      return new Promise(resolve => {
-        const index = this.cachedViews.indexOf(String(view.name))
-        index > -1 && this.cachedViews.splice(index, 1)
-        resolve([...this.cachedViews])
-      })
+    delCachedView(view: TagView): CachedViews[] {
+      const index = this.cachedViews.indexOf(String(view.name))
+      index > -1 && this.cachedViews.splice(index, 1)
+      return [...this.cachedViews]
     },
 
-    delOthersViews(view: TagView): Promise<TagsViewsState> {
-      return new Promise(resolve => {
-        this.delOthersVisitedViews(view)
-        this.delOthersCachedViews(view)
-        resolve({
-          visitedViews: [...this.visitedViews],
-          cachedViews: [...this.cachedViews]
-        })
-      })
+    delOthersViews(view: TagView): TagsViewsState {
+      return {
+        visitedViews: this.delOthersVisitedViews(view),
+        cachedViews: this.delOthersCachedViews(view)
+      }
     },
-    delOthersVisitedViews(view: TagView): Promise<VisitedViews> {
-      return new Promise(resolve => {
-        this.visitedViews = this.visitedViews.filter(v => {
-          return v?.meta?.affix || v.path === view.path
-        })
-        resolve([...this.visitedViews])
+    delOthersVisitedViews(view: TagView): VisitedViews[] {
+      this.visitedViews = this.visitedViews.filter(v => {
+        return v?.meta?.affix || v.path === view.path
       })
+      return [...this.visitedViews]
     },
-    delOthersCachedViews(view: TagView): Promise<CachedViews> {
-      return new Promise(resolve => {
-        const index = this.cachedViews.indexOf(String(view.name))
-        if (index > -1) {
-          this.cachedViews = this.cachedViews.slice(index, index + 1)
-        } else {
-          // if index = -1, there is no cached tags
-          this.cachedViews = []
-        }
-        resolve([...this.cachedViews])
-      })
+    delOthersCachedViews(view: TagView): CachedViews[] {
+      const index = this.cachedViews.indexOf(String(view.name))
+      if (index > -1) {
+        this.cachedViews = this.cachedViews.slice(index, index + 1)
+      } else {
+        // if index = -1, there is no cached tags
+        this.cachedViews = []
+      }
+      return [...this.cachedViews]
     },
 
-    delAllViews(): Promise<TagsViewsState> {
-      return new Promise(resolve => {
-        this.delAllVisitedViews()
-        this.delAllCachedViews()
-        resolve({
-          visitedViews: [...this.visitedViews],
-          cachedViews: [...this.cachedViews]
-        })
-      })
+    delAllViews(): TagsViewsState {
+      return {
+        visitedViews: this.delAllVisitedViews(),
+        cachedViews: this.delAllCachedViews()
+      }
     },
     delAllVisitedViews() {
-      return new Promise(resolve => {
       // keep affix tags
-        const affixTags = this.visitedViews.filter((tag) => tag?.meta?.affix)
-        this.visitedViews = affixTags
-        resolve([...this.visitedViews])
-      })
+      const affixTags = this.visitedViews.filter((tag) => tag?.meta?.affix)
+      this.visitedViews = affixTags
+      return [...this.visitedViews]
     },
     delAllCachedViews() {
-      return new Promise(resolve => {
-        this.cachedViews = []
-        resolve([...this.cachedViews])
-      })
+      this.cachedViews = []
+      return [...this.cachedViews]
     },
 
     updateVisitedView(view: TagView) {

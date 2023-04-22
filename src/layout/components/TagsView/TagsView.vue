@@ -12,12 +12,12 @@
     >
       <router-link
         v-for="tag in tagsViewStore.visitedViews"
-        ref="tagRefs"
         :key="tag.path"
+        ref="tagRefs"
+        class="tags-view-item"
         :class="isActive(tag) ? 'active' : ''"
         :to="{ path: tag.path || '', query: tag.query, fullPath: tag.fullPath } as any"
-        class="tags-view-item"
-        @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''"
+        @click.middle="!isAffix(tag) && closeSelectedTag(tag)"
         @contextmenu.prevent="openMenu(tag, $event)"
         @click="tag.fullPath === route.fullPath && refreshSelectedTag(route)"
       >
@@ -26,7 +26,7 @@
           v-if="!isAffix(tag)"
           class="icon-close"
           @click.prevent.stop="closeSelectedTag(tag)"
-        >x
+        >&#10008;
         </span>
       </router-link>
     </ScrollPane>
@@ -66,11 +66,6 @@ const route = useRoute()
 const permissionStore = usePermissionStore()
 const tagsViewStore = useTagsViewStore()
 
-onMounted(() => {
-  initTags()
-  addTags()
-})
-
 const visible = ref(false)
 const top = ref(0)
 const left = ref(0)
@@ -81,6 +76,11 @@ const tagsViewRef = ref<HTMLDivElement>()
 const tagRefs = ref<RouterLinkProps[]>([])
 const scrollPaneRef = ref()
 
+onMounted(() => {
+  initTags()
+  addTags()
+})
+
 watch(
   () => route.path,
   () => {
@@ -89,26 +89,19 @@ watch(
   }
 )
 
-watch(
-  () => visible,
-  (value) => {
-    if (value) {
-      document.body.addEventListener('click', closeMenu)
-    } else {
-      document.body.removeEventListener('click', closeMenu)
-    }
-  },
-  { immediate: true }
-)
+watch(() => visible, (value) => {
+  value
+    ? document.body.addEventListener('click', closeMenu)
+    : document.body.removeEventListener('click', closeMenu)
+},
+{ immediate: true })
 
 function isActive(activeTag: TagView) {
   return activeTag.path === route.path
 }
 
 function isAffix(tag?: TagView) {
-  if (!tag) return false
-
-  return tag.meta?.affix
+  return !!tag?.meta?.affix
 }
 
 function filterAffixTags(routes: Route[], basePath = '/'): TagView[] {
@@ -138,18 +131,12 @@ function initTags() {
   const tags = (affixTags.value = filterAffixTags(permissionStore.routes))
   for (const tag of tags) {
     // Must have tag name
-    if (tag.name) {
-      tagsViewStore.addVisitedView(tag)
-    }
+    tag.name && tagsViewStore.addVisitedView(tag)
   }
 }
 
 function addTags() {
-  const { name } = route
-  if (name) {
-    tagsViewStore.addView(route)
-  }
-  return false
+  route.name && tagsViewStore.addView(route)
 }
 
 function moveToCurrentTag() {
@@ -172,45 +159,33 @@ function moveToCurrentTag() {
 function refreshSelectedTag(view?: TagView) {
   if (!view) return
 
-  tagsViewStore.delCachedView(view).then(() => {
-    const { fullPath } = view
-    nextTick(() => {
-      router.replace({
-        path: '/redirect' + fullPath
-      })
-    })
-  })
+  tagsViewStore.delCachedView(view)
+  router.replace({ path: '/redirect' + view.fullPath })
 }
 
 function closeSelectedTag(view?: TagView) {
   if (!view) return
 
-  tagsViewStore.delView(view)
-    .then(({ visitedViews }) => {
-      if (isActive(view)) {
-        toLastView(visitedViews, view)
-      }
-    })
+  const { visitedViews } = tagsViewStore.delView(view)
+  isActive(view) && toLastView(visitedViews, view)
 }
 
 function closeOthersTags() {
   if (!selectedTag.value) return
 
   router.push(selectedTag.value as any)
-  tagsViewStore.delOthersViews(selectedTag.value).then(() => {
-    moveToCurrentTag()
-  })
+  tagsViewStore.delOthersViews(selectedTag.value)
+  moveToCurrentTag()
 }
 
 function closeAllTags(view?: TagView) {
   if (!view) return
 
-  tagsViewStore.delAllViews().then(({ visitedViews }) => {
-    if (affixTags.value.some(tag => tag.path === view.path)) {
-      return
-    }
-    toLastView(visitedViews, view)
-  })
+  const { visitedViews } = tagsViewStore.delAllViews()
+
+  if (affixTags.value.some(tag => tag.path === view.path)) return
+
+  toLastView(visitedViews, view)
 }
 
 function toLastView(visitedViews: TagView[], view: TagView) {
@@ -238,12 +213,7 @@ function openMenu(tag: TagView, e: MouseEvent) {
   const maxLeft = offsetWidth - menuMinWidth // left boundary
   const $left = e.clientX - offsetLeft + 15 // 15: margin right
 
-  if ($left > maxLeft) {
-    left.value = maxLeft
-  } else {
-    left.value = $left
-  }
-
+  $left > maxLeft ? (left.value = maxLeft) : (left.value = $left)
   top.value = e.clientY
   visible.value = true
   selectedTag.value = tag
