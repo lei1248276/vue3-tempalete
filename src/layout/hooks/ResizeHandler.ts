@@ -1,9 +1,7 @@
-const { body } = document
-const WIDTH = 992 // refer to Bootstrap's responsive design
-let appStore: ReturnType<typeof useAppStore>
-
 export default function ResizeHandler() {
-  appStore || (appStore = useAppStore())
+  const { body } = document
+  const WIDTH = 992 // refer to Bootstrap's responsive design
+  const appStore = useAppStore()
 
   onMounted(() => {
     const isMobile = $_isMobile()
@@ -21,8 +19,6 @@ export default function ResizeHandler() {
     window.removeEventListener('resize', $_resizeHandler)
   })
 
-  // use $_ for mixins properties
-  // https://vuejs.org/v2/style-guide/index.html#Private-property-names-essential
   function $_isMobile() {
     const rect = body.getBoundingClientRect()
     return rect.width - 1 < WIDTH

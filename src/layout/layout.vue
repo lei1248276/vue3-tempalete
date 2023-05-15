@@ -7,7 +7,7 @@
       <div
         v-if="appStore.device === 'mobile' && appStore.sidebar.opened"
         class="drawer-bg"
-        @click="handleClickOutside"
+        @click="appStore.closeSideBar(false)"
       />
 
       <Sidebar />
@@ -38,8 +38,8 @@ export default {
 import { Navbar, Sidebar, AppMain, TagsView } from './components'
 import { ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'// !中文包
-import ResizeHandler from '@/layout/mixin/ResizeHandler'
-ResizeHandler()
+import useResizeHandler from './hooks/ResizeHandler'
+useResizeHandler()
 
 const appStore = useAppStore()
 const settingsStore = useSettingsStore()
@@ -48,10 +48,8 @@ const classObj = computed(() => ({
   'sidebar--hide': !appStore.sidebar.opened,
   'sidebar--open': appStore.sidebar.opened,
   'without-animation': appStore.sidebar.withoutAnimation,
-  mobile: appStore.device === 'mobile'
+  'mobile': appStore.device === 'mobile'
 }))
-
-const handleClickOutside = () => { appStore.closeSideBar(false) }
 </script>
 
 <style lang="scss">
@@ -88,7 +86,7 @@ const handleClickOutside = () => { appStore.closeSideBar(false) }
         .sidebar-container {
           pointer-events: none;
           transition-duration: 0.3s;
-          transform: translate3d(-var(--sideBarWidth), 0, 0);
+          transform: translate3d(calc(0px - var(--sideBarWidth)), 0, 0);
         }
       }
     }
