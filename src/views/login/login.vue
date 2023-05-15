@@ -1,10 +1,10 @@
 <template>
-  <div class="login">
+  <div class="login w-screen min-h-screen overflow-hidden bg-[url('/src/assets/bg.png')]">
     <el-form
       ref="formRef"
+      class="w-[420px] text-center overflow-hidden mid"
       :model="loginForm"
       :rules="loginRules"
-      class="login-form"
       auto-complete="on"
       label-position="left"
     >
@@ -13,18 +13,18 @@
         src="~@/assets/logo.png"
       >-->
 
-      <h3 class="login-form__title">后台模版</h3>
+      <h3 class="relative mt-0 mx-auto mb-[15%] text-[32px] text-[#fff] font-bold">后台模版</h3>
 
       <el-form-item prop="username">
         <el-input
           ref="usernameRef"
           v-model="loginForm.username"
+          class="w-full pl-[36px] bg-[#f5f5f5] rounded-[33px] overflow-hidden"
           placeholder="请输入用户名"
           name="username"
           type="text"
           tabindex="1"
           auto-complete="on"
-          class="login-form__input"
         />
       </el-form-item>
 
@@ -38,12 +38,12 @@
           name="password"
           tabindex="2"
           auto-complete="on"
-          class="login-form__input"
+          class="w-full pl-[36px] bg-[#f5f5f5] rounded-[33px] overflow-hidden"
           @keypress.enter="handleLogin"
         />
         <SvgIcon
           :icon-class="passwordType ? 'eye' : 'eye-open'"
-          class-name="password--show"
+          class-name="y-mid right-[36px] text-[16px] text-[#889aa4] cursor-pointer select-none"
           @click="showPwd"
         />
       </el-form-item>
@@ -51,8 +51,7 @@
       <el-button
         :loading="loading"
         type="primary"
-        round
-        class="login-form__btn"
+        class="w-full h-[60px] text-[18px] mt-[6%] bg-[#3C66F5] rounded-[33px]"
         @click.prevent="handleLogin"
       >
         登录
@@ -92,18 +91,18 @@ function showPwd() { // * 动态控制Input标签type类型（为了浏览器密
 }
 function handleLogin() {
   formRef.value?.validate((valid: boolean) => {
-    if (valid) {
-      loading.value = true
-      userStore.login(loginForm.value)
-        .then(() => {
-          router.push({ path: '/', replace: true })
-        }).finally(() => {
-          loading.value = false
-        })
-    } else {
+    if (!valid) {
       console.log('error submit!!')
       return false
     }
+
+    loading.value = true
+    userStore.login(loginForm.value)
+      .then(() => {
+        router.push({ path: '/', replace: true })
+      }).finally(() => {
+        loading.value = false
+      })
   })
 }
 </script>
@@ -142,65 +141,5 @@ $text-color:#333;
       }
     }
   }
-}
-</style>
-
-<style lang="scss" scoped>
-.login {
-  width: 100vw;
-  min-height: 100vh;
-  //background-image: url("https://keput.comdao.com.cn:8081/image/cover_admin.png");
-  //background-size: 64% 100%;
-  //background-repeat: no-repeat;
-  //background-position: right;
-  background-color: #334154;
-  overflow: hidden;
-
-  &-form {
-    width: 420px;
-    text-align: center;
-    @include mid();
-    overflow: hidden;
-
-    &__logo{
-      @include wh(222px, 58px);
-      margin-bottom: 210px;
-    }
-
-    &__title {
-      position: relative;
-      margin: 0 auto 15%;
-      @include fc(32px, #fff);
-      font-weight: bold;
-    }
-
-    &__input{
-      width:100%;
-      padding-left: 36px;
-      background: #F5F5F5;
-      border-radius: 33px;
-      overflow: hidden;
-    }
-
-    &__btn{
-      @include wh(100%, 60px);
-      font-size: 18px;
-      margin-top:6%;
-      background: #3C66F5;
-      box-shadow: 0 4px 10px rgba(60, 102, 245, 0.65);
-      border-radius: 33px;
-    }
-  }
-}
-
-.password--show {
-  position: absolute;
-  right: 36px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 16px;
-  color: #889aa4;
-  cursor: pointer;
-  user-select: none;
 }
 </style>
