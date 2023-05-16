@@ -1,7 +1,7 @@
 <template>
   <div
     :class="{'has-logo': showLogo}"
-    class="sidebar-container"
+    class="sidebar-container !w-[var(--sideBarWidth)] h-full bg-[var(--menuBg)] fixed top-0 left-0 bottom-0 z-50 text-[0] overflow-hidden transition-[width] duration-300"
   >
     <Logo
       v-if="showLogo"
@@ -50,18 +50,6 @@ const isCollapse = computed(() => !appStore.sidebar.opened)
 <style lang="scss">
 #app {
   .sidebar-container {
-    transition: width 0.28s;
-    width: var(--sideBarWidth) !important;
-    background-color: var(--menuBg);
-    height: 100%;
-    position: fixed;
-    font-size: 0px;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1001;
-    overflow: hidden;
-
     // reset element-ui css
     .horizontal-collapse-transition {
       transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;

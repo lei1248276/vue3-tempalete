@@ -1,17 +1,17 @@
 <template>
   <div
-    class="sidebar-logo-container"
+    class="relative w-full h-[50px] leading-[50px] p-1 first-letter:text-center overflow-hidden"
     :class="{'collapse':collapse}"
   >
     <transition name="sidebarLogoFade">
       <router-link
         key="expand"
-        class="sidebar-logo-link"
+        class="w-full h-full"
         to="/"
       >
         <img
           :src="logo"
-          class="sidebar-logo"
+          class="w-full h-full"
         >
       </router-link>
     </transition>
@@ -43,40 +43,10 @@ const logo = ref<string>('https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e
   opacity: 0;
 }
 
-.sidebar-logo-container {
-  position: relative;
-  width: 100%;
-  height: 50px;
-  line-height: 50px;
-  padding: 4px;
-  text-align: center;
-  overflow: hidden;
+.collapse {
+  visibility: visible;
+  // .sidebar-logo {
 
-  & .sidebar-logo-link {
-    height: 100%;
-    width: 100%;
-
-    & .sidebar-logo {
-      width: 100%;
-      height: 100%;
-    }
-
-    & .sidebar-title {
-      display: inline-block;
-      margin: 0;
-      color: #fff;
-      font-weight: 600;
-      line-height: 50px;
-      font-size: 14px;
-      font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
-      vertical-align: middle;
-    }
-  }
-
-  &.collapse {
-    .sidebar-logo {
-      margin-right: 0px;
-    }
-  }
+  // }
 }
 </style>

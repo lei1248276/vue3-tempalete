@@ -10,11 +10,11 @@
         @click="appStore.closeSideBar(false)"
       />
 
-      <Sidebar />
+      <Sidebar class="sidebar-container" />
 
       <div
         :class="{hasTagsView: settingsStore.tagsView}"
-        class="main-container min-h-screen flex flex-col transition-[margin-left] duration-[.28s] ml-[--sideBarWidth] relative"
+        class="main-container min-h-screen flex flex-col transition-[margin-left] duration-300 ml-[var(--sideBarWidth)] relative"
       >
         <div :class="{'fixed-header': settingsStore.fixedHeader}">
           <Navbar />
