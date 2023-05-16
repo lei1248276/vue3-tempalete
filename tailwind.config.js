@@ -4,14 +4,15 @@ module.exports = {
     './index.html',
     './src/**/*.{vue,js,ts,jsx,tsx}'
   ],
-  corePlugins: {
-    preflight: false
-  },
   theme: {
     extend: {
       colors: {
         white: {
-          DEFAULT: '#F0F2F5'
+          bg: '#F0F2F5',
+          1: '#fff'
+        },
+        black: {
+          1: '#5a5e66'
         }
       }
     }
