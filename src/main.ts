@@ -1,8 +1,6 @@
 import App from './App.vue'
 import router from './router'
 
-import 'normalize.css/normalize.css'
-
 import '@/styles/index.scss' // ! global css
 
 import 'virtual:svg-icons-register'

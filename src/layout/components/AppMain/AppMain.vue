@@ -1,5 +1,11 @@
 <template>
-  <section class="app-main grow w-full bg-white-bg relative overflow-hidden">
+  <section
+    :class="{
+      'pt-[50px]': settingsStore.fixedHeader,
+      '!pt-[84px]': settingsStore.fixedHeader && settingsStore.tagsView
+    }"
+    class="grow w-full bg-white-bg relative overflow-hidden"
+  >
     <router-view
       v-slot="{ Component }"
       :key="route.path"
@@ -36,24 +42,3 @@ const route = useRoute()
 const tagsViewStore = useTagsViewStore()
 const settingsStore = useSettingsStore()
 </script>
-
-<style scoped lang="scss">
-.fixed-header+.app-main {
-  padding-top: 50px;
-}
-
-.hasTagsView {
-  .fixed-header+.app-main {
-    padding-top: 84px;
-  }
-}
-</style>
-
-<style lang="scss">
-// fix css style bug in open el-dialog
-.el-popup-parent--hidden {
-  .fixed-header {
-    padding-right: 15px;
-  }
-}
-</style>
