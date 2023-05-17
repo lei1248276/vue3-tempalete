@@ -1,23 +1,22 @@
 <template>
-  <div
-    :class="{'isShow': isShow}"
-    class="header-search"
-  >
+  <div class="flex items-center">
     <SvgIcon
-      class-name="search-icon"
+      class-name="cursor-pointer"
       icon-class="search"
       @click.stop="onClick"
     />
     <el-select
       ref="headerSearchSelectRef"
       v-model="searchData.search"
+      :class="{ 'w-[210px] ml-[10px]': isShow }"
+      class="w-0 text-[18px] transition-[width] duration-200 overflow-hidden"
       :remote-method="querySearch"
       filterable
       default-first-option
       remote
       placeholder="Search"
-      class="header-search-select"
       @change="onChange"
+      @blur="onClose"
     >
       <el-option
         v-for="item in searchData.options"
@@ -76,14 +75,6 @@ watch(
   (list: SearchOption[]) => { initFuse(list) },
   { immediate: true }
 )
-watch(
-  () => isShow,
-  (value) => {
-    value
-      ? document.body.addEventListener('click', onClose)
-      : document.body.removeEventListener('click', onClose)
-  }
-)
 
 function initFuse(list: SearchOption[]) {
   fuse = new Fuse(list, {
@@ -105,13 +96,12 @@ function querySearch(query: string) {
 
 function onClick() {
   isShow.value = !isShow.value
-  if (isShow.value) {
-    headerSearchSelectRef.value?.focus()
-  }
+  isShow.value ? headerSearchSelectRef.value?.focus() : onClose()
 }
 function onClose() {
   headerSearchSelectRef.value?.blur()
   searchData.options = []
+  searchData.search = ''
   isShow.value = false
 }
 function onChange(item: SearchOption) {
@@ -160,43 +150,3 @@ function generateRoutes(routes: Route[], basePath: string = '/', prefixTitle: st
   return res
 }
 </script>
-
-<style lang="scss" scoped>
-.header-search {
-  font-size: 0 !important;
-
-  .search-icon {
-    cursor: pointer;
-    font-size: 18px;
-    vertical-align: middle;
-  }
-
-  .header-search-select {
-    font-size: 18px;
-    transition: width 0.2s;
-    width: 0;
-    overflow: hidden;
-    background: transparent;
-    border-radius: 0;
-    display: inline-block;
-    vertical-align: middle;
-
-    :deep(.el-input__inner) {
-      border-radius: 0;
-      border: 0;
-      padding-left: 0;
-      padding-right: 0;
-      box-shadow: none !important;
-      border-bottom: 1px solid #d9d9d9;
-      vertical-align: middle;
-    }
-  }
-
-  &.isShow {
-    .header-search-select {
-      width: 210px;
-      margin-left: 10px;
-    }
-  }
-}
-</style>

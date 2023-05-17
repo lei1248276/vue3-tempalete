@@ -138,6 +138,7 @@ const isMobile = computed(() => appStore.device === 'mobile')
   .el-menu--vertical {
     &>.el-menu {
       background-color: var(--subMenuBg) !important;
+      padding: 0;
       .svg-icon {
         margin-right: 16px;
       }
