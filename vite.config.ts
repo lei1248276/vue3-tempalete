@@ -14,6 +14,7 @@ function resolve(dir: string) {
 // https://vitejs.dev/config/
 export default ({ mode }) => {
   const env = loadEnv(mode, process.cwd())
+  const PROD = mode === 'production'
 
   return defineConfig({
     base: './',
@@ -66,6 +67,9 @@ export default ({ mode }) => {
           additionalData: `@import "@/styles/mixin.scss";`
         }
       }
+    },
+    esbuild: {
+      drop: PROD ? ['console', 'debugger'] : []
     }
   })
 }
