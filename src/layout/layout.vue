@@ -23,7 +23,7 @@
         <div
           :class="{
             'fixed top-0 right-0 z-10 w-[calc(100%_-_var(--sideBarWidth))] transition-[width] duration-300': settingsStore.fixedHeader,
-            '!w-[calc(100%_-_54px)]': !appStore.sidebar.opened && !isMobile,
+            '!w-[calc(100%_-_54px)]': !appStore.sidebar.opened && settingsStore.fixedHeader,
             '!w-full': isMobile,
             '!duration-0': appStore.sidebar.withoutAnimation
           }"

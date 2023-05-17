@@ -1,12 +1,10 @@
 <template>
   <div
-    id="tags-view-container"
     ref="tagsViewRef"
-    class="tags-view-container"
+    class="w-full h-[34px] bg-[#fff] border-b-[1px] border-[#d8dce5] shadow-[0_1px_3px_0_rgba(0,0,0,.12),0_0_3px_0_rgba(0,0,0,.04)]"
   >
     <ScrollPane
       ref="scrollPaneRef"
-      class="tags-view-wrapper"
       :tags="tagRefs"
       @scroll="handleScroll"
     >
@@ -14,8 +12,8 @@
         v-for="tag in tagsViewStore.visitedViews"
         :key="tag.path"
         ref="tagRefs"
-        class="tags-view-item"
-        :class="isActive(tag) ? 'active' : ''"
+        :class="{ 'bg-[#42b983] text-[#fff] border-[#42b983] before:inline-block before:w-[8px] before:h-[8px] before:bg-[#fff] before:rounded-full before:mr-[6px]': isActive(tag) }"
+        class="inline-block relative h-[26px] leading-[26px] border border-[#d8dce5] bg-[#fff] py-0 px-2 mt-1 ml-[5px] text-[12px] cursor-pointer first-of-type:ml-[15px] last-of-type:mr-[15px]"
         :to="{ path: tag.path || '', query: tag.query, fullPath: tag.fullPath } as any"
         @click.middle="!isAffix(tag) && closeSelectedTag(tag)"
         @contextmenu.prevent="openMenu(tag, $event)"
@@ -24,7 +22,7 @@
         {{ tag.title }}
         <span
           v-if="!isAffix(tag)"
-          class="icon-close"
+          class="w-[16px] h-[16px] py-0 px-1 rounded-full text-center transition-all duration-300 hover:bg-[#b4bccc]"
           @click.prevent.stop="closeSelectedTag(tag)"
         >&#10008;
         </span>
@@ -33,17 +31,33 @@
     <ul
       v-show="visible"
       :style="{left: left + 'px',top: top + 'px'}"
-      class="contextmenu"
+      class="bg-[#fff] absolute z-50 py-[5px] px-0 rounded text-[12px] font-normal text-[#333] shadow-[2px_2px_3px_0_rgba(0,0,0,.3)]"
     >
-      <li @click="refreshSelectedTag(selectedTag)">刷新</li>
+      <li
+        class="py-[7px] px-[16px] cursor-pointer hover:bg-[#eee]"
+        @click="refreshSelectedTag(selectedTag)"
+      >
+        刷新
+      </li>
       <li
         v-if="!isAffix(selectedTag)"
+        class="py-[7px] px-[16px] cursor-pointer hover:bg-[#eee]"
         @click="closeSelectedTag(selectedTag)"
       >
         关闭
       </li>
-      <li @click="closeOthersTags">关闭其他</li>
-      <li @click="closeAllTags(selectedTag)">关闭所有</li>
+      <li
+        class="py-[7px] px-[16px] cursor-pointer hover:bg-[#eee]"
+        @click="closeOthersTags"
+      >
+        关闭其他
+      </li>
+      <li
+        class="py-[7px] px-[16px] cursor-pointer hover:bg-[#eee]"
+        @click="closeAllTags(selectedTag)"
+      >
+        关闭所有
+      </li>
     </ul>
   </div>
 </template>
@@ -81,13 +95,10 @@ onMounted(() => {
   addTags()
 })
 
-watch(
-  () => route.path,
-  () => {
-    addTags()
-    moveToCurrentTag()
-  }
-)
+watch(() => route.path, () => {
+  addTags()
+  moveToCurrentTag()
+})
 
 watch(() => visible, (value) => {
   value
@@ -227,90 +238,3 @@ function handleScroll() {
   closeMenu()
 }
 </script>
-
-<style lang="scss" scoped>
-.tags-view-container {
-  height: 34px;
-  width: 100%;
-  background: #fff;
-  border-bottom: 1px solid #d8dce5;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
-  .tags-view-wrapper {
-    .tags-view-item {
-      display: inline-block;
-      position: relative;
-      cursor: pointer;
-      height: 26px;
-      line-height: 26px;
-      border: 1px solid #d8dce5;
-      color: #495060;
-      background: #fff;
-      padding: 0 8px;
-      font-size: 12px;
-      margin-left: 5px;
-      margin-top: 4px;
-      &:first-of-type {
-        margin-left: 15px;
-      }
-      &:last-of-type {
-        margin-right: 15px;
-      }
-      &.active {
-        background-color: #42b983;
-        color: #fff;
-        border-color: #42b983;
-        &::before {
-          content: '';
-          background: #fff;
-          display: inline-block;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          position: relative;
-          margin-right: 6px;
-        }
-      }
-
-      .icon-close {
-        width: 16px;
-        height: 16px;
-        padding: 0 4px;
-        border-radius: 50%;
-        text-align: center;
-        transition: all .3s cubic-bezier(.645, .045, .355, 1);
-        transform-origin: 100% 50%;
-        &:before {
-          transform: scale(.6);
-          display: inline-block;
-          vertical-align: -3px;
-        }
-        &:hover {
-          background-color: #b4bccc;
-          color: #fff;
-        }
-      }
-    }
-  }
-  .contextmenu {
-    margin: 0;
-    background: #fff;
-    z-index: 3000;
-    position: absolute;
-    list-style-type: none;
-    padding: 5px 0;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 400;
-    color: #333;
-    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
-    li {
-      margin: 0;
-      padding: 7px 16px;
-      cursor: pointer;
-      &:hover {
-        background: #eee;
-      }
-    }
-  }
-}
-</style>
