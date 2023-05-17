@@ -1,10 +1,8 @@
 <template>
-  <div>
-    <SvgIcon
-      :icon-class="isFullscreen ? 'exit-fullscreen' : 'fullscreen'"
-      @click="onClick"
-    />
-  </div>
+  <SvgIcon
+    :icon-class="isFullscreen ? 'exit-fullscreen' : 'fullscreen'"
+    @click="onClick"
+  />
 </template>
 
 <script lang="ts">
@@ -47,14 +45,3 @@ function destroy() {
   }
 }
 </script>
-
-<style scoped>
-.screenfull-svg {
-  display: inline-block;
-  cursor: pointer;
-  fill: #5a5e66;;
-  width: 20px;
-  height: 20px;
-  vertical-align: 10px;
-}
-</style>
