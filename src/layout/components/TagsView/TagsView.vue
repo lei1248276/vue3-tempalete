@@ -12,8 +12,10 @@
         v-for="tag in tagsViewStore.visitedViews"
         :key="tag.path"
         ref="tagRefs"
-        :class="{ 'bg-[#42b983] text-[#fff] border-[#42b983] before:inline-block before:w-[8px] before:h-[8px] before:bg-[#fff] before:rounded-full before:mr-[6px]': isActive(tag) }"
-        class="inline-block relative h-[26px] leading-[26px] border border-[#d8dce5] bg-[#fff] py-0 px-2 mt-1 ml-[5px] text-[12px] cursor-pointer first-of-type:ml-[15px] last-of-type:mr-[15px]"
+        :class="{
+          '!bg-[#42b983] !border-[#42b983] text-[#fff] before:inline-block before:w-[8px] before:h-[8px] before:bg-[#fff] before:rounded-full before:mr-[6px]': isActive(tag)
+        }"
+        class="inline-block h-[26px] leading-[26px] border border-[#d8dce5] bg-[#fff] py-0 px-2 mt-1 ml-[5px] text-[12px] cursor-pointer first-of-type:ml-[15px] last-of-type:mr-[15px]"
         :to="{ path: tag.path || '', query: tag.query, fullPath: tag.fullPath } as any"
         @click.middle="!isAffix(tag) && closeSelectedTag(tag)"
         @contextmenu.prevent="openMenu(tag, $event)"
