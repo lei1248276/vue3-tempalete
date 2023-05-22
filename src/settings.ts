@@ -24,7 +24,7 @@ export default {
    * @type {boolean} true | false
    * @description 是否keep-alive路由（开发时使用keep-alive会影响热加载）
    */
-  keepAlive: false,
+  keepAlive: true,
 
   showSettings: false
 }

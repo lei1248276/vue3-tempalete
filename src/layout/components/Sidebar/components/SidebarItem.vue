@@ -44,7 +44,6 @@ export default {
 import path from 'path-browserify'
 import { isExternal } from '@/utils/validate'
 import type { Route } from '@/router'
-const router = useRouter(), route = useRoute()
 
 interface Props {
   item: Route
@@ -55,6 +54,9 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   isNest: false
 })
+
+const router = useRouter(), route = useRoute()
+const tagsViewStore = useTagsViewStore()
 
 let showingRoutes: Route[] = []
 
@@ -77,8 +79,10 @@ function resolvePath(parentPath: string, childPath: string) {
 
 function toMenuRoute(path: string) {
   const { fullPath } = route
+
   if (path === fullPath) {
-    router.replace({ path: '/redirect' + fullPath })
+    tagsViewStore.delCachedView(route)
+    nextTick(() => { router.replace({ path: '/redirect' + fullPath }) })
   } else {
     isExternal(path) ? window.open(path) : router.push(path)
   }

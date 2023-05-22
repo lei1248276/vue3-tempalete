@@ -27,7 +27,7 @@ export type Route = RouteRecordRaw & {
    roles?: string[] // * 参考：['admin','editor']   控制页面角色（可以设置多个角色）
    hidden?: boolean // * 设置为'true'时，将不会显示在侧边栏中（包含子级）
    noShow?: boolean // * 设置为'true'时，只隐藏自身（比如用来隐藏上级装饰页面"Layout"）
-   noCache?: boolean // ! 如果设置为true时，页面将不会被缓存（默认为false），三级路由以上情况上级组件使用（component: { name: name, render: () => h(resolveComponent('router-view')) }）
+   noCache?: boolean // ! 如果设置为true时，页面将不会被缓存（默认为false），三级路由以上情况父级页面使用（component: { name: name, render: () => h(resolveComponent('router-view')) }）
    affix?: boolean // * 设置为'true'时，标签将固定在TagView中
   }
 }
@@ -85,31 +85,31 @@ export const asyncRoutes = new Map<string, Route>([
   ['nested', {
     path: 'nested',
     name: 'Nested',
-    component: { name: 'Nested', render: () => h(resolveComponent('router-view')) },
+    component: () => import('@/views/nested/nested.vue'),
     meta: { title: '', icon: 'table' }
   }],
   ['nested2', {
     path: 'nested2',
     name: 'Nested2',
-    component: { name: 'Nested2', render: () => h(resolveComponent('router-view')) },
-    meta: { title: '', icon: 'table', noShow: true }
-  }],
-  ['nested3', {
-    path: 'nested3',
-    name: 'Nested3',
-    component: { name: 'Nested3', render: () => h(resolveComponent('router-view')) },
-    meta: { title: '', icon: 'table', noShow: true }
+    component: () => import('@/views/nested/nested2/nested2.vue'),
+    meta: { title: '', icon: 'table' }
   }],
   ['role', {
     path: 'role',
     name: 'Role',
-    component: () => import('@/views/role/role.vue'),
+    component: () => import('@/views/nested/role/role.vue'),
     meta: { title: '', icon: 'table' }
   }],
   ['user', {
     path: 'user',
     name: 'User',
-    component: () => import('@/views/user/user.vue'),
+    component: () => import('@/views/nested/nested2/user/user.vue'),
+    meta: { title: '', icon: 'table', noCache: true }
+  }],
+  ['superAdmin', {
+    path: 'superAdmin',
+    name: 'SuperAdmin',
+    component: () => import('@/views/superAdmin/superAdmin.vue'),
     meta: { title: '', icon: 'table' }
   }],
   ['admin', {

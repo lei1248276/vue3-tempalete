@@ -6,26 +6,15 @@
     }"
     class="grow w-full bg-white-bg relative overflow-hidden"
   >
-    <router-view
-      v-slot="{ Component }"
-      :key="route.path"
-    >
+    <router-view v-slot="{ Component }">
       <transition
         name="fade-transform"
         mode="out-in"
         appear
       >
-        <keep-alive
-          v-if="settingsStore.keepAlive"
-          :include="tagsViewStore.cachedViews"
-        >
+        <keep-alive :include="views">
           <component :is="Component" />
         </keep-alive>
-
-        <component
-          :is="Component"
-          v-else
-        />
       </transition>
     </router-view>
   </section>
@@ -41,4 +30,5 @@ export default {
 const route = useRoute()
 const tagsViewStore = useTagsViewStore()
 const settingsStore = useSettingsStore()
+const views = computed(() => ['Nested', ...tagsViewStore.cachedViews])
 </script>

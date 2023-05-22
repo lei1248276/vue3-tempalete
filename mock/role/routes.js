@@ -7,22 +7,21 @@ const asyncRoutes = [
     path: 'test',
     title: '测试',
     children: [{
+      path: 'superAdmin',
+      title: '超级管理员....'
+    }, {
       path: 'nested',
       title: '嵌套',
       children: [{
+        path: 'role',
+        title: '角色管理'
+      }, {
         path: 'nested2',
         title: '嵌套2',
         children: [{
-          path: 'role',
-          title: '角色管理'
-        }, {
           path: 'user',
           title: '用户管理'
-        }]
-      }, {
-        path: 'nested3',
-        title: '嵌套3',
-        children: [{
+        }, {
           path: 'admin',
           title: '管理员'
         }]

@@ -9,12 +9,11 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'User'
-}
+<script setup lang="ts">
+defineOptions({
+  name: 'SuperAdmin'
+})
+
+console.log('SuperAdmin')
+
 </script>
-
-<style scoped>
-
-</style>

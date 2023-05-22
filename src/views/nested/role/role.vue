@@ -9,12 +9,10 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
+<script setup lang="ts">
+defineOptions({
   name: 'Role'
-}
+})
+console.log('Role')
+
 </script>
-
-<style scoped>
-
-</style>

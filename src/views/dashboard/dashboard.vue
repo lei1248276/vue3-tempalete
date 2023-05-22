@@ -8,7 +8,7 @@
     </el-button>
     <el-button
       type="primary"
-      @click="$router.push('/test/nested/nested2/role')"
+      @click="$router.push('/test/nested/role')"
     >
       跳转role
     </el-button>
@@ -17,6 +17,12 @@
       @click="$router.push('/test/nested/nested2/user')"
     >
       跳转user
+    </el-button>
+    <el-button
+      type="primary"
+      @click="$router.push('/test/nested/nested2/admin')"
+    >
+      跳转admin
     </el-button>
 
     <el-button
@@ -46,6 +52,10 @@ const count = ref(0)
 const person = reactive({ age: 1 })
 const calcCount = () => count.value++
 const calcAge = () => person.age++
+
+onMounted(() => {
+  console.log('dashboard')
+})
 
 watch(
   () => person.age,
