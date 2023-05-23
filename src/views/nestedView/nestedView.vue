@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- ! 用于多级嵌套路由时（为了解决多级情况下keep-alive缓存问题） -->
     <router-view v-slot="{ Component }">
       <transition
         name="fade-transform"
@@ -16,7 +17,7 @@
 
 <script setup lang="ts">
 defineOptions({
-  name: 'Nested'
+  name: 'NestedView'
 })
 
 const tagsViewStore = useTagsViewStore()

@@ -7,6 +7,7 @@ import {
 
 /* * Layout */
 import Layout from '@/layout/Layout.vue'
+import { nested } from './modules'
 
 // ! 与从服务器请求的路由表对应
 export interface RouteMap {
@@ -27,7 +28,7 @@ export type Route = RouteRecordRaw & {
    roles?: string[] // * 参考：['admin','editor']   控制页面角色（可以设置多个角色）
    hidden?: boolean // * 设置为'true'时，将不会显示在侧边栏中（包含子级）
    noShow?: boolean // * 设置为'true'时，只隐藏自身（比如用来隐藏上级装饰页面"Layout"）
-   noCache?: boolean // ! 如果设置为true时，页面将不会被缓存（默认为false），三级路由以上情况父级页面使用（component: { name: name, render: () => h(resolveComponent('router-view')) }）
+   noCache?: boolean // ! 如果设置为true时，页面将不会被缓存（默认为false），三级路由以上情况父级页面使用（component: { name: name, render: () => h(NestedView) } **用于解决路由嵌套时keep-alive缓存失效**）
    affix?: boolean // * 设置为'true'时，标签将固定在TagView中
   }
 }
@@ -82,29 +83,17 @@ export const asyncRoutes = new Map<string, Route>([
     component: Layout,
     meta: { title: '', icon: 'table' }
   }],
-  ['nested', {
-    path: 'nested',
-    name: 'Nested',
-    component: () => import('@/views/nested/nested.vue'),
-    meta: { title: '', icon: 'table' }
-  }],
-  ['nested2', {
-    path: 'nested2',
-    name: 'Nested2',
-    component: () => import('@/views/nested/nested2/nested2.vue'),
-    meta: { title: '', icon: 'table' }
-  }],
   ['role', {
     path: 'role',
     name: 'Role',
-    component: () => import('@/views/nested/role/role.vue'),
+    component: () => import('@/views/role/role.vue'),
     meta: { title: '', icon: 'table' }
   }],
   ['user', {
     path: 'user',
     name: 'User',
-    component: () => import('@/views/nested/nested2/user/user.vue'),
-    meta: { title: '', icon: 'table', noCache: true }
+    component: () => import('@/views/user/user.vue'),
+    meta: { title: '', icon: 'table' }
   }],
   ['superAdmin', {
     path: 'superAdmin',
@@ -116,8 +105,9 @@ export const asyncRoutes = new Map<string, Route>([
     path: 'admin',
     name: 'Admin',
     component: () => import('@/views/admin/admin.vue'),
-    meta: { title: '', icon: 'table' }
-  }]
+    meta: { title: '', icon: 'table', noCache: true }
+  }],
+  ...nested
 ])
 
 const router = createRouter({

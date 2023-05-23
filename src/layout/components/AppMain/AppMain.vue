@@ -12,7 +12,7 @@
         mode="out-in"
         appear
       >
-        <keep-alive :include="views">
+        <keep-alive :include="tagsViewStore.cachedViews">
           <component :is="Component" />
         </keep-alive>
       </transition>
@@ -27,8 +27,6 @@ export default {
 </script>
 
 <script setup lang="ts">
-const route = useRoute()
 const tagsViewStore = useTagsViewStore()
 const settingsStore = useSettingsStore()
-const views = computed(() => ['Nested', ...tagsViewStore.cachedViews])
 </script>

@@ -8,24 +8,46 @@ const asyncRoutes = [
     title: '测试',
     children: [{
       path: 'superAdmin',
-      title: '超级管理员....'
+      title: '超级管理员'
     }, {
-      path: 'nested',
-      title: '嵌套',
+      path: 'role',
+      title: '角色管理'
+    }, {
+      path: 'user',
+      title: '用户管理'
+    }, {
+      path: 'admin',
+      title: '管理员'
+    }]
+  },
+
+  {
+    path: 'nested',
+    title: '嵌套',
+    children: [{
+      path: 'page1',
+      title: '页面1'
+    }, {
+      path: 'nested1',
+      title: '嵌套1',
       children: [{
-        path: 'role',
-        title: '角色管理'
+        path: 'page2',
+        title: '页面2'
+      }, {
+        path: 'page3',
+        title: '页面3'
       }, {
         path: 'nested2',
         title: '嵌套2',
         children: [{
-          path: 'user',
-          title: '用户管理'
+          path: 'page4',
+          title: '页面4'
         }, {
-          path: 'admin',
-          title: '管理员'
+          path: 'page5',
+          title: '页面5'
         }]
-      }]
+      }
+      ]
     }]
   }
 

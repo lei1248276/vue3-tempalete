@@ -1,0 +1,22 @@
+<template>
+  <div class="page-container">
+    <el-alert
+      :closable="false"
+      title="cache页面"
+      type="success"
+      effect="dark"
+    >
+      <el-button @click="() => count++">Page2: {{ count }}</el-button>
+    </el-alert>
+  </div>
+</template>
+
+<script setup lang="ts">
+defineOptions({
+  name: 'Page2'
+})
+
+console.log('Page2')
+const count = ref(0)
+
+</script>

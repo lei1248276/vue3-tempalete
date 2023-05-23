@@ -150,6 +150,11 @@ function initTags() {
 
 function addTags() {
   route.name && tagsViewStore.addView(route)
+
+  // ! 为保障keep-alive对三级以上的嵌套路由有效，需要将父级页面也加入缓存列表
+  if (!route.meta.noCache && route.matched.length >= 3) {
+    tagsViewStore.addCachedView(route.matched.at(-2) as TagView)
+  }
 }
 
 function moveToCurrentTag() {

@@ -13,6 +13,7 @@ declare module '@vue/runtime-core' {
     CustomTable: typeof import('./src/components/JTable/CustomTable.vue')['default']
     CustomUpload: typeof import('./src/components/CustomUpload/CustomUpload.vue')['default']
     EditorImage: typeof import('./src/components/Tinymce/components/EditorImage.vue')['default']
+    ElAlert: typeof import('element-plus/es')['ElAlert']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
     ElBreadcrumbItem: typeof import('element-plus/es')['ElBreadcrumbItem']
     ElButton: typeof import('element-plus/es')['ElButton']
