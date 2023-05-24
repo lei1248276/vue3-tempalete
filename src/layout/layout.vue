@@ -30,7 +30,7 @@
         >
           <Navbar />
 
-          <TagsView v-if="settingsStore.tagsView" />
+          <TagsView v-show="settingsStore.tagsView" />
         </div>
 
         <AppMain />

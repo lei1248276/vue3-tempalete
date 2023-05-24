@@ -1,7 +1,7 @@
 <template>
   <div
     ref="tagsViewRef"
-    class="w-full h-[34px] bg-[#fff] border-b-[1px] border-[#d8dce5] shadow-[0_1px_3px_0_rgba(0,0,0,.12),0_0_3px_0_rgba(0,0,0,.04)]"
+    class="w-full h-[34px] mx-auto my-1 rounded-md border-b-[1px] border-[#d8dce5] shadow-[0_1px_3px_0_rgba(0,0,0,.12),0_0_3px_0_rgba(0,0,0,.04)]"
   >
     <ScrollPane
       ref="scrollPaneRef"
@@ -13,9 +13,9 @@
         :key="tag.path"
         ref="tagRefs"
         :class="{
-          '!bg-[#42b983] !border-[#42b983] text-[#fff] before:inline-block before:w-[8px] before:h-[8px] before:bg-[#fff] before:rounded-full before:mr-[6px]': isActive(tag)
+          '!bg-[#42b983] !border-[#42b983] text-white-1 before:inline-block before:w-[8px] before:h-[8px] before:bg-white-1 before:rounded-full before:mr-[6px]': isActive(tag)
         }"
-        class="inline-block h-[26px] leading-[26px] border border-[#d8dce5] bg-[#fff] py-0 px-2 mt-1 ml-[5px] text-[12px] cursor-pointer first-of-type:ml-[15px] last-of-type:mr-[15px]"
+        class="inline-block h-[26px] leading-[26px] rounded-md border border-[#b4bccc] bg-white-1 py-0 px-2 mt-1 ml-[5px] text-[12px] cursor-pointer first-of-type:ml-[15px] last-of-type:mr-[15px]"
         :to="{ path: tag.path || '', query: tag.query, fullPath: tag.fullPath } as any"
         @click.middle="!isAffix(tag) && closeSelectedTag(tag)"
         @contextmenu.prevent="openMenu(tag, $event)"
@@ -33,29 +33,29 @@
     <ul
       v-show="visible"
       :style="{left: left + 'px',top: top + 'px'}"
-      class="bg-[#fff] absolute z-50 py-[5px] px-0 rounded text-[12px] font-normal text-[#333] shadow-[2px_2px_3px_0_rgba(0,0,0,.3)]"
+      class="bg-white-1 absolute z-50 py-[5px] px-0 rounded text-[12px] font-normal text-[#333] shadow-[2px_2px_3px_0_rgba(0,0,0,.3)]"
     >
       <li
-        class="py-[7px] px-[16px] cursor-pointer hover:bg-[#eee]"
+        class="py-2 px-4 cursor-pointer hover:bg-[#eee]"
         @click="refreshSelectedTag(selectedTag)"
       >
         刷新
       </li>
       <li
         v-if="!isAffix(selectedTag)"
-        class="py-[7px] px-[16px] cursor-pointer hover:bg-[#eee]"
+        class="py-2 px-4 cursor-pointer hover:bg-[#eee]"
         @click="closeSelectedTag(selectedTag)"
       >
         关闭
       </li>
       <li
-        class="py-[7px] px-[16px] cursor-pointer hover:bg-[#eee]"
+        class="scroll-py-24 px-4 cursor-pointer hover:bg-[#eee]"
         @click="closeOthersTags"
       >
         关闭其他
       </li>
       <li
-        class="py-[7px] px-[16px] cursor-pointer hover:bg-[#eee]"
+        class="py-2 px-4 cursor-pointer hover:bg-[#eee]"
         @click="closeAllTags(selectedTag)"
       >
         关闭所有

@@ -1,7 +1,7 @@
 <template>
   <div
     :class="{'hidden': hidden}"
-    class="bg-[#fff] py-8 px-4"
+    class="bg-white-1 py-8 px-4"
   >
     <el-pagination
       v-model:currentPage="calc.currentPage"

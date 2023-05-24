@@ -4,19 +4,25 @@
     separator="/"
   >
     <transition-group name="breadcrumb">
-      <el-breadcrumb-item
-        v-for="(item,index) in levelList"
-        :key="item.path"
-      >
-        <span
-          v-if="item.redirect === 'noRedirect' || index === levelList.length - 1"
-          class="text-[#3C66F5] cursor-text"
-        >{{ item?.meta?.title }}</span>
-        <a
-          v-else
-          @click.prevent="handleLink(item)"
-        >{{ item?.meta?.title }}</a>
+      <el-breadcrumb-item v-if="appStore.device === 'mobile'">
+        <span class="text-[#3C66F5] cursor-text">{{ levelList[levelList.length - 1]?.meta?.title }}</span>
       </el-breadcrumb-item>
+
+      <template v-else>
+        <el-breadcrumb-item
+          v-for="(item,index) in levelList"
+          :key="item.path"
+        >
+          <span
+            v-if="item.redirect === 'noRedirect' || index === levelList.length - 1"
+            class="text-[#3C66F5] cursor-text"
+          >{{ item?.meta?.title }}</span>
+          <a
+            v-else
+            @click.prevent="handleLink(item)"
+          >{{ item?.meta?.title }}</a>
+        </el-breadcrumb-item>
+      </template>
     </transition-group>
   </el-breadcrumb>
 </template>
@@ -34,6 +40,7 @@ import type { RouteLocationMatched } from 'vue-router'
 type RouteMatched = Partial<RouteLocationMatched>
 
 const route = useRoute(), router = useRouter()
+const appStore = useAppStore()
 
 const levelList = ref<RouteMatched[]>([])
 

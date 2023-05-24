@@ -1,6 +1,6 @@
 <template>
   <div
-    class="py-0 px-[15px]"
+    class="py-0 pl-4 pr-1"
     @click="$emit('toggleClick')"
   >
     <svg
