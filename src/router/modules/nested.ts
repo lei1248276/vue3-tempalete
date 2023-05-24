@@ -1,6 +1,6 @@
 import Layout from '@/layout/Layout.vue'
-import NestedView from '@/views/nestedView/nestedView.vue'
-import type { Route } from '../index'
+import { NestedView } from '@/layout/components'
+import type { Route } from '@/router'
 
 const nested: [string, Route][] = [
   ['nested', {

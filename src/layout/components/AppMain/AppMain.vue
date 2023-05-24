@@ -6,17 +6,7 @@
     }"
     class="grow w-full bg-white-bg relative overflow-hidden"
   >
-    <router-view v-slot="{ Component }">
-      <transition
-        name="fade-transform"
-        mode="out-in"
-        appear
-      >
-        <keep-alive :include="tagsViewStore.cachedViews">
-          <component :is="Component" />
-        </keep-alive>
-      </transition>
-    </router-view>
+    <route-page />
   </section>
 </template>
 
@@ -27,6 +17,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-const tagsViewStore = useTagsViewStore()
+import { NestedView as RoutePage } from '@/layout/components'
+
 const settingsStore = useSettingsStore()
 </script>
