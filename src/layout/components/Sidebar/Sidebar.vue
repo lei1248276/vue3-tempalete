@@ -153,6 +153,11 @@ const isMobile = computed(() => appStore.device === 'mobile')
       color: var(--subMenuText);
       background-color: var(--subMenuBg) !important;
 
+      &.is-active{
+        color: var(--subMenuActiveText) !important;
+        background-color: var(--subMenuActiveBg) !important;
+      }
+
       &:hover {
         background-color: var(--subMenuHover) !important;
       }
