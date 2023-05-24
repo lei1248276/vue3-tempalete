@@ -4,12 +4,9 @@ const constantRoutes = []
 
 const asyncRoutes = [
   {
-    path: 'test',
-    title: '测试',
+    path: 'auth',
+    title: '权限管理',
     children: [{
-      path: 'superAdmin',
-      title: '超级管理员'
-    }, {
       path: 'role',
       title: '角色管理'
     }, {

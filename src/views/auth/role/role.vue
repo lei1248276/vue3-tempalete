@@ -1,19 +1,18 @@
 <template>
-  <div class="app_container">
+  <div class="page-container">
     <el-button
       type="primary"
-      @click="$router.push('/dashboard')"
+      @click="$router.push('/test2')"
     >
-      跳转dashboard
+      跳转test2
     </el-button>
   </div>
 </template>
 
 <script setup lang="ts">
 defineOptions({
-  name: 'Admin'
+  name: 'Role'
 })
-
-console.log('admin')
+console.log('Role')
 
 </script>

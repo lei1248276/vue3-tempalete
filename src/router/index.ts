@@ -5,9 +5,13 @@ import {
   RouteRecordRedirectOption
 } from 'vue-router'
 
-/* * Layout */
+// * Layout
 import Layout from '@/layout/Layout.vue'
-import { nested } from './modules'
+// * Modules
+import {
+  auth,
+  nested
+} from './modules'
 
 // ! 与从服务器请求的路由表对应
 export interface RouteMap {
@@ -76,39 +80,9 @@ export const constantRoutes: Route[] = [
   { path: '/:pathMatch(.*)*', redirect: '/404', meta: { hidden: true }}
 ]
 
-export const asyncRoutes = new Map<string, Route>([
-  ['test', {
-    path: '/test',
-    name: 'Test',
-    component: Layout,
-    meta: { title: '', icon: 'table' }
-  }],
-  ['role', {
-    path: 'role',
-    name: 'Role',
-    component: () => import('@/views/role/role.vue'),
-    meta: { title: '', icon: 'table' }
-  }],
-  ['user', {
-    path: 'user',
-    name: 'User',
-    component: () => import('@/views/user/user.vue'),
-    meta: { title: '', icon: 'table' }
-  }],
-  ['superAdmin', {
-    path: 'superAdmin',
-    name: 'SuperAdmin',
-    component: () => import('@/views/superAdmin/superAdmin.vue'),
-    meta: { title: '', icon: 'table' }
-  }],
-  ['admin', {
-    path: 'admin',
-    name: 'Admin',
-    component: () => import('@/views/admin/admin.vue'),
-    meta: { title: '', icon: 'table', noCache: true }
-  }],
-  ...nested
-])
+export const asyncRoutes = new Map<string, Route>(
+  ([] as [string, Route][]).concat(auth, nested)
+)
 
 const router = createRouter({
   history: createWebHashHistory(),

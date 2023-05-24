@@ -7,7 +7,7 @@ const nested: [string, Route][] = [
     path: '/nested',
     name: 'Nested',
     component: Layout,
-    meta: { title: '', icon: 'table' }
+    meta: { title: '', icon: 'nested' }
   }],
   ['page1', {
     path: 'page1',
@@ -19,7 +19,7 @@ const nested: [string, Route][] = [
     path: 'nested1',
     name: 'Nested1',
     component: { name: 'Nested1', render: () => h(NestedView) },
-    meta: { title: '', icon: 'table' }
+    meta: { title: '', icon: 'nested' }
   }],
   ['page2', {
     path: 'page2',
@@ -37,7 +37,7 @@ const nested: [string, Route][] = [
     path: 'nested2',
     name: 'Nested2',
     component: { name: 'Nested2', render: () => h(NestedView) },
-    meta: { title: '', icon: 'table' }
+    meta: { title: '', icon: 'nested' }
   }],
   ['page4', {
     path: 'page4',

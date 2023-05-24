@@ -1,5 +1,5 @@
 <template>
-  <div class="app_container">
+  <div class="page-container">
     <el-button
       type="primary"
       @click="$router.push('/dashboard')"
@@ -11,9 +11,9 @@
 
 <script setup lang="ts">
 defineOptions({
-  name: 'SuperAdmin'
+  name: 'Admin'
 })
 
-console.log('SuperAdmin')
+console.log('admin')
 
 </script>

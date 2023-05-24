@@ -1,26 +1,26 @@
 <template>
-  <div class="app_container">
+  <div class="page-container">
     <el-button
       type="primary"
-      @click="$router.push('/login')"
+      @click="router.push('/login')"
     >
       跳转login
     </el-button>
     <el-button
       type="primary"
-      @click="$router.push('/test/nested/role')"
+      @click="router.push('/auth/role')"
     >
       跳转role
     </el-button>
     <el-button
       type="primary"
-      @click="$router.push('/test/nested/nested2/user')"
+      @click="router.push('/auth/user')"
     >
       跳转user
     </el-button>
     <el-button
       type="primary"
-      @click="$router.push('/test/nested/nested2/admin')"
+      @click="router.push('/auth/admin')"
     >
       跳转admin
     </el-button>
@@ -46,6 +46,7 @@ export default {
 <script setup lang="ts">
 import { resetRouter } from '@/router'
 
+const router = useRouter()
 const permissionStore = usePermissionStore()
 
 const count = ref(0)
