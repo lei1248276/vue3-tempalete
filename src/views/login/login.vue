@@ -2,7 +2,7 @@
   <div class="login w-screen min-h-screen overflow-hidden bg-[url('/src/assets/bg.png')]">
     <el-form
       ref="formRef"
-      class="w-[420px] text-center overflow-hidden mid"
+      class="max-md:w-[85%] max-2xl:w-[45%] w-[22%] text-center overflow-hidden mid"
       :model="loginForm"
       :rules="loginRules"
       auto-complete="on"
@@ -19,8 +19,8 @@
         <el-input
           ref="usernameRef"
           v-model="loginForm.username"
-          class="w-full pl-[36px] bg-[#f5f5f5] rounded-[33px] overflow-hidden"
-          placeholder="请输入用户名"
+          class="w-full bg-[#f5f5f5] rounded-[33px] overflow-hidden"
+          placeholder="请输入用户名: admin / editor"
           name="username"
           type="text"
           tabindex="1"
@@ -34,11 +34,11 @@
           :key="passwordType"
           v-model="loginForm.password"
           :type="passwordType"
-          placeholder="请输入密码"
+          placeholder="请输入密码: admin / editor"
           name="password"
           tabindex="2"
           auto-complete="on"
-          class="w-full pl-[36px] bg-[#f5f5f5] rounded-[33px] overflow-hidden"
+          class="w-full bg-[#f5f5f5] rounded-[33px] overflow-hidden"
           @keypress.enter="handleLogin"
         />
         <SvgIcon
@@ -60,14 +60,12 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'Login'
-}
-</script>
-
 <script setup lang="ts">
 import type { FormInstance } from 'element-plus'
+
+defineOptions({
+  name: 'Login'
+})
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -124,11 +122,13 @@ $text-color:#333;
     &__wrapper{
       background-color: inherit;
       box-shadow: none;
+      border-radius: 33px;
 
       input {
         -webkit-appearance: none;
         color: $text-color;
         caret-color: $text-color;
+        text-indent: 20px;
 
         // ! 隐藏浏览器自动填充的颜色
         &:-webkit-autofill,
