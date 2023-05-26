@@ -13,7 +13,7 @@
         src="~@/assets/logo.png"
       >-->
 
-      <h3 class="relative mt-0 mx-auto mb-[15%] text-[32px] text-white-1 font-bold">后台模版</h3>
+      <h3 class="relative mt-0 mx-auto mb-[15%] text-[32px] text-white font-bold">后台模版</h3>
 
       <el-form-item prop="username">
         <el-input

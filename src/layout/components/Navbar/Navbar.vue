@@ -1,5 +1,5 @@
 <template>
-  <div class="h-[50px] bg-white-1 shadow-[0_1px_4px_rgba(0,21,41,.08)] flex justify-between items-center">
+  <div class="h-[50px] bg-white shadow-[0_1px_4px_rgba(0,21,41,.08)] flex justify-between items-center">
     <div class="flex items-center">
       <Hamburger
         :is-active="appStore.sidebar.opened"

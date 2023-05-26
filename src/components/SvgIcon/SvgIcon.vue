@@ -11,7 +11,7 @@
   <svg
     v-else
     :class="className"
-    class="svg-icon w-[18px] h-[18px] fill-current shrink-0"
+    class="svg-icon fill-current shrink-0"
     aria-hidden="true"
     v-on="$attrs"
   >

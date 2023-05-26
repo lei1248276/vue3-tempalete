@@ -8,10 +8,11 @@ module.exports = {
     extend: {
       colors: {
         white: {
-          bg: '#F2F7FB',
-          1: '#fff'
+          DEFAULT: '#fff',
+          bg: '#F2F7FB'
         },
         black: {
+          DEFAULT: '#333',
           1: '#5a5e66'
         }
       }
