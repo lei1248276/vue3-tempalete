@@ -31,6 +31,7 @@ export default ({ mode }) => {
           'vue',
           'vue-router',
           'pinia',
+          '@vueuse/core',
           {
             'axios': [
               ['default', 'axios']
