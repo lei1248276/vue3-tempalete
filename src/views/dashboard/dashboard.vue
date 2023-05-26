@@ -2,21 +2,21 @@
   <div class="page-container">
     <panel-group />
 
-    <div class="relative flex justify-between gap-x-24 mt-14 after:content-['库存信息'] after:absolute after:-top-10 after:left-0 after:text-[18px] after:font-bold after:text-[#333]">
+    <div class="relative flex justify-between gap-x-24 mt-14 after:content-['库存信息'] after:absolute after:-top-10 after:left-0 after:text-[18px] after:font-bold after:text-black">
       <pie-chart
-        class="flex-1 bg-white-1 p-5"
-        class-name="pie1"
+        ref="pieChartRef"
+        class="flex-1 bg-white p-5"
       />
       <img
-        class="w-[470px] h-[300px]"
+        class="max-lg:hidden w-auto h-auto"
         src="@/assets/analyze.png"
       >
     </div>
 
-    <div class="relative bg-white-1 mt-14 p-5 text-[#333] after:content-['销售概况'] after:absolute after:-top-10 after:left-0 after:text-[18px] after:font-bold after:text-[#333]">
+    <div class="relative bg-white mt-14 p-5 text-black after:content-['销售概况'] after:absolute after:-top-10 after:left-0 after:text-[18px] after:font-bold after:text-black">
       <line-chart
-        class-name="line1"
-        :chart-data="chartData.newVisitis"
+        ref="lineChartRef"
+        :chart-data="chartData.newVisits"
       />
     </div>
   </div>
@@ -32,7 +32,7 @@ defineOptions({
 })
 
 const chartData = {
-  newVisitis: {
+  newVisits: {
     expectedData: [100, 120, 161, 134, 105, 160, 165, 161, 134, 105, 160, 165],
     actualData: [120, 82, 91, 154, 162, 140, 145, 91, 154, 162, 140, 145]
   },
@@ -49,4 +49,22 @@ const chartData = {
     actualData: [120, 82, 91, 154, 162, 140, 130, 91, 154, 162, 140, 130]
   }
 }
+
+const appStore = useAppStore()
+const { width, height } = useWindowSize()
+
+const pieChartRef = shallowRef()
+const lineChartRef = shallowRef()
+
+watch([width, height], () => {
+  pieChartRef.value?.resize()
+  lineChartRef.value?.resize()
+})
+watch(() => appStore.sidebar.opened, () => {
+  setTimeout(() => {
+    pieChartRef.value?.resize()
+    lineChartRef.value?.resize()
+  }, 333)
+})
+
 </script>

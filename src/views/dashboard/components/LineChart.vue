@@ -2,7 +2,7 @@
   <span>今年销售额趋势图</span>
   <span class="text-[12px] ml-2">单位：万元</span>
   <div
-    :class="className"
+    ref="lineChartRef"
     :style="{height:height,width:width}"
   />
 </template>
@@ -45,7 +45,6 @@ interface ChartData {
 
 interface Props {
   chartData: ChartData
-  className: string
   width?: string
   height?: string
   autoResize?: boolean
@@ -57,6 +56,7 @@ const props = withDefaults(defineProps<Props>(), {
   autoResize: true
 })
 
+const lineChartRef = shallowRef()
 const chart = shallowRef<ReturnType<typeof echarts.init>>()
 
 watch(() => props.chartData, (data) => {
@@ -71,7 +71,7 @@ onUnmounted(() => {
 })
 
 function initChart() {
-  chart.value = echarts.init(document.querySelector(`.${props.className}`)!, 'macarons')
+  chart.value = echarts.init(lineChartRef.value, 'macarons')
   setOptions(props.chartData)
 }
 function setOptions({ expectedData, actualData }: ChartData) {
@@ -140,4 +140,10 @@ function setOptions({ expectedData, actualData }: ChartData) {
 
   chart.value && chart.value.setOption(options)
 }
+
+function resize() {
+  chart.value && chart.value.resize()
+}
+
+defineExpose({ resize })
 </script>

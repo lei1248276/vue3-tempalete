@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="className"
+    ref="pieChartRef"
     :style="{height:height,width:width}"
   />
 </template>
@@ -51,18 +51,18 @@ echarts.use([
 // import resize from '@/utils/resize'
 
 interface Props {
-  className: string
   width?: string
   height?: string
   autoResize?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   width: '100%',
   height: '350px',
   autoResize: true
 })
 
+const pieChartRef = shallowRef()
 const chart = shallowRef<ReturnType<typeof echarts.init>>()
 
 onMounted(() => {
@@ -73,7 +73,7 @@ onUnmounted(() => {
 })
 
 function initChart() {
-  chart.value = echarts.init(document.querySelector(`.${props.className}`)!, 'macarons')
+  chart.value = echarts.init(pieChartRef.value, 'macarons')
   setOptions()
 }
 
@@ -116,4 +116,10 @@ function setOptions() {
 
   chart.value && chart.value.setOption(options)
 }
+
+function resize() {
+  chart.value && chart.value.resize()
+}
+
+defineExpose({ resize })
 </script>
