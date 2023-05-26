@@ -1,4 +1,5 @@
-import router, { Route } from './router'
+import type { Route } from './router'
+import router, { addRoutes } from './router'
 
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
@@ -41,10 +42,10 @@ router.beforeEach(async(to, from, next) => {
 
     // * 请求获取服务端路由表
     const { result: routeMaps } = await getRoutes()
-    // * 完善路由信息
+    // * 完善路由信息（合并自定义的‘route.meta’）
     const accessRoutes: Route[] = permissionStore.generateRoutes(routeMaps)
     // * 动态添加权限路由
-    nextTick(() => { accessRoutes.forEach((route) => { router.addRoute(route) }) })
+    addRoutes(accessRoutes)
 
     return to.path === '/404' ? next({ path: '/', replace: true }) : next()
   } catch (error) {

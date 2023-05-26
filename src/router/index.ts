@@ -10,7 +10,8 @@ import Layout from '@/layout/Layout.vue'
 // * Modules
 import {
   auth,
-  nested
+  nested,
+  dataScreen
 } from './modules'
 
 // ! 与从服务器请求的路由表对应
@@ -38,11 +39,13 @@ export type Route = RouteRecordRaw & {
 }
 
 /* *
+ ! 路由的一级页面统一为布局页面，除了少数的功能页面（默认布局组件：‘Layout’）
  * constantRoutes 没有权限要求的基页，所有角色都可以访问
  * */
 export const constantRoutes: Route[] = [
   {
     path: '/',
+    name: '/',
     component: Layout,
     redirect: '/dashboard',
     meta: { noShow: true },
@@ -81,7 +84,8 @@ export const constantRoutes: Route[] = [
 ]
 
 export const asyncRoutes = new Map<string, Route>(
-  ([] as [string, Route][]).concat(auth, nested)
+  ([] as [string, Route][])
+    .concat(auth, nested, dataScreen)
 )
 
 const router = createRouter({
@@ -92,6 +96,15 @@ const router = createRouter({
     return { top: 0 }
   }
 })
+
+export function addRoutes(routes: Route[]) {
+  nextTick(() => {
+    routes.forEach((route) => {
+      // * 没有子页面的route默认添加到根页面下（为了添加默认的‘Layout’组件样式）
+      route.children ? router.addRoute(route) : router.addRoute('/', route)
+    })
+  })
+}
 
 export function resetRouter(routes: Route[]) {
   routes.forEach((route) => {
