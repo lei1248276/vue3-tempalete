@@ -41,7 +41,7 @@
         v-if="props.showPagination"
         v-model:page="calc.currentPage"
         v-model:limit="calc.pageSize"
-        :total="props.total"
+        :total="props.total || props.data.length"
         @pagination="onPagination"
       />
     </slot>
@@ -88,7 +88,7 @@ const emit = defineEmits<{
   (e: 'pagination', options: { page: number, limit: number}): void
 }>()
 
-const tableRef = ref<TableInstance>()
+const tableRef = shallowRef<TableInstance>()
 
 const calc = reactive({
   currentPage: computed({

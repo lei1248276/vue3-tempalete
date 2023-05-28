@@ -306,6 +306,7 @@
     "watchTriggerable": true,
     "watchWithFilter": true,
     "whenever": true,
-    "useEcharts": true
+    "useEcharts": true,
+    "toValue": true
   }
 }

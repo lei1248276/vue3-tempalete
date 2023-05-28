@@ -14,16 +14,10 @@ const auth: [string, Route][] = [
     component: () => import('@/views/auth/role/role.vue'),
     meta: { title: '', icon: 'people' }
   }],
-  ['user', {
-    path: 'user',
-    name: 'User',
-    component: () => import('@/views/auth/user/user.vue'),
-    meta: { title: '', icon: 'user' }
-  }],
-  ['admin', {
-    path: 'admin',
-    name: 'Admin',
-    component: () => import('@/views/auth/admin/admin.vue'),
+  ['authSwitch', {
+    path: 'authSwitch',
+    name: 'AuthSwitch',
+    component: () => import('@/views/auth/authSwitch/authSwitch.vue'),
     meta: { title: '', icon: 'lock', noCache: true }
   }]
 ]

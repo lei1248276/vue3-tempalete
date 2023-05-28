@@ -1,7 +1,6 @@
 import Mock from 'mockjs'
 import { deepClone } from '../utils'
 import { asyncRoutes, constantRoutes } from './routes.js'
-import { getToken } from '../../src/utils/auth'
 
 const routes = deepClone([...constantRoutes, ...asyncRoutes])
 
@@ -15,13 +14,13 @@ const roles = {
   'editor-token': {
     key: 'editor',
     name: 'editor',
-    description: '编辑者。 可以看到除系统页面以外的所有页面',
-    routes: routes.filter(i => i.path !== 'auth')// just a mock
+    description: '编辑者。',
+    routes: routes.filter(i => i.path === 'auth')// just a mock
   },
   'visitor-token': {
     key: 'visitor',
     name: 'visitor',
-    description: '访客。 只能看到主页和文档页面',
+    description: '访客。',
     routes: [{
       path: '',
       redirect: 'dashboard',
@@ -42,7 +41,7 @@ export default [
     url: '/vue-element-admin/routes',
     type: 'get',
     response: _ => {
-      const route = roles[getToken()]?.routes || routes
+      const route = roles[_.query.role]?.routes || routes
       return {
         code: '2000',
         data: route,
@@ -57,8 +56,9 @@ export default [
     type: 'get',
     response: _ => {
       return {
-        code: 20000,
-        data: roles
+        code: '2000',
+        data: roles,
+        result: roles
       }
     }
   },
@@ -68,7 +68,7 @@ export default [
     url: '/vue-element-admin/role',
     type: 'post',
     response: {
-      code: 20000,
+      code: '2000',
       data: {
         key: Mock.mock('@integer(300, 5000)')
       }
@@ -80,7 +80,7 @@ export default [
     url: '/vue-element-admin/role/[A-Za-z0-9]',
     type: 'put',
     response: {
-      code: 20000,
+      code: '2000',
       data: {
         status: 'success'
       }
@@ -92,7 +92,7 @@ export default [
     url: '/vue-element-admin/role/[A-Za-z0-9]',
     type: 'delete',
     response: {
-      code: 20000,
+      code: '2000',
       data: {
         status: 'success'
       }

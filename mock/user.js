@@ -1,5 +1,3 @@
-import { getToken } from '../src/utils/auth'
-
 const tokens = {
   admin: {
     token: 'admin-token'
@@ -58,7 +56,7 @@ export default [
     url: '/vue-admin-template/user/info\.*',
     type: 'get',
     response: config => {
-      const token = getToken() || 'admin-token'
+      const token = config.query?.role || 'admin-token'
       const info = users[token]
 
       // mock error

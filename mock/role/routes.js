@@ -13,8 +13,8 @@ export const asyncRoutes = [
       path: 'user',
       title: '用户管理'
     }, {
-      path: 'admin',
-      title: '管理员'
+      path: 'authSwitch',
+      title: '页面权限切换'
     }]
   },
 
