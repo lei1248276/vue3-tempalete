@@ -202,11 +202,5 @@ const options: EChartsOption = {
 }
 
 const annualChartRef = shallowRef<HTMLElement>()
-const [chart] = useEcharts(options, annualChartRef)
-
-function resize() {
-  chart.value?.resize()
-}
-
-defineExpose({ resize })
+useEcharts(options, annualChartRef)
 </script>

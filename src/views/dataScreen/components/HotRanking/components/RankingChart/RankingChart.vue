@@ -223,11 +223,5 @@ const options: EChartsOption = {
 }
 
 const rankingChartRef = shallowRef<HTMLElement>()
-const [chart] = useEcharts(options, rankingChartRef)
-
-function resize() {
-  chart.value?.resize()
-}
-
-defineExpose({ resize })
+useEcharts(options, rankingChartRef)
 </script>

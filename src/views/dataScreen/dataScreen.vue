@@ -15,7 +15,7 @@
         </div>
 
         <div class="flex flex-col justify-between mx-8">
-          <scenic-Area />
+          <scenic-area />
           <predictive-chart />
         </div>
 

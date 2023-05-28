@@ -112,11 +112,5 @@ const options: EChartsOption = {
 }
 
 const radioChartRef = shallowRef<HTMLElement>()
-const [chart] = useEcharts(options, radioChartRef)
-
-function resize() {
-  chart.value?.resize()
-}
-
-defineExpose({ resize })
+useEcharts(options, radioChartRef)
 </script>

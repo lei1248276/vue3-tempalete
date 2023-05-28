@@ -149,11 +149,5 @@ const options: EChartsOption = {
 }
 
 const ageRadioChartRef = shallowRef<HTMLElement>()
-const [chart] = useEcharts(options, ageRadioChartRef)
-
-function resize() {
-  chart.value?.resize()
-}
-
-defineExpose({ resize })
+useEcharts(options, ageRadioChartRef)
 </script>

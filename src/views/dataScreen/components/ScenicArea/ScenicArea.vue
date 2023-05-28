@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import type { EChartsOption } from 'echarts'
-import * as echarts from 'echarts'
+import echarts from '@/utils/lib/echarts'
 import mapJson from './assets/china.json'
 
 defineOptions({
@@ -236,11 +236,5 @@ const options: EChartsOption = {
 }
 
 const scenicAreaRef = shallowRef<HTMLElement>()
-const [chart] = useEcharts(options, scenicAreaRef)
-
-function resize() {
-  chart.value?.resize()
-}
-
-defineExpose({ resize })
+useEcharts(options, scenicAreaRef)
 </script>

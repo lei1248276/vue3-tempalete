@@ -8,35 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import * as echarts from 'echarts/core'
-import { LineChart } from 'echarts/charts'
-import { TooltipComponent, GridComponent } from 'echarts/components'
-import { LabelLayout, UniversalTransition } from 'echarts/features'
-import { CanvasRenderer } from 'echarts/renderers'
-
-// 系列类型的定义后缀都为 SeriesOption
-import type { LineSeriesOption } from 'echarts/charts'
-// 组件类型的定义后缀都为 ComponentOption
-import type { TooltipComponentOption, GridComponentOption } from 'echarts/components'
-import type { ComposeOption } from 'echarts/core'
-
-// 通过 ComposeOption 来组合出一个只有必须组件和图表的 Option 类型
-type ECOption = ComposeOption<
-  | LineSeriesOption
-  | TooltipComponentOption
-  | GridComponentOption
->;
-
-// 注册必须的组件
-echarts.use([
-  TooltipComponent,
-  GridComponent,
-  LineChart,
-  LabelLayout,
-  UniversalTransition,
-  CanvasRenderer
-])
-// import resize from '@/utils/resize'
+import type { EChartsOption } from 'echarts'
 
 interface ChartData {
   expectedData: number[]
@@ -57,25 +29,14 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const lineChartRef = shallowRef()
-const chart = shallowRef<ReturnType<typeof echarts.init>>()
+const { chart, resize } = useEcharts(getOption(props.chartData), lineChartRef, 'macarons')
 
-watch(() => props.chartData, (data) => {
-  setOptions(data)
+watch(() => props.chartData, () => {
+  chart.value && chart.value.setOption(getOption(props.chartData))
 }, { deep: true })
 
-onMounted(() => {
-  nextTick(() => { initChart() })
-})
-onUnmounted(() => {
-  chart.value && chart.value.dispose()
-})
-
-function initChart() {
-  chart.value = echarts.init(lineChartRef.value, 'macarons')
-  setOptions(props.chartData)
-}
-function setOptions({ expectedData, actualData }: ChartData) {
-  const options: ECOption = {
+function getOption({ expectedData, actualData }: ChartData) {
+  const options: EChartsOption = {
     legend: {
       data: ['预期', '实际']
     },
@@ -138,11 +99,7 @@ function setOptions({ expectedData, actualData }: ChartData) {
     }]
   }
 
-  chart.value && chart.value.setOption(options)
-}
-
-function resize() {
-  chart.value && chart.value.resize()
+  return options
 }
 
 defineExpose({ resize })

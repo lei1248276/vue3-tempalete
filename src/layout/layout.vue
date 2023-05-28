@@ -5,7 +5,7 @@
       class="w-full h-full"
     >
       <div
-        v-if="appStore.device === 'mobile' && appStore.sidebar.opened"
+        v-if="isMobile && appStore.sidebar.opened"
         class="bg-[#000] bg-opacity-30 w-full h-full absolute top-0 z-50"
         @click="appStore.closeSideBar(false)"
       />

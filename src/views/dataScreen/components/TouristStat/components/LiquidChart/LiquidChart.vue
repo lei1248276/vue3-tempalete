@@ -7,14 +7,14 @@
 
 <script setup lang="ts">
 import 'echarts-liquidfill'
-import type { EChartsOption } from 'echarts'
+import type { EChartsCoreOption } from 'echarts/core'
 
 defineOptions({
   name: 'LiquidChart'
 })
 
 const data = 0.5
-const options: EChartsOption = {
+const options: EChartsCoreOption = {
   title: [
     {
       text: (data * 100).toFixed(0) + '%',
@@ -188,12 +188,5 @@ const options: EChartsOption = {
 }
 
 const liquidChartRef = shallowRef<HTMLElement>()
-const [chart] = useEcharts(options, liquidChartRef)
-
-function resize() {
-  chart.value?.resize()
-}
-
-defineExpose({ resize })
-
+useEcharts(options, liquidChartRef)
 </script>

@@ -191,11 +191,5 @@ const options: EChartsOption = {
 }
 
 const predictiveChartRef = shallowRef<HTMLElement>()
-const [chart] = useEcharts(options, predictiveChartRef)
-
-function resize() {
-  chart.value?.resize()
-}
-
-defineExpose({ resize })
+useEcharts(options, predictiveChartRef)
 </script>

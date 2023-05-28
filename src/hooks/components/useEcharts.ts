@@ -1,4 +1,4 @@
-import * as echarts from 'echarts'
+import echarts from '@/utils/lib/echarts'
 import type { ShallowRef } from 'vue'
 
 export default function useEcharts(
@@ -16,11 +16,15 @@ export default function useEcharts(
   })
 
   function initChart() {
-    if (!ref?.value) return
+    if (!ref.value) return
 
     chart.value = echarts.init(ref.value, theme)
     chart.value.setOption(options)
   }
 
-  return [chart]
+  function resize() {
+    chart.value && chart.value.resize()
+  }
+
+  return { chart, resize }
 }

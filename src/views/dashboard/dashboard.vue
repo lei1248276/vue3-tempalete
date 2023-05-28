@@ -8,7 +8,7 @@
         class="flex-1 bg-white p-5"
       />
       <img
-        class="max-lg:hidden w-auto h-auto"
+        class="max-lg:hidden w-[470px] h-[350px]"
         src="@/assets/analyze.png"
       >
     </div>
@@ -52,19 +52,34 @@ const chartData = {
 
 const appStore = useAppStore()
 const { width, height } = useWindowSize()
+let watchResizeScope = effectScope()
 
 const pieChartRef = shallowRef()
 const lineChartRef = shallowRef()
 
-watch([width, height], () => {
-  pieChartRef.value?.resize()
-  lineChartRef.value?.resize()
+onMounted(() => {
+  watchResize()
 })
-watch(() => appStore.sidebar.opened, () => {
-  setTimeout(() => {
-    pieChartRef.value?.resize()
-    lineChartRef.value?.resize()
-  }, 333)
+
+onActivated(() => {
+  watchResizeScope = effectScope()
+  watchResize()
 })
+onDeactivated(() => { watchResizeScope.stop() })
+
+function watchResize() {
+  watchResizeScope.run(() => {
+    watch([width, height], () => {
+      pieChartRef.value?.resize()
+      lineChartRef.value?.resize()
+    }, { immediate: true })
+    watch(() => appStore.sidebar.opened, () => {
+      setTimeout(() => {
+        pieChartRef.value?.resize()
+        lineChartRef.value?.resize()
+      }, 333)
+    }, { immediate: true })
+  })
+}
 
 </script>
