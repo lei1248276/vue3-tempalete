@@ -26,6 +26,8 @@
 }
 
 @layer base {
+  @import './preflight.scss';
+
   body {
     height: 100%;
     -moz-osx-font-smoothing: grayscale;

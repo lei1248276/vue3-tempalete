@@ -5,40 +5,6 @@
   font-weight: 400 !important;
 }
 
-.el-upload {
-  input[type="file"] {
-    display: none !important;
-  }
-}
-
-.el-upload__input {
-  display: none;
-}
-
-// refine element ui upload
-.upload-container {
-  .el-upload {
-    width: 100%;
-
-    .el-upload-dragger {
-      width: 100%;
-      height: 200px;
-    }
-  }
-}
-
-// dropdown
-.el-dropdown-menu {
-  a {
-    display: block
-  }
-}
-
-// to fix el-date-picker css style
-.el-range-separator {
-  box-sizing: content-box;
-}
-
 // ! 设置自定义表格头部样式
 .el-table{
   thead th{
@@ -51,119 +17,9 @@
   background: #f5f5f5 !important;
 }
 
-// ! 隐藏表头多选按钮
-.hide_selectAll .el-table__header-wrapper .el-checkbox{
-  display: none !important;
-}
-
 // ! 设置table row点击后状态颜色
 .el-table__body tr.el-table__row.current-row td.el-table__cell,
 .el-table__body tr.el-table__row--striped.current-row td.el-table__cell{
   background-color: #D1E6F6 !important;
   color: #EE8427;
-}
-
-// ! 修改原生dialog__title样式
-.el-dialog__header{
-  .el-dialog__title{
-    position: relative;
-    padding-left: 10px;
-    font-size: 14px;
-    font-weight: bold;
-    &:before{
-      position: absolute;
-      top: 0;
-      left: 0;
-      content: '';
-      width: 3px;
-      height: 16px;
-      background: #1275CB;
-    }
-  }
-}
-
-.el-button+.el-button{
-  margin-left: 10px !important;
-}
-.el-button--primary{
-  background-color: #3C66F5;
-}
-.el-button--text{
-  color: #3C66F5;
-}
-.el-button--warning{
-  background-color: #FAAD14;
-}
-.el-button--danger{
-  background-color: #FF4D4F;
-}
-
-// ! 重置el-card默认样式
-.el-card{
-  position: relative;
-  .el-card__header{
-    color: #3C66F5;
-    font-weight: bold;
-    border-bottom: none;
-    padding: 32px 0 21px 32px;
-  }
-  .el-card__body{
-    padding: 0;
-  }
-}
-// ! 添加 el-card__header 样式
-.el-card.border_top{
-  .el-card__header{
-    border-top: 10px solid #3C66F5 !important;
-    border-radius: 4px 4px 0 0 !important;
-  }
-}
-
-// ! 添加上传组件样式
-.logo_uploader .el-upload {
-  width: 180px;
-  height: 134px;
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  img{
-    width: 100%;
-    height: 100%;
-  }
-}
-.logo_uploader .el-upload:hover {
-  border-color: #409EFF;
-}
-.logo_uploader_icon {
-  width: 40px !important;
-  height: 40px !important;
-  color: #8c939d;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate3d(-50%, -50%, 0);
-}
-
-// ! 重置el-input "readonly" 样式
-.el-input{
-  input[readonly]{
-    background-color: #F5F5F5;
-    color: #333;
-  }
-}
-// ! 避免副作用（el-select默认"readonly"）
-.el-select{
-  .el-input{
-    input[readonly]{
-      background-color: #fff;
-      color: #606266;
-    }
-  }
-}
-
-// ! 重置 el-description 内容样式
-.el-descriptions__body .el-descriptions__table .el-descriptions-item__cell span{
-  color: #333 !important;
 }
