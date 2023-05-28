@@ -1,3 +1,4 @@
+import { getToken } from '../src/utils/auth'
 
 const tokens = {
   admin: {
@@ -14,18 +15,20 @@ const users = {
     introduction: 'I am a super administrator',
     avatar: 'https://www.github.com/lei1248276.png?size=256',
     nickname: 'Super Admin',
-    id: 2,
-    org_id: 2
+    id: 1,
+    org_id: 1
   },
   'editor-token': {
     roles: ['editor'],
     introduction: 'I am an editor',
-    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    name: 'Normal Editor'
+    avatar: 'https://www.github.com/lei1248276.png?size=256',
+    nickname: 'Normal Editor',
+    id: 2,
+    org_id: 2
   }
 }
 
-module.exports = [
+export default [
   // user login
   {
     url: '/vue-admin-template/user/login',
@@ -55,8 +58,7 @@ module.exports = [
     url: '/vue-admin-template/user/info\.*',
     type: 'get',
     response: config => {
-      // const { token } = config.query || 'admin-token';
-      const token = 'admin-token'
+      const token = getToken() || 'admin-token'
       const info = users[token]
 
       // mock error

@@ -1,6 +1,7 @@
-const Mock = require('mockjs')
-const { deepClone } = require('../utils')
-const { asyncRoutes, constantRoutes } = require('./routes.js')
+import Mock from 'mockjs'
+import { deepClone } from '../utils'
+import { asyncRoutes, constantRoutes } from './routes.js'
+import { getToken } from '../../src/utils/auth'
 
 const routes = deepClone([...constantRoutes, ...asyncRoutes])
 
@@ -15,7 +16,7 @@ const roles = {
     key: 'editor',
     name: 'editor',
     description: '编辑者。 可以看到除系统页面以外的所有页面',
-    routes: routes.filter(i => i.path !== 'test')// just a mock
+    routes: routes.filter(i => i.path !== 'auth')// just a mock
   },
   'visitor-token': {
     key: 'visitor',
@@ -35,13 +36,13 @@ const roles = {
   }
 }
 
-module.exports = [
+export default [
   // mock get all routes form server
   {
     url: '/vue-element-admin/routes',
     type: 'get',
     response: _ => {
-      const route = roles[_[Object.getOwnPropertySymbols(_)[1]].token].routes
+      const route = roles[getToken()]?.routes || routes
       return {
         code: '2000',
         data: route,

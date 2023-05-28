@@ -1,8 +1,8 @@
 // Just a mock data
 
-const constantRoutes = []
+export const constantRoutes = []
 
-const asyncRoutes = [
+export const asyncRoutes = [
   {
     path: 'auth',
     title: '权限管理',
@@ -53,8 +53,3 @@ const asyncRoutes = [
     title: '数据大屏'
   }
 ]
-
-module.exports = {
-  constantRoutes,
-  asyncRoutes
-}

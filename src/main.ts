@@ -7,6 +7,12 @@ import 'virtual:svg-icons-register'
 
 import './permission' // ! permission control
 
+// @ts-ignore
+import { mockXHR } from '../mock'
+if (import.meta.env.PROD) {
+  mockXHR()
+}
+
 const pinia = createPinia()
 const app = createApp(App)
 
