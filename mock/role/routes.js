@@ -10,9 +10,6 @@ export const asyncRoutes = [
       path: 'role',
       title: '角色管理'
     }, {
-      path: 'user',
-      title: '用户管理'
-    }, {
       path: 'authSwitch',
       title: '页面权限切换'
     }]
@@ -51,5 +48,19 @@ export const asyncRoutes = [
   {
     path: 'dataScreen',
     title: '数据大屏'
+  },
+
+  {
+    path: 'map',
+    title: '地图',
+    children: [{
+      path: 'baidu',
+      title: '百度地图'
+    }]
+  },
+
+  {
+    path: '404',
+    title: '404'
   }
 ]

@@ -39,17 +39,16 @@
   </ElConfigProvider>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'Layout'
-}
-</script>
-
 <script setup lang="ts">
 import { Navbar, Sidebar, AppMain, TagsView } from './components'
 import { ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'// !中文包
 import useResizeHandler from './hooks/ResizeHandler'
+
+defineOptions({
+  name: 'Layout'
+})
+
 useResizeHandler()
 
 const appStore = useAppStore()

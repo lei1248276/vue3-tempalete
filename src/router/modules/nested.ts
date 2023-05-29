@@ -1,4 +1,4 @@
-import Layout from '@/layout/Layout.vue'
+import Layout from '@/layout/layout.vue'
 import { NestedView } from '@/layout/components'
 import type { Route } from '@/router'
 

@@ -6,12 +6,13 @@ import {
 } from 'vue-router'
 
 // * Layout
-import Layout from '@/layout/Layout.vue'
+import Layout from '@/layout/layout.vue'
 // * Modules
 import {
   auth,
   nested,
-  dataScreen
+  dataScreen,
+  map
 } from './modules'
 
 // ! 与从服务器请求的路由表对应
@@ -83,10 +84,18 @@ export const constantRoutes: Route[] = [
   { path: '/:pathMatch(.*)*', redirect: '/404', meta: { hidden: true }}
 ]
 
-export const asyncRoutes = new Map<string, Route>(
-  ([] as [string, Route][])
-    .concat(auth, nested, dataScreen)
-)
+export const asyncRoutes = new Map<string, Route>([
+  ...auth,
+  ...nested,
+  ... dataScreen,
+  ...map,
+  ['404', {
+    path: '/404',
+    name: '404',
+    component: () => import('@/views/404.vue'),
+    meta: { title: '', icon: '404', noCache: true }
+  }]
+])
 
 const router = createRouter({
   history: createWebHashHistory(),
