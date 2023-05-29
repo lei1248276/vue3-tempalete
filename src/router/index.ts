@@ -1,8 +1,7 @@
 import {
   createRouter,
   createWebHashHistory,
-  RouteRecordRaw,
-  RouteRecordRedirectOption
+  RouteRecordRaw
 } from 'vue-router'
 
 // * Layout
@@ -25,7 +24,6 @@ export interface RouteMap {
 
 // ! 自定义的路由记录信息
 export type Route = RouteRecordRaw & {
-  redirect?: RouteRecordRedirectOption | 'noRedirect' // * 如果设置'noRedirect'将不会在面包屑中重定向
   name?: string // * 提供给 <keep-alive> 使用时（必须设置！！！）
   children?: Route[]
   meta?: {
@@ -35,6 +33,7 @@ export type Route = RouteRecordRaw & {
    hidden?: boolean // * 设置为'true'时，将不会显示在侧边栏中（包含子级）
    noShow?: boolean // * 设置为'true'时，只隐藏自身（比如用来隐藏上级装饰页面"Layout"）
    noCache?: boolean // ! 如果设置为true时，页面将不会被缓存（默认为false），三级路由以上情况父级页面使用（component: { name: name, render: () => h(NestedView) } **用于解决路由嵌套时keep-alive缓存失效**）
+   noRedirect?: boolean // * 设置为'true'时将不会在面包屑中重定向
    affix?: boolean // * 设置为'true'时，标签将固定在TagView中
   }
 }

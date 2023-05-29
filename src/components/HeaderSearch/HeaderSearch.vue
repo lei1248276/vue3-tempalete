@@ -133,7 +133,7 @@ function generateRoutes(routes: Route[], basePath: string = '/', prefixTitle: st
 
       // only push the routes with title
       // special case: need to exclude parent route without redirect
-      if (route.redirect !== 'noRedirect' && !route.children) {
+      if (!route.meta?.noRedirect && !route.children) {
         res.push(data)
       }
     }

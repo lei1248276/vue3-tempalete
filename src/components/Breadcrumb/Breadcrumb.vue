@@ -14,7 +14,7 @@
           :key="item.path"
         >
           <span
-            v-if="item.redirect === 'noRedirect' || index === levelList.length - 1"
+            v-if="item.meta?.noRedirect || index === levelList.length - 1"
             class="text-[#3C66F5] cursor-text"
           >{{ item?.meta?.title }}</span>
           <a
