@@ -5,7 +5,7 @@
   >
     <transition-group name="breadcrumb">
       <el-breadcrumb-item v-if="appStore.device === 'mobile'">
-        <span class="text-[#3C66F5] cursor-text">{{ levelList[levelList.length - 1]?.meta?.title }}</span>
+        <span class="inline-block w-20 align-middle text-[#3C66F5] cursor-text truncate">{{ levelList[levelList.length - 1]?.meta?.title }}</span>
       </el-breadcrumb-item>
 
       <template v-else>

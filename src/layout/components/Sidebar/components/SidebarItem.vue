@@ -57,6 +57,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const router = useRouter(), route = useRoute()
 const tagsViewStore = useTagsViewStore()
+const appStore = useAppStore()
 
 let showingRoutes: Route[] = []
 
@@ -85,6 +86,7 @@ function toMenuRoute(path: string) {
     nextTick(() => { router.replace({ path: '/redirect' + fullPath }) })
   } else {
     isExternal(path) ? window.open(path) : router.push(path)
+    appStore.toggleSideBar()
   }
 }
 </script>
