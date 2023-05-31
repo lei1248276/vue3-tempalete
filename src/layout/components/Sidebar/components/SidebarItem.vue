@@ -86,7 +86,7 @@ function toMenuRoute(path: string) {
     nextTick(() => { router.replace({ path: '/redirect' + fullPath }) })
   } else {
     isExternal(path) ? window.open(path) : router.push(path)
-    appStore.toggleSideBar()
+    appStore.device === 'mobile' && appStore.toggleSideBar()
   }
 }
 </script>

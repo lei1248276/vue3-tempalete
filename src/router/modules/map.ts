@@ -13,6 +13,12 @@ const map: [string, Route][] = [
     name: 'Baidu',
     component: () => import('@/views/map/baidu/baidu.vue'),
     meta: { title: '', icon: 'map' }
+  }],
+  ['gaode', {
+    path: 'gaode',
+    name: 'Gaode',
+    component: () => import('@/views/map/gaode/gaode.vue'),
+    meta: { title: '', icon: 'map' }
   }]
 ]
 

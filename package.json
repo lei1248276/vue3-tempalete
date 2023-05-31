@@ -9,6 +9,7 @@
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml"
   },
   "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
     "@vueuse/core": "^10.1.2",
     "axios": "^1.3.5",
     "core-js": "^3.20.1",

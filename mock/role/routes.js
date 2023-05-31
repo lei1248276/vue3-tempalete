@@ -56,6 +56,9 @@ export const asyncRoutes = [
     children: [{
       path: 'baidu',
       title: '百度地图'
+    }, {
+      path: 'gaode',
+      title: '高德地图'
     }]
   },
 
