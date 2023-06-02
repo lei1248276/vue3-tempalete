@@ -1,18 +1,9 @@
+import { constantRoutes } from '@/router'
 import {
   createRouter,
   createWebHashHistory,
   RouteRecordRaw
 } from 'vue-router'
-
-// * Layout
-import Layout from '@/layout/layout.vue'
-// * Modules
-import {
-  auth,
-  nested,
-  dataScreen,
-  map
-} from './modules'
 
 // ! 与从服务器请求的路由表对应
 export interface RouteMap {
@@ -38,73 +29,6 @@ export type Route = RouteRecordRaw & {
   }
 }
 
-/* *
- ! 路由的一级页面统一为布局页面，除了少数的功能页面（默认布局组件：‘Layout’）
- * constantRoutes 没有权限要求的基页，所有角色都可以访问
- * */
-export const constantRoutes: Route[] = [
-  {
-    path: '/',
-    name: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    meta: { noShow: true },
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/dashboard.vue'),
-      meta: { title: '首页', icon: 'dashboard', affix: true }
-    }]
-  },
-  {
-    path: '/redirect',
-    component: Layout,
-    meta: { hidden: true },
-    children: [
-      {
-        path: '/redirect/:path(.*)',
-        component: () => import('@/views/redirect/redirect.vue')
-      }
-    ]
-  },
-
-  {
-    path: '/login',
-    component: () => import('@/views/login/login.vue'),
-    meta: { hidden: true }
-  },
-
-  {
-    path: '/404',
-    component: () => import('@/views/404.vue'),
-    meta: { hidden: true }
-  },
-
-  { path: '/:pathMatch(.*)*', redirect: '/404', meta: { hidden: true }}
-]
-
-export const asyncRoutes = new Map<string, Route>([
-  ...auth,
-  ...nested,
-  ... dataScreen,
-  ...map,
-  ['404', {
-    path: '/404',
-    name: '404',
-    component: () => import('@/views/404.vue'),
-    meta: { title: '', icon: '404', noCache: true }
-  }]
-])
-
-const router = createRouter({
-  history: createWebHashHistory(),
-  routes: constantRoutes,
-  scrollBehavior() {
-    // * 始终滚动到顶部
-    return { top: 0 }
-  }
-})
-
 export function addRoutes(routes: Route[]) {
   nextTick(() => {
     routes.forEach((route) => {
@@ -120,5 +44,18 @@ export function resetRouter(routes: Route[]) {
     route.children?.length && resetRouter(route.children)
   })
 }
+
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes: constantRoutes,
+  scrollBehavior() {
+    // * 始终滚动到顶部
+    return { top: 0 }
+  }
+})
+
+// ! 路由的一级页面统一为布局页面，除了少数的功能页面（默认布局组件：‘Layout’）
+export { constantRoutes } from './routes'
+export { asyncRoutes } from './modules'
 
 export default router
