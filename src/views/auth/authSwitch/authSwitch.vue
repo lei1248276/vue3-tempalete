@@ -35,6 +35,7 @@ defineOptions({
   name: 'AuthSwitch'
 })
 
+const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
 
@@ -43,6 +44,6 @@ const role = getToken()?.split('-').shift()
 async function onSwitchRole(loginForm: { username: string, password: string }) {
   await userStore.logout()
   await userStore.login(loginForm)
-  router.push({ path: '/', replace: true })
+  router.replace({ path: '/redirect' + route.fullPath })
 }
 </script>
