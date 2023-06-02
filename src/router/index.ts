@@ -1,9 +1,11 @@
-import { constantRoutes } from '@/router'
+import { App } from 'vue'
 import {
   createRouter,
   createWebHashHistory,
   RouteRecordRaw
 } from 'vue-router'
+import { constantRoutes } from './routes'
+import { setupRouterGuard } from './guard/permission'
 
 // ! 与从服务器请求的路由表对应
 export interface RouteMap {
@@ -29,21 +31,16 @@ export type Route = RouteRecordRaw & {
   }
 }
 
-export function addRoutes(routes: Route[]) {
-  nextTick(() => {
-    routes.forEach((route) => {
-      // * 没有子页面的route默认添加到根页面下（为了添加默认的‘Layout’组件样式）
-      route.children ? router.addRoute(route) : router.addRoute('/', route)
-    })
-  })
+// * 安装router
+export function setupRouter(app: App) {
+  app.use(router)
+  setupRouterGuard(router)
 }
 
-export function resetRouter(routes: Route[]) {
-  routes.forEach((route) => {
-    if (route.name && router.hasRoute(route.name)) return router.removeRoute(route.name)
-    route.children?.length && resetRouter(route.children)
-  })
-}
+// ! 路由的一级页面统一为布局页面，除了少数的功能页面（默认布局组件：‘Layout’）
+export * from './routes'
+export * from './modules'
+export * from './helper'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -53,9 +50,5 @@ const router = createRouter({
     return { top: 0 }
   }
 })
-
-// ! 路由的一级页面统一为布局页面，除了少数的功能页面（默认布局组件：‘Layout’）
-export { constantRoutes } from './routes'
-export { asyncRoutes } from './modules'
 
 export default router
