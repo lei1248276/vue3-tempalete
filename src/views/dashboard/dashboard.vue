@@ -72,13 +72,13 @@ function watchResize() {
     watch([width, height], () => {
       pieChartRef.value?.resize()
       lineChartRef.value?.resize()
-    }, { immediate: true })
+    })
     watch(() => appStore.sidebar.opened, () => {
       setTimeout(() => {
         pieChartRef.value?.resize()
         lineChartRef.value?.resize()
       }, 333)
-    }, { immediate: true })
+    })
   })
 }
 
