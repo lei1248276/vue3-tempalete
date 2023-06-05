@@ -7,6 +7,7 @@ export default function usePrint(dom: HTMLElement) {
   iframe.style.display = 'none'
 
   document.body.append(iframe)
+  document.querySelectorAll("[rel='stylesheet']").forEach(tag => { fragment.append(tag.cloneNode(true)) })
   document.querySelectorAll('style').forEach(tag => { fragment.append(tag.cloneNode(true)) })
   iframe.contentDocument?.head.append(fragment)
   iframe.contentDocument?.body.append(transCanvas(dom))
