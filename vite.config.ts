@@ -42,6 +42,7 @@ export default ({ mode }) => {
           'src/store',
           'src/hooks/**'
         ],
+        vueTemplate: true,
         dts: true, // or a custom path
         eslintrc: {
           enabled: true

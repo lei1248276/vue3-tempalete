@@ -64,7 +64,7 @@ service.interceptors.response.use(
     Loading.close()
 
     // if the custom code is not 20000, it is judged as an error.
-    if (code !== '2000') {
+    if (code !== 2000) {
       ElMessage({
         message: message || 'Error',
         type: 'error',
@@ -72,7 +72,7 @@ service.interceptors.response.use(
       })
 
       // 50014: Token expired;
-      if (code === '50014') {
+      if (code === 50014) {
         // to re-login
         ElMessageBox.confirm('账号已退出，您可以继续停留在此页面，或重新登录', '确认退出', {
           confirmButtonText: '重新登录',
