@@ -18,8 +18,8 @@ export default [
     response: config => {
       const items = data.items
       return {
-        code: 20000,
-        data: {
+        code: 2000,
+        result: {
           total: items.length,
           items: items
         }

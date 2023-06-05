@@ -1,9 +1,9 @@
 import Mock from 'mockjs'
-import user from './user'
-import table from './table'
-import role from './role'
-import article from './article'
-import search from './remote-search'
+import user from './api/user'
+import table from './api/table'
+import role from './api/role'
+import article from './api/article'
+import search from './api/remote-search'
 import { param2Obj } from './utils'
 
 export const mocks = [

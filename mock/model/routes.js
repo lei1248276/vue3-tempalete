@@ -65,5 +65,14 @@ export const asyncRoutes = [
   {
     path: '404',
     title: '404'
+  },
+
+  {
+    path: 'print',
+    title: '打印',
+    children: [{
+      path: 'partPrint',
+      title: '局部打印'
+    }]
   }
 ]

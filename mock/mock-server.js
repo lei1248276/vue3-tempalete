@@ -34,7 +34,7 @@ function unregisterRoutes() {
 
 // for mock server
 const responseFake = (url, type, respond) => {
-  // const API = process.env.VUE_APP_MOCK ? process.env.VUE_APP_MOCK_API : process.env.VUE_APP_BASE_API
+  // const API = process.env.VUE_App_MOCK ? process.env.VUE_App_MOCK_API : process.env.VUE_App_BASE_API
   const API = '/dev-api'
   return {
     url: new RegExp(`${API}${url}`),
@@ -89,54 +89,15 @@ module.exports = () => ({
   name: 'mock-server',
   apply: 'serve',
   enforce: 'post',
-  config: (config) => ({
-    server: {
-      proxy: {
-        '/dev-api': `http://localhost:${config.server.port + 1}`
-      }
-    }
-  }),
-  configResolved(resolvedConfig) {
-    mockServer(express(), resolvedConfig.server.port + 1)
-  }
-})
+  config: (config) => {
+    mockServer(express(), config.server.port + 1)
 
-/* module.exports = () => {
-  const app = express()
-  return ((app) => {
-  // parse app.body
-  // https://expressjs.com/en/4x/api.html#req.body
-  app.use(bodyParser.json())
-  app.use(bodyParser.urlencoded({
-    extended: true
-  }))
-
-  const mockRoutes = registerRoutes(app)
-  var mockRoutesLength = mockRoutes.mockRoutesLength
-  var mockStartIndex = mockRoutes.mockStartIndex
-
-  // watch files, hot reload mock server
-  chokidar.watch(mockDir, {
-    ignored: /mock-server/,
-    ignoreInitial: true
-    }).on('all', (event, path) => {
-      if (event === 'change' || event === 'add') {
-        try {
-          // remove mock routes stack
-          app._router.stack.splice(mockStartIndex, mockRoutesLength)
-
-          // clear routes cache
-          unregisterRoutes()
-
-          const mockRoutes = registerRoutes(app)
-          mockRoutesLength = mockRoutes.mockRoutesLength
-          mockStartIndex = mockRoutes.mockStartIndex
-
-          console.log(chalk.magentaBright(`\n > Mock Server hot reload success! changed  ${path}`))
-        } catch (error) {
-          console.log(chalk.redBright(error))
+    return {
+      server: {
+        proxy: {
+          '/dev-api': `http://localhost:${config.server.port + 1}`
         }
       }
-    })
-  })(app)
-}*/
+    }
+  }
+})

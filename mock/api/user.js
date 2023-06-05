@@ -44,7 +44,7 @@ export default [
       }
 
       return {
-        code: '2000',
+        code: 2000,
         data: token,
         result: token
       }
@@ -68,7 +68,7 @@ export default [
       }
 
       return {
-        code: '2000',
+        code: 2000,
         data: info,
         result: info
       }
@@ -81,7 +81,7 @@ export default [
     type: 'post',
     response: _ => {
       return {
-        code: '2000',
+        code: 2000,
         data: 'success'
       }
     }

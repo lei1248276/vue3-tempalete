@@ -1,6 +1,6 @@
 import Mock from 'mockjs'
 import { deepClone } from '../utils'
-import { asyncRoutes, constantRoutes } from './routes.js'
+import { asyncRoutes, constantRoutes } from '../model/routes'
 
 const routes = deepClone([...constantRoutes, ...asyncRoutes])
 
@@ -43,7 +43,7 @@ export default [
     response: _ => {
       const route = roles[_.query.role]?.routes || routes
       return {
-        code: '2000',
+        code: 2000,
         data: route,
         result: route
       }
@@ -56,7 +56,7 @@ export default [
     type: 'get',
     response: _ => {
       return {
-        code: '2000',
+        code: 2000,
         data: roles,
         result: roles
       }
@@ -68,7 +68,7 @@ export default [
     url: '/vue-element-admin/role',
     type: 'post',
     response: {
-      code: '2000',
+      code: 2000,
       data: {
         key: Mock.mock('@integer(300, 5000)')
       }
@@ -80,7 +80,7 @@ export default [
     url: '/vue-element-admin/role/[A-Za-z0-9]',
     type: 'put',
     response: {
-      code: '2000',
+      code: 2000,
       data: {
         status: 'success'
       }
@@ -92,7 +92,7 @@ export default [
     url: '/vue-element-admin/role/[A-Za-z0-9]',
     type: 'delete',
     response: {
-      code: '2000',
+      code: 2000,
       data: {
         status: 'success'
       }
