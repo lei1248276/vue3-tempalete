@@ -1,7 +1,6 @@
 {
   "name": "vue3-template",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.2.0",
   "scripts": {
     "dev": "vite --open",
     "build": "vite build",
