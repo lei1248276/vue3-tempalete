@@ -12,7 +12,13 @@ const print: [string, Route][] = [
     path: 'partPrint',
     name: 'PartPrint',
     component: () => import('@/views/print/partPrint/partPrint.vue'),
-    meta: { title: '', icon: 'print', noCache: true }
+    meta: { title: '', icon: 'print' }
+  }],
+  ['templatePrint', {
+    path: 'templatePrint',
+    name: 'TemplatePrint',
+    component: () => import('@/views/print/templatePrint/templatePrint.vue'),
+    meta: { title: '', icon: 'print' }
   }]
 ]
 
