@@ -75,6 +75,11 @@ export const asyncRoutes = [
   },
 
   {
+    path: 'icon',
+    title: '图标'
+  },
+
+  {
     path: '404',
     title: '404'
   }
