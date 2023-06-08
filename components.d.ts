@@ -10,7 +10,6 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Breadcrumb: typeof import('./src/components/Breadcrumb/Breadcrumb.vue')['default']
-    CustomUpload: typeof import('./src/components/CustomUpload/CustomUpload.vue')['default']
     EditorImage: typeof import('./src/components/Tinymce/components/EditorImage.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
@@ -37,7 +36,6 @@ declare module '@vue/runtime-core' {
     HeaderSearch: typeof import('./src/components/HeaderSearch/HeaderSearch.vue')['default']
     JPagination: typeof import('./src/components/JPagination/JPagination.vue')['default']
     JTable: typeof import('./src/components/JTable/JTable.vue')['default']
-    PopoverTable: typeof import('./src/components/PopoverTable/PopoverTable.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Screenfull: typeof import('./src/components/Screenfull/Screenfull.vue')['default']

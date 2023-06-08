@@ -1,5 +1,14 @@
 <template>
   <div class="page-container mid">
+    <!-- * 直接传递'组件'和'props'进行一键打印 -->
+    <!-- <el-button
+      type="primary"
+      size="large"
+      @click="usePrint(InputTemp, inputOrder[0])"
+    >
+      模板打印
+    </el-button> -->
+    <!-- * 或者提前渲染获取'DOM'元素后进行打印 -->
     <el-button
       type="primary"
       size="large"
@@ -19,7 +28,16 @@
       </div>
     </div>
 
+    <!-- * 直接传递'组件'和props'进行一键打印 -->
     <el-button
+      type="primary"
+      size="large"
+      @click="usePrint(OutTemp, outOrder[0])"
+    >
+      异步模板打印
+    </el-button>
+    <!-- * 或者提前渲染获取'DOM'元素后进行打印 -->
+    <!-- <el-button
       type="primary"
       size="large"
       @click="isShow ? usePrint(outTempRef) : (isShow = true)"
@@ -30,7 +48,6 @@
       v-if="isShow"
       class="hidden"
     >
-      <!-- * “resolve事件”只在初次加载完毕时触发 -->
       <div ref="outTempRef">
         <Suspense @resolve="usePrint(outTempRef)">
           <out-temp
@@ -41,7 +58,7 @@
           />
         </Suspense>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -164,5 +181,4 @@ const outOrder = [
 const inputTempRef = shallowRef()
 const outTempRef = shallowRef()
 const isShow = ref(false)
-
 </script>

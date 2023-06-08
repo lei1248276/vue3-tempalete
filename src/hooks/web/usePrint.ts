@@ -1,42 +1,81 @@
+/* eslint-disable no-redeclare */
+import type { VNode } from 'vue'
+import { createVNode, render } from 'vue'
+
 /**
- * @description 页面局部打印或模版打印
+ * @description 页面局部打印或模版 / 异步模板打印
+ * @param dom DOM元素
  */
-export default function usePrint(dom: HTMLElement, delay = 200) {
+export default function usePrint(dom: HTMLElement): void
+
+/**
+ * @description 页面局部打印或模版 / 异步模板打印
+ * @param component vue组件
+ * @param props 组件props
+ * @param timeout 打印超时时间
+ */
+export default function usePrint(component: ReturnType<typeof defineAsyncComponent>, props?: Record<string, any>, timeout?: number): void
+
+export default function usePrint(dom: HTMLElement | ReturnType<typeof defineAsyncComponent>, props = {}, timeout = 5000) {
+  let instance: VNode | { el: HTMLElement }
+  dom instanceof Node
+    ? instance = { el: dom }
+    : render((instance = createVNode(dom, props)), document.createElement('div'))
+
+  // * 创建
   const fragment = document.createDocumentFragment()
   const iframe = document.createElement('iframe')
   iframe.style.display = 'none'
-
   document.body.append(iframe)
-  document.querySelectorAll("[rel='stylesheet']").forEach(tag => { fragment.append(tag.cloneNode(true)) })
-  document.querySelectorAll('style').forEach(tag => { fragment.append(tag.cloneNode(true)) })
-  iframe.contentDocument?.head.append(fragment)
 
-  // ! 添加一个默认延迟，避免一些边界情况
-  setTimeout(() => {
-    iframe.contentDocument?.body.append(hasCanvas(dom) ? transCanvas(dom) : dom.cloneNode(true))
-    iframe.focus()
-    iframe.contentWindow?.print()
-  }, delay)
+  // * 打印
+  print(instance, () => {
+    document.querySelectorAll("[rel='stylesheet']").forEach(tag => { fragment.append(tag.cloneNode(true)) })
+    document.querySelectorAll('style').forEach(tag => { fragment.append(tag.cloneNode(true)) })
+    iframe.contentDocument?.head.append(fragment)
+    iframe.contentDocument?.body.append(transform(instance.el as HTMLElement))
 
+    // ! 添加样式文件时会发出网络请求（都是缓存文件）而浏览器打印时会暂停网络请求，所以添加延迟避免一些边界情况
+    setTimeout(() => {
+      iframe.focus()
+      iframe.contentWindow?.print()
+    }, 200)
+  }, timeout)
+
+  // * 卸载
   iframe.contentWindow?.addEventListener('afterprint', () => {
-    nextTick(() => {
-      iframe.remove()
+    iframe.remove()
 
-      dom.querySelectorAll('.canvasImg').forEach(canvas => {
-        const parent = canvas.parentNode!
-        parent.removeChild(canvas)
+    hasCanvas(instance.el as HTMLElement) &&
+      (instance.el as HTMLElement).querySelectorAll('.canvasImg').forEach(canvas => {
+        canvas.parentNode?.removeChild(canvas)
       })
-    })
   })
 }
 
-function hasCanvas(dom: HTMLElement) {
-  return !!dom.querySelector('canvas')
+function print(dom: VNode | { el: HTMLElement }, callback: Function, timeout: number) {
+  if (dom.el?.nodeType === 1) return callback()
+
+  // * 模板可能是异步的（没发现有类似Suspense组件的resolve事件回调）所以定时递归执行
+  const delay = 200
+  if (timeout - delay > 0) {
+    setTimeout(() => { print(dom, callback, timeout - delay) }, delay)
+  }
+}
+
+function transform(el: HTMLElement) {
+  if (hasCanvas(el)) transCanvas(el)
+
+  return el.cloneNode(true)
+}
+
+function hasCanvas(el: HTMLElement) {
+  return !!el.querySelector('canvas')
 }
 
 // * 将canvas全部生成为图片，打印完后再删除
-function transCanvas(dom: HTMLElement) {
-  const canvasList = dom.querySelectorAll('canvas')
+function transCanvas(el: HTMLElement) {
+  const canvasList = el.querySelectorAll('canvas')
 
   canvasList.forEach(canvas => {
     const parent = canvas.parentNode!
@@ -46,6 +85,4 @@ function transCanvas(dom: HTMLElement) {
     img.src = canvasUrl
     parent.append(img)
   })
-
-  return dom.cloneNode(true)
 }
