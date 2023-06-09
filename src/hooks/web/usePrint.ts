@@ -17,7 +17,7 @@ export default function usePrint(dom: HTMLElement): void
 export default function usePrint(component: ReturnType<typeof defineAsyncComponent>, props?: Record<string, any>, timeout?: number): void
 
 export default function usePrint(dom: HTMLElement | ReturnType<typeof defineAsyncComponent>, props = {}, timeout = 5000) {
-  let instance: VNode | { el: HTMLElement }
+  let instance: VNode | { el: HTMLElement } | null
   dom instanceof Node
     ? instance = { el: dom }
     : render((instance = createVNode(dom, props)), document.createElement('div'))
@@ -33,7 +33,7 @@ export default function usePrint(dom: HTMLElement | ReturnType<typeof defineAsyn
     document.querySelectorAll("[rel='stylesheet']").forEach(tag => { fragment.append(tag.cloneNode(true)) })
     document.querySelectorAll('style').forEach(tag => { fragment.append(tag.cloneNode(true)) })
     iframe.contentDocument?.head.append(fragment)
-    iframe.contentDocument?.body.append(transform(instance.el as HTMLElement))
+    iframe.contentDocument?.body.append(transform(instance!))
 
     // ! 添加样式文件时会发出网络请求（都是缓存文件）而浏览器打印时会暂停网络请求，所以添加延迟避免一些边界情况
     setTimeout(() => {
@@ -46,10 +46,13 @@ export default function usePrint(dom: HTMLElement | ReturnType<typeof defineAsyn
   iframe.contentWindow?.addEventListener('afterprint', () => {
     iframe.remove()
 
-    hasCanvas(instance.el as HTMLElement) &&
-      (instance.el as HTMLElement).querySelectorAll('.canvasImg').forEach(canvas => {
+    if (hasCanvas(instance?.el as HTMLElement)) {
+      (instance?.el as HTMLElement).querySelectorAll('.canvasImg').forEach(canvas => {
         canvas.parentNode?.removeChild(canvas)
       })
+    }
+
+    instance = null
   })
 }
 
@@ -63,10 +66,15 @@ function print(dom: VNode | { el: HTMLElement }, callback: Function, timeout: nu
   }
 }
 
-function transform(el: HTMLElement) {
-  if (hasCanvas(el)) transCanvas(el)
+function transform(instance: VNode | { el: HTMLElement }) {
+  if (hasCanvas(instance.el as HTMLElement)) transCanvas(instance.el as HTMLElement)
 
-  return el.cloneNode(true)
+  // * 如果传递的参数是组件的话也就代表是页面上不需要展示的模板所以就直接使用
+  return isVNode(instance) ? instance.el as HTMLElement : instance.el?.cloneNode(true)
+}
+
+function isVNode(instance: any): instance is VNode {
+  return !!instance['__v_isVNode']
 }
 
 function hasCanvas(el: HTMLElement) {
