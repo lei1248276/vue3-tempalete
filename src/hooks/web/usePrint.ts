@@ -23,28 +23,32 @@ export default function usePrint(dom: HTMLElement | ReturnType<typeof defineAsyn
     : render((instance = createVNode(dom, props)), document.createElement('div'))
 
   // * 创建
-  const fragment = document.createDocumentFragment()
-  const iframe = document.createElement('iframe')
+  let iframe: HTMLIFrameElement | null = document.createElement('iframe')
   iframe.style.display = 'none'
   document.body.append(iframe)
 
   // * 打印
   print(instance, () => {
-    document.querySelectorAll("[rel='stylesheet']").forEach(tag => { fragment.append(tag.cloneNode(true)) })
-    document.querySelectorAll('style').forEach(tag => { fragment.append(tag.cloneNode(true)) })
-    iframe.contentDocument?.head.append(fragment)
-    iframe.contentDocument?.body.append(transform(instance!))
+    // * 获取所有的样式表
+    const reduce = Array.prototype.reduce
+    let styleTag: HTMLStyleElement | null = document.createElement('style')
+    styleTag.textContent = reduce.call(
+      document.styleSheets,
+      (acc, cur) => (acc += reduce.call(cur.cssRules, (a, c) => (a += c.cssText), '') as string),
+      ''
+    ) as string
 
-    // ! 添加样式文件时会发出网络请求（都是缓存文件）而浏览器打印时会暂停网络请求，所以添加延迟避免一些边界情况
-    setTimeout(() => {
-      iframe.focus()
-      iframe.contentWindow?.print()
-    }, 200)
+    iframe?.contentDocument?.head.append(styleTag)
+    iframe?.contentDocument?.body.append(transform(instance!))
+    iframe?.focus()
+    iframe?.contentWindow?.print()
+
+    styleTag = null
   }, timeout)
 
   // * 卸载
   iframe.contentWindow?.addEventListener('afterprint', () => {
-    iframe.remove()
+    iframe?.remove()
 
     if (hasCanvas(instance?.el as HTMLElement)) {
       (instance?.el as HTMLElement).querySelectorAll('.canvasImg').forEach(canvas => {
@@ -53,6 +57,7 @@ export default function usePrint(dom: HTMLElement | ReturnType<typeof defineAsyn
     }
 
     instance = null
+    iframe = null
   })
 }
 
