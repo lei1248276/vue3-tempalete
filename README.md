@@ -14,6 +14,7 @@ vue3-template是一个后台模版项目本是为了个人练手创建的，主�
 
 ## 预览
 - [vue3-template](https://jadmin.vercel.app)
+- [vue3-template -- 国内网址](https://jadmin.osrc.com)
 
 ## 运行
 
