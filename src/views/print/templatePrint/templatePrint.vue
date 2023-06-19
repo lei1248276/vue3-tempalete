@@ -59,12 +59,21 @@
         </Suspense>
       </div>
     </div> -->
+
+    <el-button
+      type="primary"
+      size="large"
+      @click="usePrint(InvoiceTemp)"
+    >
+      异步模板打印发票
+    </el-button>
   </div>
 </template>
 
 <script setup lang="ts">
 import InputTemp from './template/InputTemp.vue'
 const OutTemp = defineAsyncComponent(() => import('./template/OutTemp.vue'))
+const InvoiceTemp = defineAsyncComponent(() => import('./template/InvoiceTemp.vue'))
 
 defineOptions({
   name: 'TemplatePrint'
