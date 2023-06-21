@@ -17,10 +17,11 @@ export default function usePrint(dom: HTMLElement): void
 export default function usePrint(component: ReturnType<typeof defineAsyncComponent>, props?: Record<string, any>, timeout?: number): void
 
 export default function usePrint(dom: HTMLElement | ReturnType<typeof defineAsyncComponent>, props = {}, timeout = 5000) {
+  let container: HTMLElement | null
   let instance: VNode | { el: HTMLElement } | null
   dom instanceof Node
     ? instance = { el: dom }
-    : render((instance = createVNode(dom, props)), document.createElement('div'))
+    : render((instance = createVNode(dom, props)), (container = document.createElement('div')))
 
   // * 创建
   let iframe: HTMLIFrameElement | null = document.createElement('iframe')
@@ -47,18 +48,24 @@ export default function usePrint(dom: HTMLElement | ReturnType<typeof defineAsyn
   }, timeout)
 
   // * 卸载
-  iframe.contentWindow?.addEventListener('afterprint', () => {
-    iframe?.remove()
-
+  function unload() {
     if (hasCanvas(instance?.el as HTMLElement)) {
       (instance?.el as HTMLElement).querySelectorAll('.canvasImg').forEach(canvas => {
         canvas.parentNode?.removeChild(canvas)
       })
     }
 
+    if (container) {
+      render(null, container!)
+      container = null
+    }
+    iframe?.contentWindow?.removeEventListener('afterprint', unload)
+    iframe?.remove()
     instance = null
     iframe = null
-  })
+  }
+
+  iframe.contentWindow?.addEventListener('afterprint', unload)
 }
 
 function print(dom: VNode | { el: HTMLElement }, callback: Function, timeout: number) {
