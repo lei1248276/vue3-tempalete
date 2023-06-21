@@ -2,21 +2,46 @@
 import type { VNode } from 'vue'
 import { createVNode, render } from 'vue'
 
+interface Options {
+  before?: Function
+  after?: Function
+  timeout?: number
+}
+
 /**
  * @description 页面局部打印或模版 / 异步模板打印
  * @param dom DOM元素
+ * @param options.before 打印之前回调
+ * @param options.after 打印之后回调
  */
-export default function usePrint(dom: HTMLElement): void
+export default function usePrint(dom: HTMLElement, options?: {
+  before?: Function
+  after?: Function
+}): void
 
 /**
  * @description 页面局部打印或模版 / 异步模板打印
  * @param component vue组件
  * @param props 组件props
- * @param timeout 打印超时时间
+ * @param options.before 打印之前回调
+ * @param options.after 打印之后回调
+ * @param options.timeout 打印超时时间
  */
-export default function usePrint(component: ReturnType<typeof defineAsyncComponent>, props?: Record<string, any>, timeout?: number): void
+export default function usePrint(
+  component: ReturnType<typeof defineAsyncComponent>,
+  props?: Record<string, any>,
+  options?: {
+    before?: Function
+    after?: Function
+    timeout?: number
+  }
+): void
 
-export default function usePrint(dom: HTMLElement | ReturnType<typeof defineAsyncComponent>, props = {}, timeout = 5000) {
+export default function usePrint(
+  dom: HTMLElement | ReturnType<typeof defineAsyncComponent>,
+  props = {},
+  options?: Options
+) {
   let container: HTMLElement | null
   let instance: VNode | { el: HTMLElement } | null
   dom instanceof Node
@@ -45,7 +70,7 @@ export default function usePrint(dom: HTMLElement | ReturnType<typeof defineAsyn
     iframe?.contentWindow?.print()
 
     styleTag = null
-  }, timeout)
+  }, options?.timeout || 5000)
 
   // * 卸载
   function unload() {
@@ -56,15 +81,21 @@ export default function usePrint(dom: HTMLElement | ReturnType<typeof defineAsyn
     }
 
     if (container) {
-      render(null, container!)
+      render(null, container)
       container = null
     }
+    // eslint-disable-next-line no-undef
+    options?.before && iframe?.contentWindow?.removeEventListener('beforeprint', options?.before as EventListener)
     iframe?.contentWindow?.removeEventListener('afterprint', unload)
     iframe?.remove()
     instance = null
     iframe = null
+
+    options?.after?.()
   }
 
+  // eslint-disable-next-line no-undef
+  options?.before && iframe.contentWindow?.addEventListener('beforeprint', options.before as EventListener)
   iframe.contentWindow?.addEventListener('afterprint', unload)
 }
 
