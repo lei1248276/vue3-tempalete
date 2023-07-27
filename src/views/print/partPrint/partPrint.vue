@@ -53,6 +53,7 @@ import type { ColumnProps } from '@/components/JTable/JTable.vue'
 import PieChart from '@/views/dashboard/components/PieChart.vue'
 import LineChart from '@/views/dashboard/components/LineChart.vue'
 import { getArticle } from '@/api/print'
+import usePrint from 'vue3-use-print'
 
 defineOptions({
   name: 'AreaPrint'

@@ -71,6 +71,7 @@
 </template>
 
 <script setup lang="ts">
+import usePrint from 'vue3-use-print'
 import InputTemp from './template/InputTemp.vue'
 const OutTemp = defineAsyncComponent(() => import('./template/OutTemp.vue'))
 const InvoiceTemp = defineAsyncComponent(() => import('./template/InvoiceTemp.vue'))

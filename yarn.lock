@@ -4129,6 +4129,11 @@ vue3-count-to@^1.1.2:
     core-js "^3.8.1"
     vue-count-to "^1.0.13"
 
+vue3-use-print@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/vue3-use-print/-/vue3-use-print-1.0.0.tgz#3c4452393b5addec937985ec50fde081d3e298c1"
+  integrity sha512-TP0L9FH6NlL9GDaQzVw9A4eJlyH9IqXLCcJvEdzbFi9RchKN33qrfd2tWP4/XkOMLOH8tVs0iL73pVLMKlvsZw==
+
 vue@^3.3.4:
   version "3.3.4"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.3.4.tgz#8ed945d3873667df1d0fcf3b2463ada028f88bd6"
