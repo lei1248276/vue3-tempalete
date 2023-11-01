@@ -75,6 +75,21 @@ export const asyncRoutes = [
   },
 
   {
+    path: 'order',
+    title: '订单管理',
+    children: [{
+      path: 'orderSearch',
+      title: '订单查询'
+    }, {
+      path: 'user',
+      title: '用户管理'
+    }, {
+      path: 'bill',
+      title: '资金对账'
+    }]
+  },
+
+  {
     path: 'icon',
     title: '图标'
   },

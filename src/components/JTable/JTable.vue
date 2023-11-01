@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="j-table">
     <el-table
       ref="tableRef"
       v-bind="Object.assign({}, $props, $attrs)"
@@ -10,18 +10,15 @@
       >
         <!-- * 添加slot来改写某一列的内容 -->
         <el-table-column
-          v-if="column['prop'] && $slots[column['prop']]"
+          v-if="$slots[column['prop']!]"
           v-bind="column"
-          align="center"
         >
           <template #default="slot: { row: any, column: any, $index: number}">
             <slot
               :name="column.prop"
               v-bind="slot"
             >
-              {{ slot.row[column['prop']] instanceof Object
-                ? ''
-                : slot.row[column['prop']] }}
+              {{ slot.row[column['prop']!] }}
             </slot>
           </template>
         </el-table-column>
@@ -29,7 +26,6 @@
         <el-table-column
           v-else
           v-bind="column"
-          align="center"
         />
       </template>
 
@@ -53,10 +49,6 @@ import type { TableInstance, TableColumnInstance, TableProps as ElTableProps } f
 
 export type ColumnProps = TableColumnInstance['$props']
 
-defineOptions({
-  name: 'JTable'
-})
-
 type TableProps<T = any> = ElTableProps<T> & {
   data: T[]
   columnProps: ColumnProps[]
@@ -66,13 +58,17 @@ type TableProps<T = any> = ElTableProps<T> & {
   showPagination?: boolean
 }
 
+defineOptions({
+  name: 'JTable'
+})
+
 const props = withDefaults(defineProps<TableProps>(), {
   total: 0,
   page: 1,
   limit: 10,
-  showPagination: true,
-  stripe: true,
-  border: true,
+  showPagination: false,
+  stripe: false,
+  border: false,
   highlightCurrentRow: true,
   showHeader: true,
   fit: true,
@@ -107,3 +103,39 @@ function onPagination(options: { page: number, limit: number }) {
 
 defineExpose({ tableRef })
 </script>
+
+<style lang="scss">
+.j-table{
+    // ! 设置自定义表格头部样式
+  .el-table{
+    thead th{
+      background: #F5F7FC !important;
+      color: #333 !important;
+      font-weight: 500;
+      .cell{
+        padding: 0 10px !important;
+        border-left: 1px solid #BFC9D5;
+      }
+      &:nth-child(1) .cell{
+        border-left: none !important;
+      }
+    }
+
+    tbody td{
+      .cell{
+        padding: 0 10px !important;
+        color: #333;
+      }
+    }
+  }
+  .el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell{
+    background: #F5F7FC !important;
+  }
+
+  // ! 设置table row点击后状态颜色
+  .el-table__body tr.el-table__row.current-row td.el-table__cell,
+  .el-table__body tr.el-table__row--striped.current-row td.el-table__cell{
+    background-color: #F0F4FF !important;
+  }
+}
+</style>

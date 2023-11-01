@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import { Navbar, Sidebar, AppMain, TagsView } from './components'
 import { ElConfigProvider } from 'element-plus'
-import zhCn from 'element-plus/lib/locale/lang/zh-cn'// !中文包
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'// !中文包
 import useResizeHandler from './hooks/ResizeHandler'
 
 defineOptions({

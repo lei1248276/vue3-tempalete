@@ -4,22 +4,3 @@
 .el-breadcrumb__inner a {
   font-weight: 400 !important;
 }
-
-// ! 设置自定义表格头部样式
-.el-table{
-  thead th{
-    background: #F5F5F5 !important;
-    color: #333 !important;
-    font-weight: bold;
-  }
-}
-.el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell{
-  background: #f5f5f5 !important;
-}
-
-// ! 设置table row点击后状态颜色
-.el-table__body tr.el-table__row.current-row td.el-table__cell,
-.el-table__body tr.el-table__row--striped.current-row td.el-table__cell{
-  background-color: #D1E6F6 !important;
-  color: #EE8427;
-}

@@ -309,6 +309,12 @@
     "ElMessage": true,
     "ElLoading": true,
     "ElMessageBox": true,
-    "usePrint": true
+    "usePrint": true,
+    "ExtractDefaultPropTypes": true,
+    "ExtractPropTypes": true,
+    "ExtractPublicPropTypes": true,
+    "WritableComputedRef": true,
+    "injectLocal": true,
+    "provideLocal": true
   }
 }
