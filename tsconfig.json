@@ -17,6 +17,12 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "auto-imports.d.ts", "components.d.ts"],
+  "include": [
+    "components.d.ts", 
+    "auto-imports.d.ts",
+    "src/**/*.ts", 
+    "src/**/*.d.ts", 
+    "src/**/*.vue"
+],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
